@@ -1,0 +1,50 @@
+{
+  "welcomeFile": "index.html",
+  "routes": [
+    {
+      "path": "/sap/opu/odata",
+      "target": {
+        "type": "destination",
+        "name": "T40",
+        "entryPath": "/sap/opu/odata"
+      },
+      "description": "5 [T40] KCAD ECC System"
+    },
+    {
+      "path": "kcad",
+      "target": {
+        "type": "destination",
+        "name": "T40",
+        "entryPath": "/kcad/"
+      },
+      "description": "T40 Development System"
+    },
+    {
+      "path": "/sap/bc/ui5_ui5",
+      "target": {
+        "type": "destination",
+        "name": "T40",
+        "entryPath": "/sap/bc/ui5_ui5"
+      },
+      "description": "5 [T40] KCAD ECC System"
+    },
+    {
+      "path": "/resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/resources"
+      },
+      "description": "SAPUI5 Resources"
+    },
+    {
+      "path": "/test-resources",
+      "target": {
+        "type": "service",
+        "name": "sapui5",
+        "entryPath": "/test-resources"
+      },
+      "description": "SAPUI5 Test Resources"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+			        <!--src="https://sapui5.hana.ondemand.com/1.32.7/resources/sap-ui-core.js"-->
+		<script id="sap-ui-bootstrap"
+		        type="text/javascript"
+		        src="https://sapcdn.kcadeutag.com/1.71.25A/resources/sap-ui-core.js"
+				data-sap-ui-libs="sap.m,sap.ui.comp"
+				data-sap-ui-theme="sap_bluecrystal"
+				data-sap-ui-xx-bindingSyntax="complex"
+				data-sap-ui-appCacheBuster = "./">
+		</script>
+	
+	<!--
+				<script id="sap-ui-bootstrap"
+				src="../../resources/sap-ui-cachebuster/sap-ui-core.js"
+				src="/sap/public/bc/ui5_ui5/1/resources/sap-ui-cachebuster/sap-ui-core.js"
+			data-sap-ui-libs="sap.m"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-compatVersion="edge"
+			data-sap-ui-appCacheBuster = "./">
+			    
+			</script>
+		-->
+
+		<script>
+                //Load in javascript utility script
+                sap.ui.localResources("js");
+                jQuery.sap.require("js.helper");
+		
+				sap.ui.localResources("dms");
+				jQuery.sap.require("sap.ui.layout.form.SimpleForm");
+				jQuery.sap.require("sap.ui.commons.MessageBox");
+				jQuery.sap.require("sap.m.MessageBox");
+				jQuery.sap.require("sap.ui.core.IconPool");
+				
+				var sUrl = "/sap/opu/odata/sap/ZDMS_SEARCH_SRV_01/";
+	            var searchModel = new sap.ui.model.odata.ODataModel(sUrl, true);
+				
+				var sap_system = "";
+				
+				var documentTypes = new sap.ui.model.json.JSONModel();
+				var documentGroups = new sap.ui.model.json.JSONModel();
+				var documentTemplate = new sap.ui.model.json.JSONModel();
+				var attachmentsModel = new sap.ui.model.json.JSONModel();
+				var myDMSModel = new sap.ui.model.json.JSONModel();
+				var inboxModel = new sap.ui.model.json.JSONModel();
+				var tileData = new sap.ui.model.json.JSONModel();
+				
+				inboxModel.setSizeLimit(99999);
+				myDMSModel.setSizeLimit(99999);
+				
+				var formHasErrors = false;
+				var formErrors = "";
+				var lastEvent = "";
+				
+				var attachmentsView = sap.ui.view({id:"dms.DMSAttachments", viewName:"dms.DMSAttachments", type:sap.ui.core.mvc.ViewType.JS});			
+				var dmsUploadForm   = sap.ui.view({id:"dms.uploadForm", viewName:"dms.DMSUploadForm", type:sap.ui.core.mvc.ViewType.JS});
+				var dmsInbox        = sap.ui.view({id:"dms.inbox", viewName:"dms.DMSInbox", type:sap.ui.core.mvc.ViewType.JS});
+				var dmsHomepage     = sap.ui.view({id:"dms.homepage", viewName:"dms.DMSHompage", type:sap.ui.core.mvc.ViewType.JS});
+				var dmsMyItems      = sap.ui.view({id:"dms.myDMSForms", viewName:"dms.DMSMyDMSForms", type:sap.ui.core.mvc.ViewType.JS});
+
+				
+				var app = new sap.m.App("App", {initialPage: "dms.homepage"});
+
+				app.addPage(dmsUploadForm);
+				app.addPage(dmsHomepage);
+				app.addPage(dmsInbox);	
+				app.addPage(dmsMyItems);	
+				
+				
+				app.placeAt("content");
+				
+				
+				//var wf_id = jQuery.sap.getUriParameters().get("wf_id");
+				
+				//if( wf_id != null ){
+				//	var form = jQuery.sap.getUriParameters().get("form");
+				
+				//	if( form === "Resubmit" )
+				//		openResubmitDMSUploadForm(dms_id);
+				//	}
+				//}
+				
+				//navigateTo("dms.homepage");						
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>
