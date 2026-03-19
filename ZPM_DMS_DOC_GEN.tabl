@@ -1,0 +1,43 @@
+Table ZPM_DMS_DOC_GEN
+
+MANDT	MANDT	CLNT	3	0	Client
+DOC_TYPE	DOKAR	CHAR	3	0	Document Type
+DOC_GROUP	ZPM_DMS_DOC_GROUP	CHAR	3	0	Document group
+WORKFLOW_ACTIVE	ZPM_DMS_WORKFLOW_ACTIVE	CHAR	1	0	Workflow active
+WORKFLOW_NUMBER	SWD_STEP_T	CHAR	14	0	Task abbreviation
+APPROVAL_RULE	ZPM_DMS_APPROVAL_RULE	CHAR	30	0	DMS approval rule
+DOCUMENT_IND	ZPM_DMS_DOCUMENT_IND	CHAR	1	0	New Document Indicator
+DOCUMENT_PER_OL	ZPM_DMS_DOCUMENT_PER_OL	CHAR	1	0	Indicator: Create document per object link
+DOCUMENT_PER_GR	ZPM_DMS_DOCUMENT_PER_GR	CHAR	1	0	Create document per group
+APPROVAL_EXTRA	ZPM_DMS_APPROVAL_EXTRA	CHAR	30	0	Function module name, on approval allow extra functions
+APPROVAL_CONDITION	ZPM_DMS_APPROVAL_CONDITION	CHAR	30	0	Add additional conditions for triggering of workflow
+
+
+CAT	CT	              	                              	                              	                              
+CER	CE	WS99900008	ZPM_DMS_WFR_WOC	ZPM_DMS_COMPLETE_WO	ZPM_DMS_CERT_COND
+CER	CM	              	                              	                              	                              
+CER	CO	WS99900008	ZPM_DMS_WFR_WOC	ZPM_DMS_COMPLETE_WO	ZPM_DMS_CERT_COND
+CER	ER	WS99900008	ZPM_DMS_WFR_WOC	ZPM_DMS_COMPLETE_WO	ZPM_DMS_CERT_COND
+CER	EX	              	                              	                              	                              
+CER	IR	              	                              	                              	                              
+CER	OS	WS99900008	ZPM_DMS_WFR_WOC	ZPM_DMS_COMPLETE_WO	ZPM_DMS_CERT_COND
+CER	RR	              	                              	                              	                              
+CER	SF	              	                              	                              	                              
+CER	TP	WS99900008	ZPM_DMS_WFR_WOC	ZPM_DMS_COMPLETE_WO	ZPM_DMS_CERT_COND
+GRP	AC	WS99900008	ZPM_DMS_WFR_MWC	ZPM_DMS_COMPLETE_WO	                              
+GRP	AD	              	                              	                              	                              
+GRP	CR	WS99900008	ZPM_DMS_WFR_MWC	ZPM_DMS_COMPLETE_WO	                              
+GRP	CS	WS99900008	ZPM_DMS_WFR_MWC	ZPM_DMS_COMPLETE_WO	                              
+GRP	EA	              	                              	                              	                              
+GRP	EC	WS99900008	ZPM_DMS_WFR_WOC	ZPM_DMS_COMPLETE_WO	ZPM_DMS_CERT_COND
+GRP	EV	WS99900008	ZPM_DMS_WFR_MWC	ZPM_DMS_COMPLETE_WO	                              
+GRP	RA	              	                              	                              	                              
+GRP	VR	              	                              	                              	                              
+MAN	DW	              	                              	                              	                              
+MAN	MA	              	                              	                              	                              
+MAN	PC	              	                              	                              	                              
+MAN	SC	              	                              	                              	                              
+MAN	SL	              	                              	                              	                              
+STC	CA	              	                              	                              	                              
+STU	HZ	              	                              	                              	                              
+STU	ST	              	                              	                              	                              
