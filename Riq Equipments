@@ -1,0 +1,2821 @@
+Asset Number	Asset Description	Organization	Parent Asset Number
+10 Power System.700		R0700	Rig 700 - Flex 3 W3 A
+20 Rotating System.700		R0700	Rig 700 - Flex 3 W3 A
+30 Hoisting System.700		R0700	Rig 700 - Flex 3 W3 A
+40 Mud System.700		R0700	Rig 700 - Flex 3 W3 A
+50 Pipe Handling System.700		R0700	Rig 700 - Flex 3 W3 A
+60 Well Control System.700		R0700	Rig 700 - Flex 3 W3 A
+70 Ancillary Systems.700		R0700	Rig 700 - Flex 3 W3 A
+A103177	Drill Line Spool Rack, Helmerich & Payne, Flex3	R0700	Drilling Line Spool Rack.700
+A103398	Mud Tank - Processing Skid, STI	R0700	Tank #1 - Processing.700
+A103400	Active/Mixing Tank, STI	R0700	Tank #2 - Mixing.700
+A106436	MRCF2, Parker	R0700	Mast Raising Cylinder(DS).700
+A111228	Hyd Hoist, Braden, PD12C-SPL-59034-02L-1	R0700	Hydraulic Hoist (DSF).700
+A111504	Traveling Block-Split, Varco, Split 500T	R0700	Traveling Block.700
+A112560	Choke Manifold, Cameron,	R0700	Choke Manifold Assembly.700
+A113919	Generator, Kato Manufacturing, A27038017	R0700	Generator #3.700
+A116314	Generator, Kato Manufacturing, AA27673008	R0700	Generator #4.700
+A121050	Generator, Kato Manufacturing, AA27673008	R0700	Generator #2.700
+A126537	Mud Pump, Gardner Denver, PZ-11HP	R0700	Mud Pump #3.700
+A126705	Generator, Kato Manufacturing, AA27673008	R0700	Generator #1.700
+A132850	Mud Tank - Mixing Skid	R0700	Tank #7 - Mixing #2.700
+A135826	Drawworks Skid	R0700	Drawworks Skid.700
+A147610	Discharge Dampner, PPC, RIBO-5000CS	R0700	Rig 700 Spare Holding Area.700
+A147614	Relief Valve, Demco, 3| Shear, 5000 Psi	R0700	Rig 700 Spare Holding Area.700
+A15713	Engine, Caterpillar, 3512B, 4AW00182	R0700	Generator Set #3-Engine.700
+A1664	Mud Pump, Gardner Denver, PZ-11HP	R0700	Mud Pump #1.700
+A167218	MCC House	R0700	MCC House-Mud System.700
+A167270	Air Dryer, Great Lakes Air Products, GPS	R0700	Air Dryer.700
+A167300	FlexHoist Drawworks, Brad Foote, Flex3	R0700	FlexHoist.700
+A167325	Elevator Links, Varco BJ, 350T	R0700	Elevator Link #1.700
+A167327	Elevator Links, Varco BJ, 350T	R0700	Elevator Link #2.700
+A167335	Derrick, STI, Flex3	R0700	Derrick.700
+A167337	Emergency Descent, DBI/Sala, Rollgliss	R0700	Safety Escape Line.700
+A167342	Hydraulic Power Unit, Aberdeen Dynamics	R0700	MRC Hydraulic Power Unit.700
+A167344	Engine, John Deere, 4045DF150	R0700	MRC Hyd Power Unit-Engine.700
+A167460	Shale Shaker, Brandt, King Cobra	R0700	Shale Shaker #1.700
+A167462	Shale Shaker, Brandt, King Cobra	R0700	Shale Shaker #2.700
+A167464	Shale Shaker, Brandt, King Cobra	R0700	Shale Shaker #3.700
+A167485	Rotary Hose, Phoenix, 3 1/2" X 75' 5000	R0700	Rotary Hose.700
+A167487	Choke Hose	R0700	Choke Line Assembly.700
+A167504	Drill Pipe Slips, Varco, 5" SDXL	R0700	Drill Pipe Slips #1.700
+A167506	Drill Collar Slips, Varco, R 5 1/2"-7"	R0700	Drill Collar Slips #2.700
+A167508	Drill Collar Slips, Varco, L 6 3/4-8 1/4	R0700	Rig 700 Spare Holding Area.700
+A167510	Power Slips, Varco, PS-15	R0700	Power Slips.700
+A167513	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0700	Drill Collar Clamp #1.700
+A167515	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0700	Drill Collar Clamp #2.700
+A167518	Drill Pipe Elevator, Varco, 4 1/2" 350T	R0700	Drill Pipe Elevator #1.700
+A167520	Drill Pipe Elevator, Varco, GG 5" 350T	R0700	Drill Pipe Elevator #2.700
+A167560	Fire Extinguishers	R0700	Safety Systems.700
+A167579	Parts House/Lube Skid, H&P	R0700	Parts House/Lube Skid.700
+A167581	Change/Meeting House	R0700	Change/Meeting House.700
+A167583	Parts House/Toolbox Skid, H&P	R0700	Parts House/Tool Box.700
+A167587	Water Tank	R0700	Water Tank #2.700
+A172023	Rotary Table	R0700	Table.700
+A174280	Shaker Skid, STI	R0700	Shale Shaker Skid.700
+A178327	Suction Tank, STI	R0700	Tank #5 - Suction 3.700
+A195219	BOP Transporter, H&P	R0700	BOP Transporter.700
+A199717	Driller's Cabin	R0700	Driller's Cabin House.700
+A21204	Suction Tank, STI	R0700	Tank #4 - Suction 2.700
+A21870	Torque Wrench, Varco, ST80 Gen 3	R0700	Torque Wrench.700
+A39820	Engine, Caterpillar, 3512B, 4AW00475	R0700	Generator Set #2-Engine.700
+A44914	FlexRig Crown Sheave Cluster, H&P - Flex3	R0700	Rig 700 Spare Holding Area.700
+A503602	VFD House, Omron, Flex3	R0700	VFD House.700
+A503716	Water Tank, H&P	R0700	Water Tank #1.700
+A505036	Mud Pump, Gardner Denver, PZ-11HP	R0700	Mud Pump #2.700
+A510159	Active/Mixing Tank, STI	R0700	Volume Tank #2.700
+A60293	Engine, Caterpillar, 3512B, 4AW00744	R0700	Generator Set #1-Engine.700
+A700179	Motor, AC/L, General Electric, 5GEB22D3	R0700	Drawworks-AC Motor #2.700
+A700186	Motor, AC/L, General Electric, 5GEB22D3	R0700	Drawworks-AC Motor #1.700
+A701463	HT Top Drive, Varco, TDS-11HP 500T	R0700	Top Drive.700
+A7016391	Eye Wash Station	R0700	Safety Systems.700
+A7039331	Kill Hose	R0700	Kill Line Assembly.700
+A72190	Engine, Caterpillar, 3512B, 4AW00818	R0700	Generator Set #4-Engine.700
+A88628	Suction Tank, STI	R0700	Tank #3 - Suction 1.700
+A900950	Hydraulic Catwalk, Forum, 3000 30' Gen 2	R0700	Hydraulic Catwalk.700
+A906307	Mud/Gas Separator, DBI	R0700	Gas Buster.700
+A94264	Parking Brakes, Ind. Clutch, LKB-321	R0700	Parking Brake.700
+A9999979	Steam Cleaner	R0700	Steam Cleaner #1.700
+Accumulator.700		R0700	60 Well Control System.700
+Active Mud System.700		R0700	40 Mud System.700
+Active.700		R0700	Electric Chain Hoists.700
+Air Compressor #1.700		R0700	Air Compressors.700
+Air Compressor #2.700		R0700	Air Compressors.700
+Air Compressors.700		R0700	10 Power System.700
+Air Dryer.700		R0700	Air Compressors.700
+Annular #1.700		R0700	BOP Assembly.700
+Annular #2.700		R0700	BOP Assembly.700
+Annular.700		R0700	
+B040806	Mud Tank - Active Skid, STI	R0700	Volume Tank #3.700
+BOP Assembly.700		R0700	60 Well Control System.700
+BOP Control Hoses.700		R0700	Accumulator.700
+BOP Handling System.700		R0700	60 Well Control System.700
+BOP Test Stump.700		R0700	BOP Transporter.700
+BOP Transporter.700		R0700	60 Well Control System.700
+BOP Trolley/Hoist A.700		R0700	BOP Handling System.700
+BOP Trolley/Hoist B.700		R0700	BOP Handling System.700
+Beam Clamp #1.700Test		R0700	
+Beam Clamp.700		R0700	70 Ancillary Systems.700
+Belly Board Pad Eyes.700		R0700	70 Ancillary Systems.700
+Boiler.700		R0700	70 Ancillary Systems.700
+Boom Box HPU - Engine.700		R0700	Boom Box.700
+Boom Box Hyd Power Unit.700		R0700	Boom Box.700
+Boom Box.700		R0700	10 Power System.700
+Bug Blower.700		R0700	70 Ancillary Systems.700
+Cables.380		R0700	70 Ancillary Systems.700
+Casing Running Tools.700		R0700	50 Pipe Handling System.700
+Cellar Pumps.700		R0700	70 Ancillary Systems.700
+Cement.700		R0700	Electric Chain Hoists.700
+Centrifuges.700		R0700	70 Ancillary Systems.700
+Change/Meeting House.700		R0700	70 Ancillary Systems.700
+Chicksan Iron Slings.700		R0700	70 Ancillary Systems.700
+Choke & Kill Hose.700		R0700	
+Choke Line Assembly.700		R0700	Choke Manifold.700
+Choke Manifold Assembly.700		R0700	Choke Manifold.700
+Choke Manifold Skid #1.700		R0700	Choke Manifold.700
+Choke Manifold Skid #2.700		R0700	Choke Manifold.700
+Choke Manifold Skid.700		R0700	
+Choke Manifold.700		R0700	60 Well Control System.700
+Choke Panel #1.700		R0700	Choke Manifold.700
+Choke Panel #2.700		R0700	Choke Manifold.700
+Choke Panel.700		R0700	
+Climb Assist Fall Arrest.700		R0700	Derrick.700
+Cold Start Air Comp-Engine.700		R0700	
+Cold Start Compressor #1.700		R0700	Air Compressors.700
+Crew Quarters #1.700		R0700	70 Ancillary Systems.700
+Crew Quarters #2.700		R0700	70 Ancillary Systems.700
+Crew Quarters #3.700		R0700	70 Ancillary Systems.700
+Cup Testers.700		R0700	70 Ancillary Systems.700
+D032206	Drag Chain Support Frame, STI, 100' Capable	R0700	Drag Chain Support Frame.700
+D060814	Hyd Hoist, Braden, PD12C-SPL-59034-02L-1	R0700	
+D060817	Hyd Hoist, Braden, PD12C-SPL-59034-02L-1	R0700	
+Dead Line Anchor.700		R0700	Traveling Equipment.700
+Degasser.700		R0700	Processing Equipment.700
+Derrick.700		R0700	Hoisting Structure.700
+Diesel Tank #1.700		R0700	Fuel Tank # 1.700
+Discharge Dampner #1.700		R0700	Mud Pump Assembly #1.700
+Discharge Dampner #2.700		R0700	Mud Pump Assembly #2.700
+Discharge Dampner #3.700		R0700	Mud Pump Assembly #3.700
+Ditch Valves.700		R0700	70 Ancillary Systems.700
+Double #1 w/Booster.700		R0700	BOP Assembly.700
+Double #2.700		R0700	BOP Assembly.700
+Double.700		R0700	
+Drag Chain Support Frame.700		R0700	Hoisting Structure.700
+Drawworks Skid.700		R0700	30 Hoisting System.700
+Drawworks-AC Motor #1.700		R0700	Drawworks Skid.700
+Drawworks-AC Motor #2.700		R0700	Drawworks Skid.700
+Drill Collar Clamp #1.700		R0700	Drill Collar Clamps.700
+Drill Collar Clamp #2.700		R0700	Drill Collar Clamps.700
+Drill Collar Clamps.700		R0700	50 Pipe Handling System.700
+Drill Collar Slips #1.700		R0700	Slips.700
+Drill Collar Slips #2.700		R0700	Slips.700
+Drill Pipe Elevator #1.700		R0700	Elevators.700
+Drill Pipe Elevator #2.700		R0700	Elevators.700
+Drill Pipe Elevator #3.700		R0700	Elevators.700
+Drill Pipe Slips #1.700		R0700	Slips.700
+Driller's Cabin Group.700		R0700	10 Power System.700
+Driller's Cabin House.700		R0700	Driller's Cabin Group.700
+Drilling Line Spool Rack.700		R0700	Traveling Equipment.700
+Drilling Spool/Mud Cross#1.700		R0700	60 Well Control System.700
+Drilling Spool/Mud Cross#2.700		R0700	60 Well Control System.700
+Drilling Spool/Mud Cross.700		R0700	
+Drum Lifter.700		R0700	70 Ancillary Systems.700
+Dynamic Brake Resistor.700		R0700	VFD House.700
+Electric Chain Hoists.700		R0700	70 Ancillary Systems.700
+Elevator Link #1.700		R0700	Traveling Equipment.700
+Elevator Link #2.700		R0700	Traveling Equipment.700
+Elevators.700		R0700	50 Pipe Handling System.700
+Emergency Brake.700		R0700	Drawworks Skid.700
+F091102	MRCF3, Parker, BB251800	R0700	Mast Raising Cylinder(ODS).700
+Flare Lines.700		R0700	70 Ancillary Systems.700
+FlexHoist.700		R0700	Drawworks Skid.700
+FlexRig Crown Assy.700		R0700	Traveling Equipment.700
+Flow Meters.700		R0700	70 Ancillary Systems.700
+Fuel Distribution.700		R0700	10 Power System.700
+Fuel Tank # 1.700		R0700	Fuel Distribution.700
+Full Body Harness.700		R0700	Personnel Hoisting Equip.700
+G031006	Motor, AC/TD	R0700	TDS Motor ODS.700
+G031009	Motor, AC/TD	R0700	TDS Motor DS.700
+G060602	Dead Line Anchor, American Block, FTR-100	R0700	Dead Line Anchor.700
+G062804	Emergency Brakes, Wichita, ATD-536AM	R0700	Emergency Brake.700
+G082914	Mud Tank - Active Skid, STI	R0700	Volume Tank #1.700
+G090102	Hydraulic Power Unit, Aberdeen Dynamics	R0700	Sub Hydraulic Power Unit.700
+G090103	Hyd Hoist, Braden, PD12C-59034-02L-1	R0700	Hydraulic Hoist (DSB).700
+G090104	MCC House - Substructure, STI	R0700	MCC House-Substructure.700
+G090105	Hyd Hoist, Braden, PD12C-59034-02L-1	R0700	Hydraulic Hoist String-up.700
+G090106	Substructure, STI, Flex3 W3	R0700	Substructure.700
+Gas Buster.700		R0700	60 Well Control System.700
+Generator #1.700		R0700	Generator Set #1.700
+Generator #2.700		R0700	Generator Set #2.700
+Generator #3.700		R0700	Generator Set #3.700
+Generator #4.700		R0700	Generator Set #4.700
+Generator #5.700		R0700	Generator Set #5.700
+Generator Set #1-Engine.700		R0700	Generator Set #1.700
+Generator Set #1.700		R0700	Generator Sets.700
+Generator Set #2-Engine.700		R0700	Generator Set #2.700
+Generator Set #2.700		R0700	Generator Sets.700
+Generator Set #3-Engine.700		R0700	Generator Set #3.700
+Generator Set #3.700		R0700	Generator Sets.700
+Generator Set #4-Engine.700		R0700	Generator Set #4.700
+Generator Set #4.700		R0700	Generator Sets.700
+Generator Set #5-Engine.700		R0700	Generator Set #5.700
+Generator Set #5.700		R0700	Generator Sets.700
+Generator Sets.700		R0700	10 Power System.700
+H060806	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0700	BOP Trolley/Hoist A.700
+H060807	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0700	BOP Trolley/Hoist B.700
+H060810	Mud Cleaner, Derrick, Hyperpool 4P	R0700	Mud Cleaner/Desilter#1.700
+H060812	Degasser, Derrick, VACU-FLO 1200	R0700	Degasser.700
+H060813	Steam Cleaner, H&P	R0700	Steam Cleaner #2.700
+H101204	Motor, AC/L, General Electric, 5GEB29B1	R0700	Mud Pump #3 - AC Motor.700
+H101205	Motor, AC/L, General Electric, 5GEB29B1	R0700	Mud Pump #1 - AC Motor.700
+H101207	Motor, AC/L, General Electric, 5GEB29B1	R0700	Mud Pump #2 - AC Motor.700
+H112801	BOP Accumulator, Axon, TX670-0005/3	R0700	Accumulator.700
+H121212	Hydraulic Power Unit, Aberdeen Dynamics	R0700	Boom Box Hyd Power Unit.700
+H121214	Engine, DEUTZ, D 2.9 L4	R0700	Boom Box HPU - Engine.700
+H122008	BOP Annular, Cameron, 21 1/4"-2M DL	R0700	Annular #2.700
+H122009	BOP Double, Cameron, 13 5/8"-10M DBL U	R0700	Double #1 w/Booster.700
+H122010	BOP Double, Cameron, 13 5/8"-10M DBL U	R0700	Double #2.700
+HA167585	Rig Manager House	R0700	Rig Manager House.700
+Heater.700		R0700	70 Ancillary Systems.700
+High Pressure Piping Sys.700		R0700	Active Mud System.700
+Hoisting Structure.700		R0700	30 Hoisting System.700
+Hoisting Systems.700		R0700	70 Ancillary Systems.700
+Hoses.700		R0700	70 Ancillary Systems.700
+Hydraulic Cathead (DS).700		R0700	
+Hydraulic Cathead (ODS).700		R0700	
+Hydraulic Catwalk Motor.700		R0700	
+Hydraulic Catwalk.700		R0700	50 Pipe Handling System.700
+Hydraulic Hoist (DLSR).700		R0700	
+Hydraulic Hoist (DSB).700		R0700	Hydraulic Hoists.700
+Hydraulic Hoist (DSF).700		R0700	Hydraulic Hoists.700
+Hydraulic Hoist (Manrider).700		R0700	
+Hydraulic Hoist (ODSB).700		R0700	Hydraulic Hoists.700
+Hydraulic Hoist (ODSF).700		R0700	Hydraulic Hoists.700
+Hydraulic Hoist String-up.700		R0700	Hydraulic Hoists.700
+Hydraulic Hoists.700		R0700	Hoisting Systems.700
+IJ62824	FlexRig Crown Sheave Cluster, H&P - Flex3	R0700	FlexRig Crown Assy.700
+Ignition Device.700		R0700	70 Ancillary Systems.700
+Instrumentation (VFD).700		R0700	VFD System.700
+J011202	Choke Skid, STI	R0700	Choke Manifold Skid #1.700
+J011204	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0700	Rig 700 Spare Holding Area.700
+J011701	Hydraulic Choke, Cameron	R0700	Choke Panel #1.700
+J011702	Hydraulic Choke, Cameron	R0700	Choke Panel #2.700
+J052401	Shale Shaker - Derrick, Hyperpool	R0700	Shale Shaker #1.700
+J052402	Shale Shaker - Derrick, Hyperpool	R0700	Shale Shaker #2.700
+J052403	Shale Shaker - Derrick, Hyperpool	R0700	Shale Shaker #3.700
+J052404	Discharge Dampner,PPC DR-130-7500CS	R0700	Discharge Dampner #1.700
+J052405	Discharge Dampner,PPC DR-130-7500CS	R0700	Discharge Dampner #2.700
+J052406	Discharge Dampner,PPC DR-130-7500CS	R0700	Discharge Dampner #3.700
+Josh Perrin.700		R0700	
+K042424	Spinning Wrench, Varco, SSW-40	R0700	Spinning Wrench.700
+K050703	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0700	Drilling Spool/Mud Cross#1.700
+K050704	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0700	Drilling Spool/Mud Cross#2.700
+K172025	Engine Cold Start,Gardner Denver	R0700	Cold Start Compressor #1.700
+K444777	Cascade Air Compressors Electrical	R0700	Safety Systems.700
+K444778	Cascade Air Compressors Diesel	R0700	Safety Systems.700
+K70002	ELGi Air Compressors	R0700	Air Compressor #2.700
+K700021	ELGi Air Compressors	R0700	Air Compressor #1.700
+K70088	Fire Pump - Grundfos	R0700	Safety Systems.700
+K70100	Electric Chain Hoists	R0700	Cement.700
+K701011	Electric Chain Hoists	R0700	Active.700
+K701012	Electric Chain Hoists	R0700	Reserve.700
+K826168	Choke Line	R0700	Choke Line Assembly.700
+K826343	Kill Line	R0700	Kill Line Assembly.700
+KDH1000	Double 7 Ignition Device	R0700	Ignition Device.700
+Kill Line Assembly.700		R0700	Choke Manifold.700
+Lanyards.700		R0700	Personnel Hoisting Equip.700
+Leamon Wilson.700		R0700	
+MCC House-Auxiliary.700		R0700	MCC System.700
+MCC House-Mud System.700		R0700	MCC System.700
+MCC House-Substructure.700		R0700	MCC System.700
+MCC System.700		R0700	10 Power System.700
+MRC Hyd Power Unit-Engine.700		R0700	MRC Hydraulic Power Unit.700
+MRC Hydraulic Power Unit.700		R0700	Raising Cylinders.700
+Man Basket.700		R0700	70 Ancillary Systems.700
+Manlift.700		R0700	70 Ancillary Systems.700
+Manrider #1.700		R0700	
+Manrider #2.700		R0700	
+Manrider (DS).700		R0700	Hydraulic Hoists.700
+Manrider (ODS).700		R0700	Hydraulic Hoists.700
+Mast Raising Cylinder(DS).700		R0700	Raising Cylinders.700
+Mast Raising Cylinder(ODS).700		R0700	Raising Cylinders.700
+Mud Buckets.700		R0700	70 Ancillary Systems.700
+Mud Cleaner/Desilter#1.700		R0700	Processing Equipment.700
+Mud Cleaner/Desilter#2.700		R0700	Processing Equipment.700
+Mud Cleaner/Desilter.700		R0700	
+Mud House.700		R0700	40 Mud System.700
+Mud Pump #1 - AC Motor.700		R0700	Mud Pump Assembly #1.700
+Mud Pump #1.700		R0700	Mud Pump Assembly #1.700
+Mud Pump #2 - AC Motor.700		R0700	Mud Pump Assembly #2.700
+Mud Pump #2.700		R0700	Mud Pump Assembly #2.700
+Mud Pump #3 - AC Motor.700		R0700	Mud Pump Assembly #3.700
+Mud Pump #3.700		R0700	Mud Pump Assembly #3.700
+Mud Pump Assembly #1.700		R0700	Mud Pumps.700
+Mud Pump Assembly #2.700		R0700	Mud Pumps.700
+Mud Pump Assembly #3.700		R0700	Mud Pumps.700
+Mud Pumps.700		R0700	Active Mud System.700
+Mud Tanks.700		R0700	Active Mud System.700
+Pad Eyes.700		R0700	70 Ancillary Systems.700
+Parking Brake.700		R0700	Drawworks Skid.700
+Parts House/Lube Skid.700		R0700	70 Ancillary Systems.700
+Parts House/Tool Box.700		R0700	70 Ancillary Systems.700
+Personnel Hoisting Equip.700		R0700	Safety Systems.700
+Pipe Baskets.700		R0700	70 Ancillary Systems.700
+Pipe Delivery System-Winch.700		R0700	Hydraulic Hoists.700
+Power Slips.700		R0700	Slips.700
+Processing Equipment.700		R0700	Active Mud System.700
+Pump Back System.700		R0700	Active Mud System.700
+Pump Pressure Gauge #1.700		R0700	Mud Pump Assembly #1.700
+Pump Pressure Gauge #2.700		R0700	Mud Pump Assembly #2.700
+Racking Board Winch.700		R0700	Derrick.700
+Raising Cylinders.700		R0700	Hoisting Structure.700
+Relief Valve #1.700		R0700	Mud Pump Assembly #1.700
+Relief Valve #2.700		R0700	Mud Pump Assembly #2.700
+Reserve.700		R0700	Electric Chain Hoists.700
+Rig 700 - Flex 3 W3 A	Flex3 Walking Rig ArabiaK	R0700	
+Rig 700 Spare Holding Area.700		R0700	Rig 700 - Flex 3 W3 A
+Rig Manager House.700		R0700	70 Ancillary Systems.700
+Rocky Welch.700		R0700	
+Rotary Hose.700		R0700	Rotary Hoses.700
+Rotary Hoses.700		R0700	High Pressure Piping Sys.700
+Rotary Table Assembly.700		R0700	20 Rotating System.700
+Rotating Mouse Hole.700		R0700	20 Rotating System.700
+Safety Escape Line.700		R0700	Derrick.700
+Safety Systems.700		R0700	70 Ancillary Systems.700
+Sala Blocks.700		R0700	Personnel Hoisting Equip.700
+Saver Sub.700		R0700	70 Ancillary Systems.700
+Shale Shaker #1.700		R0700	Shale Shaker Skid.700
+Shale Shaker #2.700		R0700	Shale Shaker Skid.700
+Shale Shaker #3.700		R0700	Shale Shaker Skid.700
+Shale Shaker Skid.700		R0700	Processing Equipment.700
+Single.700		R0700	BOP Assembly.700
+Slings.700		R0700	Hoisting Systems.700
+Slips.700		R0700	50 Pipe Handling System.700
+Spacer Spool.700		R0700	70 Ancillary Systems.700
+Spinning Wrench.700		R0700	50 Pipe Handling System.700
+Standpipe Manifold.700		R0700	High Pressure Piping Sys.700
+Steam Cleaner #1.700		R0700	70 Ancillary Systems.700
+Steam Cleaner #2.700		R0700	70 Ancillary Systems.700
+Sub HPU Motor #1.700		R0700	
+Sub HPU Motor #2.700		R0700	
+Sub Hydraulic Power Unit.700		R0700	Hoisting Structure.700
+Substructure.700		R0700	Hoisting Structure.700
+Suction Dampner #1.700		R0700	Mud Pump Assembly #1.700
+Suction Dampner #2.700		R0700	Mud Pump Assembly #2.700
+TBD.700		R0700	
+TDS Motor DS.700		R0700	Top Drive.700
+TDS Motor ODS.700		R0700	Top Drive.700
+Table.700		R0700	Rotary Table Assembly.700
+Tank #1 - Processing.700		R0700	Mud Tanks.700
+Tank #2 - Mixing.700		R0700	Mud Tanks.700
+Tank #3 - Suction 1.700		R0700	Mud Tanks.700
+Tank #4 - Suction 2.700		R0700	Mud Tanks.700
+Tank #5 - Suction 3.700		R0700	Mud Tanks.700
+Tank #6 - Reserve.700		R0700	
+Tank #7 - Mixing #2.700		R0700	Mud Tanks.700
+Top Drive.700		R0700	20 Rotating System.700
+Torque Wrench.700		R0700	50 Pipe Handling System.700
+Traveling Block.700		R0700	Traveling Equipment.700
+Traveling Equipment.700		R0700	30 Hoisting System.700
+Trip Tank #1.700		R0700	Mud Tanks.700
+Tubulars.700		R0700	Rig 700 Spare Holding Area.700
+VFD House.700		R0700	VFD System.700
+VFD System.700		R0700	10 Power System.700
+Valves.700		R0700	70 Ancillary Systems.700
+Vehicles.700		R0700	
+Volume Tank #1.700		R0700	Mud Tanks.700
+Volume Tank #2.700		R0700	Mud Tanks.700
+Volume Tank #3.700		R0700	Mud Tanks.700
+Water Tank #1.700		R0700	70 Ancillary Systems.700
+Water Tank #2.700		R0700	70 Ancillary Systems.700
+Winch Hoist Cables.700		R0700	70 Ancillary Systems.700
+Wire Line Machine.700		R0700	70 Ancillary Systems.700
+Wire Rope/Cables.700		R0700	70 Ancillary Systems.700
+10 Power System.703		R0703	Rig 703 - Flex 3 W3 A
+20 Rotating System.703		R0703	Rig 703 - Flex 3 W3 A
+30 Hoisting System.703		R0703	Rig 703 - Flex 3 W3 A
+40 Mud System.703		R0703	Rig 703 - Flex 3 W3 A
+50 Pipe Handling System.703		R0703	Rig 703 - Flex 3 W3 A
+60 Well Control System.703		R0703	Rig 703 - Flex 3 W3 A
+70 Ancillary Systems.703		R0703	Rig 703 - Flex 3 W3 A
+A001926	Motor, AC/L, General Electric, 5GEB22D3	R0703	Drawworks-AC Motor #1.703
+A102129	Drill Line Spool Rack, Tulsa P, TUAF-20	R0703	Drilling Line Spool Rack.703
+A105798	Hyd Hoist, Braden, PD12C-59034-02L-1	R0703	Hydraulic Hoist (DSB).703
+A106880	Motor, AC/L, General Electric, 5GEB22D4	R0703	Drawworks-AC Motor #2.703
+A109291	Engine, John Deere, 4045TF280	R0703	MRC Hyd Power Unit-Engine.703
+A110071	Generator, Kato Manufacturing, 270980013	R0703	Generator #5.703
+A110658	Mud Tank - Mixing Skid, STI	R0703	Tank #7 - Mixing #2.703
+A111911	Change/Meeting House, H&P	R0703	Change/Meeting House.703
+A111944	Steam Cleaner, H&P	R0703	Steam Cleaner #1.703
+A112678	Choke Manifold, Cameron,	R0703	Choke Manifold Assembly.703
+A113138	Drawworks Skid	R0703	Drawworks Skid.703
+A135455	Generator, Kato Manufacturing, A27038017	R0703	Generator #1.703
+A135906	Mud Tank - Suction Skid	R0703	Tank #3 - Suction 1.703
+A136846	Mud Tank - Suction Skid	R0703	Tank #4 - Suction 2.703
+A147312	Choke Skid, Cameron, FLS 5M	R0703	Choke Manifold Skid #2.703
+A147314	Mud/Gas Separator, DBI	R0703	Gas Buster.703
+A192656	FlexHoist Drawworks, Brad Foote, Flex3	R0703	FlexHoist.703
+A19415	Mud Pump, Gardner Denver, PZ-11HP	R0703	Mud Pump #1.703
+A32086	Engine, Caterpillar, 3512B, 4AW00439	R0703	Generator Set #4-Engine.703
+A32509	Engine, Caterpillar, 3512B, 4AW00190	R0703	Rig 703 Spare Holding Area.703
+A49822	Traveling Block-Split, Varco, Split 500T	R0703	Traveling Block.703
+A501328	BOP Transporter, H&P	R0703	BOP Transporter.703
+A502980	Parking Brakes, Wichita, LKB-321	R0703	Parking Brake.703
+A504345	Mud Pump, Gardner Denver, PZ-11HP	R0703	Mud Pump #2.703
+A504896	Driller's Cabin, Helmerich & Payne	R0703	Driller's Cabin House.703
+A507	Shaker Skid, STI	R0703	Shale Shaker Skid.703
+A509011	Parts House/Toolbox Skid, H&P	R0703	Parts House/Tool Box.703
+A555612	Choke Hose	R0703	Choke Line Assembly.703
+A57650	Engine, Caterpillar, 3512B, 4AW00700	R0703	Generator Set #2-Engine.703
+A700537	Hyd Hoist, Braden, PD12C-59034-02L-1	R0703	Hydraulic Hoist (ODSB).703
+A701519	MRCF3, Parker, BB251800	R0703	Mast Raising Cylinder(ODS).703
+A703680	Generator, Kato Manufacturing, A27673013	R0703	Generator #2.703
+A703730	Torque Wrench, Varco, ST80 Gen 3	R0703	Torque Wrench.703
+A704563	Hyd Hoist, Braden, PD12C-59034-02L-1	R0703	Hydraulic Hoist (ODSF).703
+A71733	Engine, Caterpillar, 3512B, 4AW00809	R0703	Generator Set #3-Engine.703
+A806012	HT Top Drive, Varco, TDS-11HP 500T	R0703	Top Drive.703
+A82235	Generator, Kato Manufacturing, A27098017	R0703	Generator #4.703
+A900774	Generator, Kato Manufacturing, AA27673013	R0703	Generator #3.703
+A901875	Hydraulic Catwalk, Forum, 3550 30' Gen 2	R0703	Hydraulic Catwalk.703
+A904207	MCC House, RGT	R0703	MCC House-Mud System.703
+A905252	Choke Hose	R0703	Choke Line Assembly.703
+A905253	Kill Hose	R0703	Kill Line Assembly.703
+A9052561	Fire Extinguishers	R0703	Safety Systems.703
+A9052581	Eye Wash Station	R0703	Safety Systems.703
+A906211	VFD House, Omron, Flex3	R0703	VFD House.703
+A906224	Air Dryer, Great Lakes Air Products, GPS	R0703	Air Dryer.703
+A906237	FlexRig Crown Sheave Cluster, H&P - Flex3	R0703	Rig 703 Spare Holding Area.703
+A906240	Elevator Links, Varco BJ, 350T	R0703	Elevator Link #1.703
+A906241	Elevator Links, Varco BJ, 350T	R0703	Elevator Link #2.703
+A906242	Derrick, STI, Flex3	R0703	Derrick.703
+A906243	Emergency Descent, DBI/Sala, Rollgliss	R0703	Safety Escape Line.703
+A906245	Hydraulic Power Unit, Aberdeen Dynamics	R0703	MRC Hydraulic Power Unit.703
+A906255	Discharge Dampner, PPC, RIBO-5000CS	R0703	Discharge Dampner #1.703
+A906258	Relief Valve, Demco, 3" Shear, 5000 Psi	R0703	Relief Valve #1.703
+A906261	Discharge Dampner, PPC, RIBO-5000CS	R0703	Discharge Dampner #2.703
+A906264	Relief Valve, Demco, 3" Shear, 5000 Psi	R0703	Relief Valve #2.703
+A906265	Processing Tank, STI	R0703	Tank #1 - Processing.703
+A906271	Active/Mixing Tank, STI	R0703	Tank #2 - Mixing.703
+A906286	Rotary Hose, Phoenix, 3 1/2" X 75' 5000	R0703	Rotary Hose.703
+A906289	Drill Pipe Slips, Den-Con, 5" SDXL	R0703	Drill Pipe Slips #1.703
+A906290	Drill Collar Slips, Varco, R 5 1/2"-7"	R0703	Drill Collar Slips #1.703
+A906291	Drill Collar Slips, Varco, L 6 3/4-8 1/4	R0703	Drill Collar Slips #2.703
+A906292	Power Slips, Den-Con, FG-5	R0703	Power Slips.703
+A906293	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0703	Drill Collar Clamp #1.703
+A906294	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0703	Drill Collar Clamp #2.703
+A906295	Drill Pipe Elevator, Varco, GG 5" 350T	R0703	Drill Pipe Elevator #1.703
+A906296	Drill Pipe Elevator, Varco, GG 5" 350T	R0703	Drill Pipe Elevator #2.703
+A906319	Water Tank	R0703	Water Tank #2.703
+A906322	Parts House/Lube Skid, H&P	R0703	Parts House/Lube Skid.703
+A96031	Engine, Caterpillar, 3512B, 4AW01472	R0703	Generator Set #1-Engine.703
+Accumulator.703		R0703	60 Well Control System.703
+Active Mud System.703		R0703	40 Mud System.703
+Active.703		R0703	Electric Chain Hoists.703
+Air Compressor #1.703		R0703	Air Compressors.703
+Air Compressor #2.703		R0703	Air Compressors.703
+Air Compressors.703		R0703	10 Power System.703
+Air Dryer.703		R0703	Air Compressors.703
+Annular #1.703		R0703	BOP Assembly.703
+Annular #2.703		R0703	BOP Assembly.703
+B011200	Water Tank, H&P	R0703	Water Tank #1.703
+B031410	Mud Pump, Gardner Denver, PZ-11HP	R0703	Mud Pump #3.703
+B122138	Motor, AC, Leeson, 75HP	R0703	Rig 703 Spare Holding Area.703
+BOP Assembly.703		R0703	60 Well Control System.703
+BOP Control Hoses.703		R0703	Accumulator.703
+BOP Handling System.703		R0703	60 Well Control System.703
+BOP Test Stump.703		R0703	BOP Transporter.703
+BOP Transporter.703		R0703	60 Well Control System.703
+BOP Trolley/Hoist A.703		R0703	BOP Handling System.703
+BOP Trolley/Hoist B.703		R0703	BOP Handling System.703
+Beam Clamp.703		R0703	70 Ancillary Systems.703
+Belly Board Pad Eyes.703		R0703	70 Ancillary Systems.703
+Boiler.703		R0703	70 Ancillary Systems.703
+Boom Box HPU - Engine.703		R0703	Boom Box.703
+Boom Box Hyd Power Unit.703		R0703	Boom Box.703
+Boom Box.703		R0703	10 Power System.703
+Bug Blower.703		R0703	70 Ancillary Systems.703
+Cables.383		R0703	70 Ancillary Systems.703
+Casing Running Tools.703		R0703	50 Pipe Handling System.703
+Cellar Pumps.703		R0703	70 Ancillary Systems.703
+Cement.703		R0703	Electric Chain Hoists.703
+Centrifuges.703		R0703	70 Ancillary Systems.703
+Change/Meeting House.703		R0703	70 Ancillary Systems.703
+Chicksan Iron Slings.703		R0703	70 Ancillary Systems.703
+Choke Line Assembly.703		R0703	Choke Manifold.703
+Choke Manifold Assembly.703		R0703	Choke Manifold.703
+Choke Manifold Skid #1.703		R0703	Choke Manifold.703
+Choke Manifold Skid #2.703		R0703	Choke Manifold.703
+Choke Manifold.703		R0703	60 Well Control System.703
+Choke Panel #1.703		R0703	Choke Manifold.703
+Choke Panel #2.703		R0703	Choke Manifold.703
+Climb Assist Fall Arrest.703		R0703	Derrick.703
+Cold Start Compressor #1.703		R0703	Air Compressors.703
+Crew Quarters #1.703		R0703	70 Ancillary Systems.703
+Crew Quarters #2.703		R0703	70 Ancillary Systems.703
+Crew Quarters #3.703		R0703	70 Ancillary Systems.703
+Cup Testers.703		R0703	70 Ancillary Systems.703
+D082205	Drag Chain Support Frame, STI, 100' Capable	R0703	Drag Chain Support Frame.703
+D112604	Suction Tank, STI	R0703	Tank #5 - Suction 3.703
+Dead Line Anchor.703		R0703	Traveling Equipment.703
+Degasser.703		R0703	Processing Equipment.703
+Derrick.703		R0703	Hoisting Structure.703
+Diesel Tank #1.703		R0703	Fuel Distribution.703
+Discharge Dampner #1.703		R0703	Mud Pump Assembly #1.703
+Discharge Dampner #2.703		R0703	Mud Pump Assembly #2.703
+Discharge Dampner #3.703		R0703	Mud Pump Assembly #3.703
+Ditch Valves.703		R0703	70 Ancillary Systems.703
+Double #1 w/Booster.703		R0703	BOP Assembly.703
+Double #2.703		R0703	BOP Assembly.703
+Drag Chain Support Frame.703		R0703	Hoisting Structure.703
+Drawworks Skid.703		R0703	30 Hoisting System.703
+Drawworks-AC Motor #1.703		R0703	Drawworks Skid.703
+Drawworks-AC Motor #2.703		R0703	Drawworks Skid.703
+Drill Collar Clamp #1.703		R0703	Drill Collar Clamps.703
+Drill Collar Clamp #2.703		R0703	Drill Collar Clamps.703
+Drill Collar Clamps.703		R0703	50 Pipe Handling System.703
+Drill Collar Slips #1.703		R0703	Slips.703
+Drill Collar Slips #2.703		R0703	Slips.703
+Drill Pipe Elevator #1.703		R0703	Elevators.703
+Drill Pipe Elevator #2.703		R0703	Elevators.703
+Drill Pipe Elevator #3.703		R0703	Elevators.703
+Drill Pipe Slips #1.703		R0703	Slips.703
+Driller's Cabin Group.703		R0703	10 Power System.703
+Driller's Cabin House.703		R0703	Driller's Cabin Group.703
+Drilling Line Spool Rack.703		R0703	Traveling Equipment.703
+Drilling Spool/Mud Cross#1.703		R0703	60 Well Control System.703
+Drilling Spool/Mud Cross#2.703		R0703	60 Well Control System.703
+Drum Lifter.703		R0703	70 Ancillary Systems.703
+Dynamic Brake Resistor.703		R0703	VFD House.703
+Electric Chain Hoists.703		R0703	70 Ancillary Systems.703
+Elevator Link #1.703		R0703	Traveling Equipment.703
+Elevator Link #2.703		R0703	Traveling Equipment.703
+Elevators.703		R0703	50 Pipe Handling System.703
+Emergency Brake.703		R0703	Drawworks Skid.703
+F091106	MRCF3, Parker, BB251800	R0703	Mast Raising Cylinder(DS).703
+Flare Lines.703		R0703	70 Ancillary Systems.703
+FlexHoist.703		R0703	Drawworks Skid.703
+FlexRig Crown Assy.703		R0703	Traveling Equipment.703
+Flow Meters.703		R0703	70 Ancillary Systems.703
+Fuel Distribution.703		R0703	10 Power System.703
+Fuel Tank # 1.703		R0703	Fuel Distribution.703
+Full Body Harness.703		R0703	Personnel Hoisting Equip.703
+G43812	Shale Shaker - Derrick, Hyperpool	R0703	Shale Shaker #1.703
+G43912	Shale Shaker - Derrick, Hyperpool	R0703	Shale Shaker #2.703
+G44012	Shale Shaker - Derrick, Hyperpool	R0703	Shale Shaker #3.703
+Gas Buster.703		R0703	60 Well Control System.703
+Generator #1.703		R0703	Generator Set #1.703
+Generator #2.703		R0703	Generator Set #2.703
+Generator #3.703		R0703	Generator Set #3.703
+Generator #4.703		R0703	Generator Set #4.703
+Generator #5.703		R0703	Generator Set #5.703
+Generator Set #1-Engine.703		R0703	Generator Set #1.703
+Generator Set #1.703		R0703	Generator Sets.703
+Generator Set #2-Engine.703		R0703	Generator Set #2.703
+Generator Set #2.703		R0703	Generator Sets.703
+Generator Set #3-Engine.703		R0703	Generator Set #3.703
+Generator Set #3.703		R0703	Generator Sets.703
+Generator Set #4-Engine.703		R0703	Generator Set #4.703
+Generator Set #4.703		R0703	Generator Sets.703
+Generator Set #5-Engine.703		R0703	Generator Set #5.703
+Generator Set #5.703		R0703	Generator Sets.703
+Generator Sets.703		R0703	10 Power System.703
+H070403	Degasser, Derrick, VACU-FLO 1200	R0703	Degasser.703
+H080101	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0703	BOP Trolley/Hoist B.703
+H102703	Emergency Brakes, Wichita, ATD-536AM	R0703	Emergency Brake.703
+H122001	Rotary Table, American Block Co, RT-3750HC	R0703	Table.703
+HA112107	Rig Manager House, DBI, RM200	R0703	Rig Manager House.703
+Heater.703		R0703	70 Ancillary Systems.703
+High Pressure Piping Sys.703		R0703	Active Mud System.703
+Hoisting Structure.703		R0703	30 Hoisting System.703
+Hoisting Systems.703		R0703	70 Ancillary Systems.703
+Hoses.703		R0703	70 Ancillary Systems.703
+Hydraulic Catwalk.703		R0703	50 Pipe Handling System.703
+Hydraulic Hoist (DSB).703		R0703	Hydraulic Hoists.703
+Hydraulic Hoist (DSF).703		R0703	Hydraulic Hoists.703
+Hydraulic Hoist (ODSB).703		R0703	Hydraulic Hoists.703
+Hydraulic Hoist (ODSF).703		R0703	Hydraulic Hoists.703
+Hydraulic Hoist String-up.703		R0703	Hydraulic Hoists.703
+Hydraulic Hoists.703		R0703	Hoisting Systems.703
+Ignition Device.703		R0703	70 Ancillary Systems.703
+Instrumentation (VFD).703		R0703	VFD System.703
+J013004	Engine, DEUTZ, D 2.9 L4	R0703	Boom Box HPU - Engine.703
+J013005	Hyd Hoist, Braden, PD12C-SPL-59034-02L-1	R0703	Hydraulic Hoist (DSF).703
+J013009	Hyd Hoist, Braden, PD12C-SPL-59034-02L-1	R0703	Rig 703 Spare Holding Area.703
+J013014	Hydraulic Power Unit, Aberdeen Dynamics, Boom Box	R0703	Boom Box Hyd Power Unit.703
+J020602	Motor, AC/TD	R0703	TDS Motor ODS.703
+J020604	Motor, AC/TD	R0703	TDS Motor DS.703
+J021125	FlexRig Crown Sheave Cluster, H&P - Flex3	R0703	FlexRig Crown Assy.703
+J021605	Hydraulic Power Unit, Aberdeen Dynamics, Substructure	R0703	Sub Hydraulic Power Unit.703
+J031201	Substructure, STI, Flex3 W3	R0703	Substructure.703
+J040903	Mud Cleaner, Derrick, Hyperpool 4P	R0703	Mud Cleaner/Desilter#2.703
+J040907	Mud Tank - Active Skid, STI	R0703	Volume Tank #1.703
+J040908	Mud Tank - Active Skid, STI	R0703	Volume Tank #2.703
+J040909	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0703	Manrider (ODS).703
+J041102	Dead Line Anchor, American Block, FTR-100	R0703	Dead Line Anchor.703
+J041201	Motor, AC/L, Houma Armature, HAW29B160	R0703	Mud Pump #1 - AC Motor.703
+J041202	Motor, AC/L, Houma Armature, HAW29B160	R0703	Mud Pump #3 - AC Motor.703
+J041203	Motor, AC/L, Houma Armature, HAW29B160	R0703	Mud Pump #2 - AC Motor.703
+J042603	Mud Cleaner, Derrick, Hyperpool 4P	R0703	Mud Cleaner/Desilter#1.703
+J042605	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0703	BOP Trolley/Hoist A.703
+J050202	MCC House - Substructure, STI	R0703	MCC House-Substructure.703
+J050203	Steam Cleaner, H&P	R0703	Steam Cleaner #2.703
+J050207	BOP Accumulator, Axon, TX670-0005/3	R0703	Accumulator.703
+J051301	Mud Tank - Volume Skid, STI	R0703	Volume Tank #3.703
+J051304	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0703	Manrider (DS).703
+J071906	MCC House - Auxiliary, STI	R0703	Rig 703 Spare Holding Area.703
+K012407	BOP Annular, Cameron, 13 5/8"-10M DL	R0703	Annular #1.703
+K012408	BOP Annular, Cameron, 21 1/4"-2M DL	R0703	Annular #2.703
+K012409	BOP Double, Cameron, 13 5/8"-10M DBL U	R0703	Double #1 w/Booster.703
+K012410	BOP Double, Cameron, 13 5/8"-10M DBL U	R0703	Double #2.703
+K013006	Choke Skid, Cameron	R0703	Choke Manifold Skid #1.703
+K013112	Hydraulic Choke, Cameron, 10K	R0703	Choke Panel #1.703
+K013113	Hydraulic Choke, Cameron, 10K	R0703	Choke Panel #2.703
+K042406	Spinning Wrench, Varco, SSW-40	R0703	Spinning Wrench.703
+K042410	BOP Annular, Cameron, 13 5/8"-10M DL	R0703	Annular #1.703
+K050707	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0703	Drilling Spool/Mud Cross#1.703
+K050708	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0703	Drilling Spool/Mud Cross#2.703
+K172028	Engine Cold Start,Gardner Denver	R0703	Cold Start Compressor #1.703
+K444783	Cascade Air Compressors Electrical	R0703	Safety Systems.703
+K444784	Cascade Air Compressors Diesel	R0703	Safety Systems.703
+K70032	ELGi Air Compressors	R0703	Air Compressor #2.703
+K701019	Electric Chain Hoists	R0703	Cement.703
+K701020	Electric Chain Hoists	R0703	Active.703
+K701021	Electric Chain Hoists	R0703	Reserve.703
+K70391	Fire Pump - Grundfos	R0703	Safety Systems.703
+K826171	Choke Line	R0703	Choke Line Assembly.703
+K826346	Kill Line	R0703	Kill Line Assembly.703
+KDH1003	Double 7 Ignition Device	R0703	Ignition Device.703
+Kill Line Assembly.703		R0703	Choke Manifold.703
+L010605	Discharge Dampner, PPC, DR-130-7500CS	R0703	Discharge Dampner #3.703
+Lanyards.703		R0703	Personnel Hoisting Equip.703
+MCC House-Mud System.703		R0703	MCC System.703
+MCC House-Substructure.703		R0703	MCC System.703
+MCC System.703		R0703	10 Power System.703
+MRC Hyd Power Unit-Engine.703		R0703	MRC Hydraulic Power Unit.703
+MRC Hydraulic Power Unit.703		R0703	Raising Cylinders.703
+Man Basket.703		R0703	70 Ancillary Systems.703
+Manlift.703		R0703	70 Ancillary Systems.703
+Manrider (DS).703		R0703	Hydraulic Hoists.703
+Manrider (ODS).703		R0703	Hydraulic Hoists.703
+Mast Raising Cylinder(DS).703		R0703	Raising Cylinders.703
+Mast Raising Cylinder(ODS).703		R0703	Raising Cylinders.703
+Mud Buckets.703		R0703	70 Ancillary Systems.703
+Mud Cleaner/Desilter#1.703		R0703	Processing Equipment.703
+Mud Cleaner/Desilter#2.703		R0703	Processing Equipment.703
+Mud House.703		R0703	40 Mud System.703
+Mud Pump #1 - AC Motor.703		R0703	Mud Pump Assembly #1.703
+Mud Pump #1.703		R0703	Mud Pump Assembly #1.703
+Mud Pump #2 - AC Motor.703		R0703	Mud Pump Assembly #2.703
+Mud Pump #2.703		R0703	Mud Pump Assembly #2.703
+Mud Pump #3 - AC Motor.703		R0703	Mud Pump Assembly #3.703
+Mud Pump #3.703		R0703	Mud Pump Assembly #3.703
+Mud Pump Assembly #1.703		R0703	Mud Pumps.703
+Mud Pump Assembly #2.703		R0703	Mud Pumps.703
+Mud Pump Assembly #3.703		R0703	Mud Pumps.703
+Mud Pumps.703		R0703	Active Mud System.703
+Mud Tanks.703		R0703	Active Mud System.703
+Pad Eyes.703		R0703	70 Ancillary Systems.703
+Parking Brake.703		R0703	Drawworks Skid.703
+Parts House/Lube Skid.703		R0703	70 Ancillary Systems.703
+Parts House/Tool Box.703		R0703	70 Ancillary Systems.703
+Personnel Hoisting Equip.703		R0703	Safety Systems.703
+Pipe Baskets.703		R0703	70 Ancillary Systems.703
+Pipe Delivery System-Winch.703		R0703	Hydraulic Hoists.703
+Power Slips.703		R0703	Slips.703
+Processing Equipment.703		R0703	Active Mud System.703
+Pump Back System.703		R0703	Active Mud System.703
+Pump Pressure Gauge #1.703		R0703	Mud Pump Assembly #1.703
+Pump Pressure Gauge #2.703		R0703	Mud Pump Assembly #2.703
+Racking Board Winch.703		R0703	Derrick.703
+Raising Cylinders.703		R0703	Hoisting Structure.703
+Relief Valve #1.703		R0703	Mud Pump Assembly #1.703
+Relief Valve #2.703		R0703	Mud Pump Assembly #2.703
+Reserve.703		R0703	Electric Chain Hoists.703
+Rig 703 - Flex 3 W3 A	Flex3 Walking Rig Arabia	R0703	
+Rig 703 Spare Holding Area.703		R0703	Rig 703 - Flex 3 W3 A
+Rig Manager House.703		R0703	70 Ancillary Systems.703
+Rotary Hose.703		R0703	Rotary Hoses.703
+Rotary Hoses.703		R0703	High Pressure Piping Sys.703
+Rotary Table Assembly.703		R0703	20 Rotating System.703
+Rotating Mouse Hole.703		R0703	20 Rotating System.703
+Safety Escape Line.703		R0703	Derrick.703
+Safety Systems.703		R0703	70 Ancillary Systems.703
+Sala Blocks.703		R0703	Personnel Hoisting Equip.703
+Saver Sub.703		R0703	70 Ancillary Systems.703
+Shale Shaker #1.703		R0703	Shale Shaker Skid.703
+Shale Shaker #2.703		R0703	Shale Shaker Skid.703
+Shale Shaker #3.703		R0703	Shale Shaker Skid.703
+Shale Shaker Skid.703		R0703	Processing Equipment.703
+Single.703		R0703	BOP Assembly.703
+Slings.703		R0703	Hoisting Systems.703
+Slips.703		R0703	50 Pipe Handling System.703
+Spacer Spool.703		R0703	70 Ancillary Systems.703
+Spinning Wrench.703		R0703	50 Pipe Handling System.703
+Standpipe Manifold.703		R0703	High Pressure Piping Sys.703
+Steam Cleaner #1.703		R0703	70 Ancillary Systems.703
+Steam Cleaner #2.703		R0703	70 Ancillary Systems.703
+Sub Hydraulic Power Unit.703		R0703	Hoisting Structure.703
+Substructure.703		R0703	Hoisting Structure.703
+Suction Dampner #1.703		R0703	Mud Pump Assembly #1.703
+Suction Dampner #2.703		R0703	Mud Pump Assembly #2.703
+TDS Motor DS.703		R0703	Top Drive.703
+TDS Motor ODS.703		R0703	Top Drive.703
+Table.703		R0703	Rotary Table Assembly.703
+Tank #1 - Processing.703		R0703	Mud Tanks.703
+Tank #2 - Mixing.703		R0703	Mud Tanks.703
+Tank #3 - Suction 1.703		R0703	Mud Tanks.703
+Tank #4 - Suction 2.703		R0703	Mud Tanks.703
+Tank #5 - Suction 3.703		R0703	Mud Tanks.703
+Tank #7 - Mixing #2.703		R0703	Mud Tanks.703
+Top Drive.703		R0703	20 Rotating System.703
+Torque Wrench.703		R0703	50 Pipe Handling System.703
+Traveling Block.703		R0703	Traveling Equipment.703
+Traveling Equipment.703		R0703	30 Hoisting System.703
+Trip Tank #1.703		R0703	Mud Tanks.703
+Tubulars.703		R0703	Rig 703 Spare Holding Area.703
+VFD House.703		R0703	VFD System.703
+VFD System.703		R0703	10 Power System.703
+Valves.703		R0703	70 Ancillary Systems.703
+Volume Tank #1.703		R0703	Mud Tanks.703
+Volume Tank #2.703		R0703	Mud Tanks.703
+Volume Tank #3.703		R0703	Mud Tanks.703
+Water Tank #1.703		R0703	70 Ancillary Systems.703
+Water Tank #2.703		R0703	70 Ancillary Systems.703
+Winch Hoist Cables.703		R0703	70 Ancillary Systems.703
+Wire Line Machine.703		R0703	70 Ancillary Systems.703
+Wire Rope/Cables.703		R0703	70 Ancillary Systems.703
+10 Power System.701		R0701	Rig 701 - Flex 3 W3 A
+20 Rotating System.701		R0701	Rig 701 - Flex 3 W3 A
+30 Hoisting System.701		R0701	Rig 701 - Flex 3 W3 A
+40 Mud System.701		R0701	Rig 701 - Flex 3 W3 A
+50 Pipe Handling System.701		R0701	Rig 701 - Flex 3 W3 A
+60 Well Control System.701		R0701	Rig 701 - Flex 3 W3 A
+70 Ancillary Systems.701		R0701	Rig 701 - Flex 3 W3 A
+A001730	Driller's Cabin	R0701	Driller's Cabin House.701
+A001812	Suction Tank, STI	R0701	Tank #3 - Suction 1.701
+A102134	MRCF3, Parker, BB251800	R0701	Mast Raising Cylinder(DS).701
+A107250	Traveling Block-Split, Varco, Split 500T	R0701	Traveling Block.701
+A112175	Shale Shaker - Derrick, Hyperpool	R0701	Shale Shaker #1.701
+A112177	Shale Shaker - Derrick, Hyperpool	R0701	Shale Shaker #2.701
+A112178	Shale Shaker - Derrick, Hyperpool	R0701	Shale Shaker #3.701
+A112306	Drawworks Skid	R0701	Drawworks Skid.701
+A112314	Shaker Skid, STI	R0701	Shale Shaker Skid.701
+A112544	Choke Manifold, Cameron,	R0701	Choke Manifold Assembly.701
+A119827	Drill Pipe Slips, Varco, 5" SDXL	R0701	Drill Collar Slips #1.701
+A119828	Drill Pipe Slips, Varco, 5" SDXL	R0701	Drill Collar Slips #2.701
+A120384	Drill Pipe Elevator, Varco, GG 5" 350T	R0701	Drill Pipe Elevator #1.701
+A137208	Parts House/Toolbox Skid, H&P	R0701	Parts House/Tool Box.701
+A146983	MCC House, Omron	R0701	MCC House-Mud System.701
+A147035	Air Dryer, Great Lakes Air Products, GPS	R0701	Air Dryer.701
+A147090	Elevator Links, Varco BJ, 350T	R0701	Elevator Link #1.701
+A147092	Elevator Links, Varco BJ, 350T	R0701	Elevator Link #2.701
+A147100	Derrick, STI, Flex3	R0701	Derrick.701
+A147102	Emergency Descent, DBI/Sala, Rollgliss	R0701	Safety Escape Line.701
+A147107	Hydraulic Power Unit, Aberdeen Dynamics	R0701	Boom Box Hyd Power Unit.701
+A147109	Engine, John Deere, 4045DF150	R0701	Boom Box HPU - Engine.701
+A147134	Discharge Dampner, PPC, RIBO-5000CS	R0701	Discharge Dampner #1.701
+A147138	Relief Valve, Demco, 3" Shear, 5000 Psi	R0701	Relief Valve #1.701
+A147160	Discharge Dampner, PPC, RIBO-5000CS	R0701	Discharge Dampner #2.701
+A147164	Relief Valve, Demco, 3" Shear, 5000 Psi	R0701	Relief Valve #2.701
+A147177	Processing Tank, STI	R0701	Tank #1 - Processing.701
+A147194	Active/Mixing Tank, STI	R0701	Tank #2 - Mixing.701
+A147242	Rotary Hose, Phoenix, 3 1/2" X 75' 5000	R0701	Rotary Hose.701
+A147244	Choke Hose	R0701	Choke Line Assembly.701
+A147261	Drill Pipe Slips, Varco, 5" SDXL	R0701	Drill Pipe Slips #1.701
+A147267	Power Slips, Varco, PS-15	R0701	Power Slips.701
+A147270	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0701	Drill Collar Clamp #1.701
+A147272	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0701	Drill Collar Clamp #2.701
+A147275	Drill Pipe Elevator, Varco, 4 1/2" 350T	R0701	Drill Pipe Elevator #1.701
+A147279	Drill Pipe Elevator, Den-Con, SJ-4 9 5/8	R0701	Drill Pipe Elevator #3.701
+A147319	Fire Extinguishers	R0701	Safety Systems.701
+A147338	Parts House/Lube Skid	R0701	Parts House/Lube Skid.701
+A147340	Change/Meeting House	R0701	Change/Meeting House.701
+A147346	Water Tank	R0701	Water Tank #1.701
+A147822	Water Tank	R0701	Water Tank #2.701
+A167600	Generator, Kato Manufacturing, 6P6-3150	R0701	Generator #2.701
+A180816	Generator, Kato Manufacturing, 6P6-3150	R0701	Generator #4.701
+A204059	Mud Pump, Gardner Denver, PZ-11HP	R0701	Mud Pump #2.701
+A39831	Engine, Caterpillar, 3512B, 4AW00470	R0701	Generator Set #4-Engine.701
+A503551	Suction Tank, STI	R0701	Tank #4 - Suction 2.701
+A503665	Active/Mixing Tank, STI	R0701	Tank #2 - Mixing.701
+A504397	Drill Line Spool Rack, Tulsa P, TUAF-30	R0701	Drilling Line Spool Rack.701
+A504784	HT Top Drive, Varco, TDS-11HP 500T	R0701	Top Drive.701
+A507317	Steam Cleaner	R0701	Steam Cleaner #1.701
+A509198	Choke Skid, Cameron	R0701	Choke Manifold Skid #1.701
+A509199	Mud/Gas Separator, DBI	R0701	Gas Buster.701
+A510523	Suction Tank, STI	R0701	Tank #5 - Suction 3.701
+A51863	Engine, Caterpillar, 3512B, 4AW00695	R0701	Generator Set #2-Engine.701
+A57654	Generator, Kato Manufacturing, 270980006	R0701	Generator #3.701
+A60271	Engine, Caterpillar, 3512B, 4AW00755	R0701	Generator Set #3-Engine.701
+A701515	MRCF3, Parker, BB251800	R0701	Mast Raising Cylinder(ODS).701
+A7016171	Eye Wash Station	R0701	Safety Systems.701
+A702010	Hyd Hoist, Braden, PD12C-59034-02L-1	R0701	Hydraulic Hoists.701
+A703462	Torque Wrench, Varco, ST80 Gen 3	R0701	Torque Wrench.701
+A7039221	Kill Hose	R0701	Kill Line Assembly.701
+A704193	Hydraulic Catwalk, Forum, 3000 30' Gen 2	R0701	Hydraulic Catwalk.701
+A74053	Engine, Caterpillar, 3512B, 4AW00175	R0701	Generator Set #1-Engine.701
+A810108	FlexHoist Drawworks, Merit Gear, Flex3	R0701	FlexHoist.701
+A810486	Parking Brakes, Wichita, LKB-321	R0701	Parking Brake.701
+A810811	Generator, Kato Manufacturing, A27673013	R0701	Generator #1.701
+A88581	Mud Pump, Gardner Denver, PZ-11HP	R0701	Mud Pump #3.701
+A904458	Motor, AC/L, General Electric, 5GEB22D3	R0701	Drawworks-AC Motor #2.701
+A904459	Motor, AC/L, General Electric, 5GEB22D3	R0701	Drawworks-AC Motor #1.701
+A93160	Generator, Kato Manufacturing, AA27673008	R0701	Generator #5.701
+A951010	Mud Pump, Gardner Denver, PZ-11HP	R0701	Mud Pump #1.701
+Accumulator.701		R0701	60 Well Control System.701
+Active Mud System.701		R0701	40 Mud System.701
+Active.701		R0701	Electric Chain Hoists.701
+Air Compressor #1.701		R0701	Air Compressors.701
+Air Compressor #2.701		R0701	Air Compressors.701
+Air Compressors.701		R0701	10 Power System.701
+Air Dryer.701		R0701	Air Compressors.701
+Annular #1.701		R0701	BOP Assembly.701
+Annular #2.701		R0701	BOP Assembly.701
+BOP Assembly.701		R0701	60 Well Control System.701
+BOP Control Hoses.701		R0701	Accumulator.701
+BOP Handling System.701		R0701	60 Well Control System.701
+BOP Test Stump.701		R0701	BOP Transporter.701
+BOP Transporter.701		R0701	60 Well Control System.701
+BOP Trolley/Hoist A.701		R0701	BOP Handling System.701
+BOP Trolley/Hoist B.701		R0701	BOP Handling System.701
+Beam Clamp.701		R0701	70 Ancillary Systems.701
+Belly Board Pad Eyes.701		R0701	70 Ancillary Systems.701
+Boiler.701		R0701	70 Ancillary Systems.701
+Boom Box HPU - Engine.701		R0701	Boom Box.701
+Boom Box Hyd Power Unit.701		R0701	Boom Box.701
+Boom Box.701		R0701	10 Power System.701
+Bug Blower.701		R0701	70 Ancillary Systems.701
+Cables.381		R0701	70 Ancillary Systems.701
+Casing Running Tools.701		R0701	50 Pipe Handling System.701
+Cellar Pumps.701		R0701	70 Ancillary Systems.701
+Cement.701		R0701	Electric Chain Hoists.701
+Centrifuges.701		R0701	70 Ancillary Systems.701
+Change/Meeting House.701		R0701	70 Ancillary Systems.701
+Chicksan Iron Slings.701		R0701	70 Ancillary Systems.701
+Choke Line Assembly.701		R0701	Choke Manifold.701
+Choke Manifold Assembly.701		R0701	Choke Manifold.701
+Choke Manifold Skid #1.701		R0701	Choke Manifold.701
+Choke Manifold Skid #2.701		R0701	Choke Manifold.701
+Choke Manifold.701		R0701	60 Well Control System.701
+Choke Panel #1.701		R0701	Choke Manifold.701
+Choke Panel #2.701		R0701	Choke Manifold.701
+Climb Assist Fall Arrest.701		R0701	Derrick.701
+Cold Start Compressor #1.701		R0701	Air Compressors.701
+Crew Quarters #1.701		R0701	70 Ancillary Systems.701
+Crew Quarters #2.701		R0701	70 Ancillary Systems.701
+Crew Quarters #3.701		R0701	70 Ancillary Systems.701
+Cup Testers.701		R0701	70 Ancillary Systems.701
+D080111	Drag Chain Support Frame, STI, 100' Capable	R0701	Drag Chain Support Frame.701
+D112669	Power Slips, Franks Int	R0701	Power Slips.701
+Dead Line Anchor.701		R0701	Traveling Equipment.701
+Degasser.701		R0701	Processing Equipment.701
+Derrick.701		R0701	Hoisting Structure.701
+Diesel Tank #1.701		R0701	Fuel Distribution.701
+Discharge Dampner #1.701		R0701	Mud Pump Assembly #1.701
+Discharge Dampner #2.701		R0701	Mud Pump Assembly #2.701
+Discharge Dampner #3.701		R0701	Mud Pump Assembly #3.701
+Ditch Valves.701		R0701	70 Ancillary Systems.701
+Double #1 w/Booster.701		R0701	BOP Assembly.701
+Double #2.701		R0701	BOP Assembly.701
+Drag Chain Support Frame.701		R0701	Hoisting Structure.701
+Drawworks Skid.701		R0701	30 Hoisting System.701
+Drawworks-AC Motor #1.701		R0701	Drawworks Skid.701
+Drawworks-AC Motor #2.701		R0701	Drawworks Skid.701
+Drill Collar Clamp #1.701		R0701	Drill Collar Clamps.701
+Drill Collar Clamp #2.701		R0701	Drill Collar Clamps.701
+Drill Collar Clamps.701		R0701	50 Pipe Handling System.701
+Drill Collar Slips #1.701		R0701	Slips.701
+Drill Collar Slips #2.701		R0701	Slips.701
+Drill Pipe Elevator #1.701		R0701	Elevators.701
+Drill Pipe Elevator #2.701		R0701	Elevators.701
+Drill Pipe Elevator #3.701		R0701	Elevators.701
+Drill Pipe Slips #1.701		R0701	Slips.701
+Driller's Cabin Group.701		R0701	10 Power System.701
+Driller's Cabin House.701		R0701	Driller's Cabin Group.701
+Drilling Line Spool Rack.701		R0701	Traveling Equipment.701
+Drilling Spool/Mud Cross#1.701		R0701	60 Well Control System.701
+Drilling Spool/Mud Cross#2.701		R0701	60 Well Control System.701
+Drum Lifter.701		R0701	70 Ancillary Systems.701
+Dynamic Brake Resistor.701		R0701	VFD House.701
+E110801	BOP Transporter, H&P	R0701	BOP Transporter.701
+Electric Chain Hoists.701		R0701	70 Ancillary Systems.701
+Elevator Link #1.701		R0701	Traveling Equipment.701
+Elevator Link #2.701		R0701	Traveling Equipment.701
+Elevators.701		R0701	50 Pipe Handling System.701
+Emergency Brake.701		R0701	Drawworks Skid.701
+Flare Lines.701		R0701	70 Ancillary Systems.701
+FlexHoist.701		R0701	Drawworks Skid.701
+FlexRig Crown Assy.701		R0701	Traveling Equipment.701
+Flow Meters.701		R0701	70 Ancillary Systems.701
+Fuel Distribution.701		R0701	10 Power System.701
+Fuel Tank # 1.701		R0701	Fuel Distribution.701
+Full Body Harness.701		R0701	Personnel Hoisting Equip.701
+G032605	Mud Tank - Active Skid, STI	R0701	Volume Tank #3.701
+Gas Buster.701		R0701	60 Well Control System.701
+Generator #1.701		R0701	Generator Set #1.701
+Generator #2.701		R0701	Generator Set #2.701
+Generator #3.701		R0701	Generator Set #3.701
+Generator #4.701		R0701	Generator Set #4.701
+Generator #5.701		R0701	Generator Set #5.701
+Generator Set #1-Engine.701		R0701	Generator Set #1.701
+Generator Set #1.701		R0701	Generator Sets.701
+Generator Set #2-Engine.701		R0701	Generator Set #2.701
+Generator Set #2.701		R0701	Generator Sets.701
+Generator Set #3-Engine.701		R0701	Generator Set #3.701
+Generator Set #3.701		R0701	Generator Sets.701
+Generator Set #4-Engine.701		R0701	Generator Set #4.701
+Generator Set #4.701		R0701	Generator Sets.701
+Generator Set #5-Engine.701		R0701	Generator Set #5.701
+Generator Set #5.701		R0701	Generator Sets.701
+Generator Sets.701		R0701	10 Power System.701
+H041801	Emergency Brakes, Wichita, ATD-536AM	R0701	Emergency Brake.701
+H060811	Degasser, Derrick, VACU-FLO 1200	R0701	Degasser.701
+H070401	Mud Cleaner, Derrick, Hyperpool 4P	R0701	Mud Cleaner/Desilter#2.701
+H070404	Mud Cleaner, Derrick, Hyperpool 4P	R0701	Mud Cleaner/Desilter#1.701
+H080102	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0701	BOP Trolley/Hoist B.701
+H080401	VFD House, Schlumberger, F3V4	R0701	VFD House.701
+H080805	Motor, AC/TD	R0701	TDS Motor ODS.701
+H080807	Motor, AC/TD	R0701	TDS Motor DS.701
+H092105	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0701	BOP Trolley/Hoist A.701
+H120702	Rotary Table, American Block Co, RT-3750HC	R0701	Table.701
+HA131521	Rig Manager House	R0701	Rig Manager House.701
+Heater.701		R0701	70 Ancillary Systems.701
+High Pressure Piping Sys.701		R0701	Active Mud System.701
+Hoisting Structure.701		R0701	30 Hoisting System.701
+Hoisting Systems.701		R0701	70 Ancillary Systems.701
+Hoses.701		R0701	70 Ancillary Systems.701
+Hydraulic Catwalk.701		R0701	50 Pipe Handling System.701
+Hydraulic Hoist (DSB).701		R0701	Hydraulic Hoists.701
+Hydraulic Hoist (ODSB).701		R0701	Hydraulic Hoists.701
+Hydraulic Hoist String-up.701		R0701	Hydraulic Hoists.701
+Hydraulic Hoists.701		R0701	Hoisting Systems.701
+I010506	BOP Accumulator, Axon, TX670-0005/3	R0701	Accumulator.701
+I010801	Hydraulic Power Unit, Aberdeen Dynamics, Substructure	R0701	Sub Hydraulic Power Unit.701
+Ignition Device.701		R0701	70 Ancillary Systems.701
+Instrumentation (VFD).701		R0701	VFD System.701
+J011203	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0701	Manrider (ODS).701
+J012401	Mud Tank - Active Skid, STI	R0701	Volume Tank #1.701
+J012407	Hyd Hoist, Braden, PD12C-59034-02L-1	R0701	Hydraulic Hoist (ODSB).701
+J012408	Hyd Hoist, Braden, PD12C-59034-02L-1	R0701	Rig 701 Spare Holding Area.701
+J012409	Hyd Hoist, Braden, PD12C-59034-02L-1	R0701	Hydraulic Hoist (ODSB).701
+J012410	Hyd Hoist, Braden, PD12C-59034-02L-1	R0701	Hydraulic Hoist (DSB).701
+J013001	Motor, AC/L, General Electric, 5GEB29B1	R0701	Mud Pump #2 - AC Motor.701
+J013002	Motor, AC/L, General Electric, 5GEB29B1	R0701	Mud Pump #1 - AC Motor.701
+J013003	Motor, AC/L, General Electric, 5GEB29B1	R0701	Mud Pump #3 - AC Motor.701
+J020205	Engine, DEUTZ, D 2.9 L4	R0701	Boom Box HPU - Engine.701
+J020207	Hydraulic Power Unit, Aberdeen Dynamics, Boom Box	R0701	Boom Box Hyd Power Unit.701
+J021401	MCC House - Substructure, STI	R0701	MCC House-Substructure.701
+J021402	Substructure, STI, Flex3 W3	R0701	Substructure.701
+J021403	Mud Tank - Active Skid, STI	R0701	Volume Tank #2.701
+J021607	Dead Line Anchor, American Block, FTR-100	R0701	Dead Line Anchor.701
+J040915	Steam Cleaner, H&P	R0701	Steam Cleaner #2.701
+J050206	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0701	Manrider (DS).701
+J050701	BOP Double, Cameron, 13 5/8"-10M DBL U	R0701	Double #1 w/Booster.701
+J050702	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0701	Drilling Spool/Mud Cross#1.701
+J050703	Drilling Spool/Mud Cross, Camer, 13 5/8"	R0701	Drilling Spool/Mud Cross#2.701
+J050705	BOP Annular, Cameron, 21 1/4"-2M DL	R0701	Annular #1.701
+J050706	BOP Annular, Cameron, 13 5/8"-10M DL	R0701	Annular #2.701
+J071904	MCC House - Auxiliary, STI	R0701	MCC House-Auxiliary.701
+J120719	FlexRig Crown Sheave Cluster, H&P - Flex3	R0701	FlexRig Crown Assy.701
+K013108	Hydraulic Choke, Cameron, 10K	R0701	Choke Panel #1.701
+K013109	Hydraulic Choke, Cameron, 10K	R0701	Choke Panel #2.701
+K042401	Spinning Wrench, Varco, SSW-40	R0701	Spinning Wrench.701
+K172026	Engine Cold Start,Gardner Denver	R0701	Cold Start Compressor #1.701
+K318205	BOP Double, Cameron, 13 5/8"-10M DBL U	R0701	Double #2.701
+K444779	Cascade Air Compressors Electrical	R0701	Safety Systems.701
+K444780	Cascade Air Compressors Electrical	R0701	Safety Systems.701
+K70012	ELGi Air Compressors	R0701	Air Compressor #1.701
+K700121	ELGi Air Compressors	R0701	Air Compressor #2.701
+K701013	Electric Chain Hoists	R0701	Cement.701
+K701014	Electric Chain Hoists	R0701	Active.701
+K701015	Electric Chain Hoists	R0701	Reserve.701
+K70189	Fire Pump - Grundfos	R0701	Safety Systems.701
+K826169	Choke Line	R0701	Choke Line Assembly.701
+K826344	Kill Line	R0701	Kill Line Assembly.701
+KDH1001	Double 7 Ignition Device	R0701	Ignition Device.701
+Kill Line Assembly.701		R0701	Choke Manifold.701
+L010603	Discharge Dampner, PPC, DR-130-7500CS	R0701	Discharge Dampner #3.701
+Lanyards.701		R0701	Personnel Hoisting Equip.701
+MCC House-Auxiliary.701		R0701	MCC System.701
+MCC House-Mud System.701		R0701	MCC System.701
+MCC House-Substructure.701		R0701	MCC System.701
+MCC System.701		R0701	10 Power System.701
+MRC Hyd Power Unit-Engine.701		R0701	MRC Hydraulic Power Unit.701
+MRC Hydraulic Power Unit.701		R0701	Raising Cylinders.701
+Man Basket.701		R0701	70 Ancillary Systems.701
+Manlift.701		R0701	70 Ancillary Systems.701
+Manrider (DS).701		R0701	Hydraulic Hoists.701
+Manrider (ODS).701		R0701	Hydraulic Hoists.701
+Mast Raising Cylinder(DS).701		R0701	Raising Cylinders.701
+Mast Raising Cylinder(ODS).701		R0701	Raising Cylinders.701
+Mud Buckets.701		R0701	70 Ancillary Systems.701
+Mud Cleaner/Desilter#1.701		R0701	Processing Equipment.701
+Mud Cleaner/Desilter#2.701		R0701	Processing Equipment.701
+Mud House.701		R0701	40 Mud System.701
+Mud Pump #1 - AC Motor.701		R0701	Mud Pump Assembly #1.701
+Mud Pump #1.701		R0701	Mud Pump Assembly #1.701
+Mud Pump #2 - AC Motor.701		R0701	Mud Pump Assembly #2.701
+Mud Pump #2.701		R0701	Mud Pump Assembly #2.701
+Mud Pump #3 - AC Motor.701		R0701	Mud Pump Assembly #3.701
+Mud Pump #3.701		R0701	Mud Pump Assembly #3.701
+Mud Pump Assembly #1.701		R0701	Mud Pumps.701
+Mud Pump Assembly #2.701		R0701	Mud Pumps.701
+Mud Pump Assembly #3.701		R0701	Mud Pumps.701
+Mud Pumps.701		R0701	Active Mud System.701
+Mud Tanks.701		R0701	Active Mud System.701
+Pad Eyes.701		R0701	70 Ancillary Systems.701
+Parking Brake.701		R0701	Drawworks Skid.701
+Parts House/Lube Skid.701		R0701	70 Ancillary Systems.701
+Parts House/Tool Box.701		R0701	70 Ancillary Systems.701
+Personnel Hoisting Equip.701		R0701	Safety Systems.701
+Pipe Baskets.701		R0701	70 Ancillary Systems.701
+Pipe Delivery System-Winch.701		R0701	Hydraulic Hoists.701
+Power Slips.701		R0701	Slips.701
+Processing Equipment.701		R0701	Active Mud System.701
+Pump Back System.701		R0701	Active Mud System.701
+Pump Pressure Gauge #1.701		R0701	Mud Pump Assembly #1.701
+Pump Pressure Gauge #2.701		R0701	Mud Pump Assembly #2.701
+Racking Board Winch.701		R0701	Derrick.701
+Raising Cylinders.701		R0701	Hoisting Structure.701
+Relief Valve #1.701		R0701	Mud Pump Assembly #1.701
+Relief Valve #2.701		R0701	Mud Pump Assembly #2.701
+Reserve.701		R0701	Electric Chain Hoists.701
+Rig 701 - Flex 3 W3 A	Flex3 Walking Rig Arabia	R0701	
+Rig 701 Spare Holding Area.701		R0701	Rig 701 - Flex 3 W3 A
+Rig Manager House.701		R0701	70 Ancillary Systems.701
+Rotary Hose.701		R0701	Rotary Hoses.701
+Rotary Hoses.701		R0701	High Pressure Piping Sys.701
+Rotary Table Assembly.701		R0701	20 Rotating System.701
+Rotating Mouse Hole.701		R0701	20 Rotating System.701
+Safety Escape Line.701		R0701	Derrick.701
+Safety Systems.701		R0701	70 Ancillary Systems.701
+Sala Blocks.701		R0701	Personnel Hoisting Equip.701
+Saver Sub.701		R0701	70 Ancillary Systems.701
+Shale Shaker #1.701		R0701	Shale Shaker Skid.701
+Shale Shaker #2.701		R0701	Shale Shaker Skid.701
+Shale Shaker #3.701		R0701	Shale Shaker Skid.701
+Shale Shaker Skid.701		R0701	Processing Equipment.701
+Single.701		R0701	BOP Assembly.701
+Slings.701		R0701	Hoisting Systems.701
+Slips.701		R0701	50 Pipe Handling System.701
+Spacer Spool.701		R0701	70 Ancillary Systems.701
+Spinning Wrench.701		R0701	50 Pipe Handling System.701
+Standpipe Manifold.701		R0701	High Pressure Piping Sys.701
+Steam Cleaner #1.701		R0701	70 Ancillary Systems.701
+Steam Cleaner #2.701		R0701	70 Ancillary Systems.701
+Sub Hydraulic Power Unit.701		R0701	Hoisting Structure.701
+Substructure.701		R0701	Hoisting Structure.701
+Suction Dampner #1.701		R0701	Mud Pump Assembly #1.701
+Suction Dampner #2.701		R0701	Mud Pump Assembly #2.701
+TDS Motor DS.701		R0701	Top Drive.701
+TDS Motor ODS.701		R0701	Top Drive.701
+Table.701		R0701	Rotary Table Assembly.701
+Tank #1 - Processing.701		R0701	Mud Tanks.701
+Tank #2 - Mixing.701		R0701	Mud Tanks.701
+Tank #3 - Suction 1.701		R0701	Mud Tanks.701
+Tank #4 - Suction 2.701		R0701	Mud Tanks.701
+Tank #5 - Suction 3.701		R0701	Mud Tanks.701
+Tank #7 - Mixing #2.701		R0701	Mud Tanks.701
+Top Drive.701		R0701	20 Rotating System.701
+Torque Wrench.701		R0701	50 Pipe Handling System.701
+Traveling Block.701		R0701	Traveling Equipment.701
+Traveling Equipment.701		R0701	30 Hoisting System.701
+Trip Tank #1.701		R0701	Mud Tanks.701
+Tubulars.701		R0701	Rig 701 Spare Holding Area.701
+VFD House.701		R0701	VFD System.701
+VFD System.701		R0701	10 Power System.701
+Valves.701		R0701	70 Ancillary Systems.701
+Volume Tank #1.701		R0701	Mud Tanks.701
+Volume Tank #2.701		R0701	Mud Tanks.701
+Volume Tank #3.701		R0701	Mud Tanks.701
+Water Tank #1.701		R0701	70 Ancillary Systems.701
+Water Tank #2.701		R0701	70 Ancillary Systems.701
+Winch Hoist Cables.701		R0701	70 Ancillary Systems.701
+Wire Line Machine.701		R0701	70 Ancillary Systems.701
+Wire Rope/Cables.701		R0701	70 Ancillary Systems.701
+10 Power System.702		R0702	Rig 702 - Flex 3 W3 A
+20 Rotating System.702		R0702	Rig 702 - Flex 3 W3 A
+30 Hoisting System.702		R0702	Rig 702 - Flex 3 W3 A
+40 Mud System.702		R0702	Rig 702 - Flex 3 W3 A
+50 Pipe Handling System.702		R0702	Rig 702 - Flex 3 W3 A
+60 Well Control System.702		R0702	Rig 702 - Flex 3 W3 A
+70 Ancillary Systems.702		R0702	Rig 702 - Flex 3 W3 A
+A102467	Generator, Kato Manufacturing, AA27673008	R0702	Rig 702 Spare Holding Area.702
+A108594	VFD House, Omron, Flex3	R0702	VFD House.702
+A110188	Mud Pump, Gardner Denver, PZ-11HP	R0702	Mud Pump #2.702
+A110789	Drawworks Skid	R0702	Drawworks Skid.702
+A111751	Parts House/Lube Skid, H&P	R0702	Parts House/Lube Skid.702
+A111905	Derrick, STI, Flex3	R0702	Derrick.702
+A112108	Driller's Cabin, Helmerich & Payne	R0702	Driller's Cabin House.702
+A112138	MCC House, Helmerich & Payne	R0702	MCC House-Mud System.702
+A112179	Mud Tank - Processing Skid, STI	R0702	Tank #1 - Processing.702
+A112180	Mud Tank - Mixing Skid, STI	R0702	Tank #2 - Mixing.702
+A112184	Parts House/Toolbox Skid, H&P	R0702	Parts House/Tool Box.702
+A112186	Mud/Gas Separator, H&P Designed	R0702	Gas Buster.702
+A113005	Water Tank, H&P	R0702	Water Tank #1.702
+A113283	Air Dryer, Great Lakes Air Products, GPS	R0702	Air Dryer.702
+A113291	FlexRig Crown Sheave Cluster, H&P - Flex3	R0702	FlexRig Crown Assy.702
+A113293	Elevator Links, Varco BJ, 350T	R0702	Elevator Link #1.702
+A113295	Elevator Links, Varco BJ, 350T	R0702	Elevator Link #2.702
+A113297	Emergency Descent, DBI/Sala, Rollgliss	R0702	Safety Escape Line.702
+A113299	Discharge Dampner, PPC, RIBO-5000CS	R0702	Discharge Dampner #1.702
+A113305	Relief Valve, Demco, 3" Shear, 5000 Psi	R0702	Relief Valve #1.702
+A113307	Discharge Dampner, PPC, RIBO-5000CS	R0702	Discharge Dampner #2.702
+A113313	Relief Valve, Demco, 3" Shear, 5000 Psi	R0702	Relief Valve #2.702
+A113315	Rotary Hose, Phoenix, 3 1/2" X 75' 5000	R0702	Rotary Hose.702
+A113321	Drill Pipe Slips, Den-Con, 5" SDXL	R0702	Drill Pipe Slips #1.702
+A113323	Drill Collar Slips, Varco, R 5 1/2"-7"	R0702	Drill Collar Slips #1.702
+A113325	Drill Collar Slips, Varco, L 6 3/4-8 1/4	R0702	Drill Collar Slips #2.702
+A113327	Power Slips, Den-Con	R0702	Power Slips.702
+A113329	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0702	Drill Collar Clamp #1.702
+A113331	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0702	Drill Collar Clamp #2.702
+A113333	Drill Pipe Elevator, Varco, GG 5" 350T	R0702	Drill Pipe Elevator #1.702
+A113335	Drill Pipe Elevator, Varco, GG 5" 350T	R0702	Drill Pipe Elevator #2.702
+A120649	Generator, Kato Manufacturing, AA27673008	R0702	Generator #2.702
+A121335	Hyd Hoist, Braden, PD12C-59034-02L-1	R0702	Hydraulic Hoist (DSB).702
+A124867	Generator, Kato Manufacturing, AA27673008	R0702	Generator #1.702
+A142300	MRCF3, Parker, BB251800	R0702	Mast Raising Cylinder(DS).702
+A146938	Generator, Kato Manufacturing, AA27673013	R0702	Generator #4.702
+A167159	Traveling Block-Split, Varco, Split 500T	R0702	Traveling Block.702
+A176531	Mud Pump, Gardner Denver, PZ-11HP	R0702	Mud Pump #1.702
+A183531	Suction Tank, STI	R0702	Tank #5 - Suction 3.702
+A210672	Hydraulic Power Unit, Aberdeen Dynamics	R0702	Boom Box Hyd Power Unit.702
+A39408	Engine, Caterpillar, 3512B, 4AW00596	R0702	Generator Set #5-Engine.702
+A43921	Engine, Caterpillar, 3512B, 4AW00733	R0702	Generator Set #2-Engine.702
+A501810	Active/Mixing Tank, STI	R0702	Tank #2 - Mixing.702
+A501845	Water Tank	R0702	Water Tank #2.702
+A503645	MRCF3, Parker, BB251800	R0702	Mast Raising Cylinder(ODS).702
+A503707	Hyd Hoist, Braden, PD12C-59051-02L-1	R0702	Rig 702 Spare Holding Area.702
+A506353	BOP Transporter, H&P	R0702	BOP Transporter.702
+A58996	Motor, AC/L, General Electric, 5GEB22A2	R0702	Drawworks-AC Motor #1.702
+A647198	Choke Hose	R0702	Choke Line Assembly.702
+A647199	Kill Hose	R0702	Kill Line Assembly.702
+A647202	Fire Extinguishers	R0702	Safety Systems.702
+A647204	Eye Wash Station	R0702	Safety Systems.702
+A703463	Torque Wrench, Varco, ST80 Gen 3	R0702	Torque Wrench.702
+A704557	Hydraulic Catwalk, Forum, 3550 30' Gen 2	R0702	Hydraulic Catwalk.702
+A902202	HT Top Drive, Varco, TDS-11HP 500T	R0702	Top Drive.702
+A904115	FlexHoist Drawworks, Merit Gear, Flex3	R0702	FlexHoist.702
+A905923	Motor, AC/L, General Electric, 5GEB22D3	R0702	Drawworks-AC Motor #2.702
+A906202	Change/Meeting House	R0702	Change/Meeting House.702
+A906235	Parking Brakes, Wichita, LKB-321	R0702	Parking Brake.702
+A906280	Shaker Skid, STI	R0702	Shale Shaker Skid.702
+A906281	Shale Shaker, Brandt, King Cobra	R0702	Shale Shaker #1.702
+A906282	Shale Shaker, Brandt, King Cobra	R0702	Shale Shaker #2.702
+A906283	Shale Shaker, Brandt, King Cobra	R0702	Shale Shaker #3.702
+A906320	Steam Cleaner	R0702	Steam Cleaner #1.702
+A93503	Engine, Caterpillar, 3512B, 4AW01461	R0702	Generator Set #4-Engine.702
+A96020	Engine, Caterpillar, 3512B, 4AW01544	R0702	Generator Set #1-Engine.702
+A96042	Engine, Caterpillar, 3512B, 4AW01476	R0702	Generator Set #3-Engine.702
+A96486	Mud Pump, Gardner Denver, PZ-11HP	R0702	Rig 702 Spare Holding Area.702
+A99118	Engine, Caterpillar, 3512B, 4AW01467	R0702	
+A9999496	Engine, John Deere, 4045DF150	R0702	Rig 702 Spare Holding Area.702
+Accumulator.702		R0702	60 Well Control System.702
+Active Mud System.702		R0702	40 Mud System.702
+Active.702		R0702	Electric Chain Hoists.702
+Air Compressor #1.702		R0702	Air Compressors.702
+Air Compressor #2.702		R0702	Air Compressors.702
+Air Compressors.702		R0702	10 Power System.702
+Air Dryer.702		R0702	Air Compressors.702
+Annular #1.702		R0702	BOP Assembly.702
+Annular #2.702		R0702	BOP Assembly.702
+BOP Assembly.702		R0702	60 Well Control System.702
+BOP Control Hoses.702		R0702	Accumulator.702
+BOP Handling System.702		R0702	60 Well Control System.702
+BOP Test Stump.702		R0702	BOP Transporter.702
+BOP Transporter.702		R0702	60 Well Control System.702
+BOP Trolley/Hoist A.702		R0702	BOP Handling System.702
+BOP Trolley/Hoist B.702		R0702	BOP Handling System.702
+Beam Clamp.702		R0702	70 Ancillary Systems.702
+Belly Board Pad Eyes.702		R0702	70 Ancillary Systems.702
+Boiler.702		R0702	70 Ancillary Systems.702
+Boom Box HPU - Engine.702		R0702	Boom Box.702
+Boom Box Hyd Power Unit.702		R0702	Boom Box.702
+Boom Box.702		R0702	10 Power System.702
+Bug Blower.702		R0702	70 Ancillary Systems.702
+Cables.382		R0702	70 Ancillary Systems.702
+Casing Running Tools.702		R0702	50 Pipe Handling System.702
+Cellar Pumps.702		R0702	70 Ancillary Systems.702
+Cement.702		R0702	Electric Chain Hoists.702
+Centrifuges.702		R0702	70 Ancillary Systems.702
+Change/Meeting House.702		R0702	70 Ancillary Systems.702
+Chicksan Iron Slings.702		R0702	70 Ancillary Systems.702
+Choke Line Assembly.702		R0702	Choke Manifold.702
+Choke Manifold Assembly.702		R0702	Choke Manifold.702
+Choke Manifold Skid #1.702		R0702	Choke Manifold.702
+Choke Manifold Skid #2.702		R0702	Choke Manifold.702
+Choke Manifold.702		R0702	60 Well Control System.702
+Choke Panel #1.702		R0702	Choke Manifold.702
+Choke Panel #2.702		R0702	Choke Manifold.702
+Climb Assist Fall Arrest.702		R0702	Derrick.702
+Cold Start Compressor #1.702		R0702	Air Compressors.702
+Crew Quarters #1.702		R0702	70 Ancillary Systems.702
+Crew Quarters #2.702		R0702	70 Ancillary Systems.702
+Crew Quarters #3.702		R0702	70 Ancillary Systems.702
+Cup Testers.702		R0702	70 Ancillary Systems.702
+D052206	Suction Tank, STI	R0702	Tank #3 - Suction 1.702
+D052207	Suction Tank, STI	R0702	Tank #4 - Suction 2.702
+D082313	Drag Chain Support Frame, STI, 100' Capable	R0702	Drag Chain Support Frame.702
+Dead Line Anchor.702		R0702	Traveling Equipment.702
+Degasser.702		R0702	Processing Equipment.702
+Derrick.702		R0702	Hoisting Structure.702
+Diesel Tank #1.702		R0702	Fuel Distribution.702
+Discharge Dampner #1.702		R0702	Mud Pump Assembly #1.702
+Discharge Dampner #2.702		R0702	Mud Pump Assembly #2.702
+Discharge Dampner #3.702		R0702	Mud Pump Assembly #3.702
+Ditch Valves.702		R0702	70 Ancillary Systems.702
+Double #1 w/Booster.702		R0702	BOP Assembly.702
+Double #2.702		R0702	BOP Assembly.702
+Drag Chain Support Frame.702		R0702	Hoisting Structure.702
+Drawworks Skid.702		R0702	30 Hoisting System.702
+Drawworks-AC Motor #1.702		R0702	Drawworks Skid.702
+Drawworks-AC Motor #2.702		R0702	Drawworks Skid.702
+Drill Collar Clamp #1.702		R0702	Drill Collar Clamps.702
+Drill Collar Clamp #2.702		R0702	Drill Collar Clamps.702
+Drill Collar Clamps.702		R0702	50 Pipe Handling System.702
+Drill Collar Slips #1.702		R0702	Slips.702
+Drill Collar Slips #2.702		R0702	Slips.702
+Drill Pipe Elevator #1.702		R0702	Elevators.702
+Drill Pipe Elevator #2.702		R0702	Elevators.702
+Drill Pipe Elevator #3.702		R0702	Elevators.702
+Drill Pipe Slips #1.702		R0702	Slips.702
+Driller's Cabin Group.702		R0702	10 Power System.702
+Driller's Cabin House.702		R0702	Driller's Cabin Group.702
+Drilling Line Spool Rack.702		R0702	Traveling Equipment.702
+Drilling Spool/Mud Cross#1.702		R0702	60 Well Control System.702
+Drilling Spool/Mud Cross#2.702		R0702	60 Well Control System.702
+Drum Lifter.702		R0702	70 Ancillary Systems.702
+Dynamic Brake Resistor.702		R0702	VFD House.702
+Electric Chain Hoists.702		R0702	70 Ancillary Systems.702
+Elevator Link #1.702		R0702	Traveling Equipment.702
+Elevator Link #2.702		R0702	Traveling Equipment.702
+Elevators.702		R0702	50 Pipe Handling System.702
+Emergency Brake.702		R0702	Drawworks Skid.702
+Flare Lines.702		R0702	70 Ancillary Systems.702
+FlexHoist.702		R0702	Drawworks Skid.702
+FlexRig Crown Assy.702		R0702	Traveling Equipment.702
+Flow Meters.702		R0702	70 Ancillary Systems.702
+Fuel Distribution.702		R0702	10 Power System.702
+Fuel Tank # 1.702		R0702	Fuel Distribution.702
+Full Body Harness.702		R0702	Personnel Hoisting Equip.702
+Gas Buster.702		R0702	60 Well Control System.702
+Generator #1.702		R0702	Generator Set #1.702
+Generator #2.702		R0702	Generator Set #2.702
+Generator #3.702		R0702	Generator Set #3.702
+Generator #4.702		R0702	Generator Set #4.702
+Generator #5.702		R0702	Generator Set #5.702
+Generator Set #1-Engine.702		R0702	Generator Set #1.702
+Generator Set #1.702		R0702	Generator Sets.702
+Generator Set #2-Engine.702		R0702	Generator Set #2.702
+Generator Set #2.702		R0702	Generator Sets.702
+Generator Set #3-Engine.702		R0702	Generator Set #3.702
+Generator Set #3.702		R0702	Generator Sets.702
+Generator Set #4-Engine.702		R0702	Generator Set #4.702
+Generator Set #4.702		R0702	Generator Sets.702
+Generator Set #5-Engine.702		R0702	Generator Set #5.702
+Generator Set #5.702		R0702	Generator Sets.702
+Generator Sets.702		R0702	10 Power System.702
+H070402	Degasser, Derrick, VACU-FLO 1200	R0702	Degasser.702
+H070706	Motor, AC/TD	R0702	TDS Motor DS.702
+H070712	Motor, AC/TD	R0702	TDS Motor ODS.702
+H122002	Rotary Table, American Block Co, RT-3750HC	R0702	Table.702
+HA906321	Rig Manager House, H&P	R0702	Rig Manager House.702
+Heater.702		R0702	70 Ancillary Systems.702
+High Pressure Piping Sys.702		R0702	Active Mud System.702
+Hoisting Structure.702		R0702	30 Hoisting System.702
+Hoisting Systems.702		R0702	70 Ancillary Systems.702
+Hoses.702		R0702	70 Ancillary Systems.702
+Hydraulic Catwalk.702		R0702	50 Pipe Handling System.702
+Hydraulic Hoist (DSB).702		R0702	Hydraulic Hoists.702
+Hydraulic Hoist (ODSB).702		R0702	Hydraulic Hoists.702
+Hydraulic Hoist String-up.702		R0702	Hydraulic Hoists.702
+Hydraulic Hoists.702		R0702	Hoisting Systems.702
+I010505	Emergency Brakes, Wichita, ATD-536AM	R0702	Emergency Brake.702
+I010509	Engine, DEUTZ, D 2.9 L4	R0702	Boom Box HPU - Engine.702
+I010511	Hydraulic Power Unit, Aberdeen Dynamics, Boom Box	R0702	Boom Box Hyd Power Unit.702
+Ignition Device.702		R0702	70 Ancillary Systems.702
+Instrumentation (VFD).702		R0702	VFD System.702
+J013006	Hyd Hoist, Braden, PD12C-SPL-59034-02L-1	R0702	Rig 702 Spare Holding Area.702
+J013007	Hyd Hoist, Braden, PD12C-SPL-59034-02L-	R0702	Rig 702 Spare Holding Area.702
+J013008	Hyd Hoist, Braden, PD12C-SPL-59034-02L-1	R0702	Hydraulic Hoist (ODSB).702
+J013013	Hydraulic Power Unit, Aberdeen Dynamics, Substructure	R0702	Sub Hydraulic Power Unit.702
+J030503	Mud Tank - Active Skid, STI	R0702	Volume Tank #1.702
+J030521	Motor, AC/L, Houma Armature, HAW29B160	R0702	Mud Pump #3 - AC Motor.702
+J030522	Motor, AC/L, Houma Armature, HAW29B160	R0702	Mud Pump #2 - AC Motor.702
+J030523	Motor, AC/L, Houma Armature, HAW29B160	R0702	Mud Pump #1 - AC Motor.702
+J030526	Dead Line Anchor, American Block, FTR-100	R0702	Dead Line Anchor.702
+J031202	Substructure, STI, Flex3 W3	R0702	Substructure.702
+J031203	MCC House - Substructure, STI	R0702	MCC House-Substructure.702
+J031204	Mud Tank - Active Skid, STI	R0702	Volume Tank #3.702
+J040906	Mud Tank - Active Skid, STI	R0702	Volume Tank #2.702
+J040910	BOP Accumulator, Axon, TX670-0005/3	R0702	Accumulator.702
+J040916	Steam Cleaner, H&P	R0702	Steam Cleaner #2.702
+J041204	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0702	BOP Trolley/Hoist B.702
+J041205	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0702	BOP Trolley/Hoist A.702
+J042601	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0702	Manrider (ODS).702
+J042602	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0702	Manrider (DS).702
+J051310	Mud Cleaner, Derrick, Hyperpool 4P	R0702	Mud Cleaner/Desilter#1.702
+J062402	Mud Cleaner, Derrick, Hyperpool 4P	R0702	Mud Cleaner/Desilter#2.702
+J071905	MCC House - Auxiliary, ST	R0702	Rig 702 Spare Holding Area.702
+K011601	Choke Manifold, Cameron	R0702	Choke Manifold Assembly.702
+K012403	BOP Annular, Cameron, 13 5/8"-10M DL	R0702	Annular #1.702
+K012404	BOP Annular, Cameron, 21 1/4"-2M DL	R0702	Annular #2.702
+K012405	BOP Double, Cameron, 13 5/8"-10M DBL U	R0702	Double #1 w/Booster.702
+K012406	BOP Double, Cameron, 13 5/8"-10M DBL U	R0702	Double #2.702
+K013105	Choke Skid, Cameron	R0702	Choke Manifold Skid #1.702
+K013110	Hydraulic Choke, Cameron, 10K	R0702	Choke Panel #1.702
+K013111	Hydraulic Choke, Cameron, 10K	R0702	Choke Panel #2.702
+K042402	Spinning Wrench, Varco, SSW-40	R0702	Spinning Wrench.702
+K050705	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0702	Drilling Spool/Mud Cross#1.702
+K050706	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0702	Drilling Spool/Mud Cross#2.702
+K172027	Engine Cold Start,Gardner Denver	R0702	Cold Start Compressor #1.702
+K444781	Cascade Air Compressors Electrical	R0702	Safety Systems.702
+K444782	Cascade Air Compressors Diesel	R0702	Safety Systems.702
+K70022	ELGi Air Compressors	R0702	Air Compressor #2.702
+K700221	ELGi Air Compressors	R0702	Air Compressor #1.702
+K701016	Electric Chain Hoists	R0702	Cement.702
+K701017	Electric Chain Hoists	R0702	Active.702
+K701018	Electric Chain Hoists	R0702	Reserve.702
+K70290	Fire Pump - Grundfos	R0702	Safety Systems.702
+K826170	Choke Line	R0702	Choke Line Assembly.702
+K826345	Kill Line	R0702	Kill Line Assembly.702
+KDH1002	Double 7 Ignition Device	R0702	Ignition Device.702
+Kill Line Assembly.702		R0702	Choke Manifold.702
+L010604	Discharge Dampner, PPC, DR-130-7500CS	R0702	Discharge Dampner #3.702
+Lanyards.702		R0702	Personnel Hoisting Equip.702
+MCC House-Mud System.702		R0702	MCC System.702
+MCC House-Substructure.702		R0702	MCC System.702
+MCC System.702		R0702	10 Power System.702
+MRC Hyd Power Unit-Engine.702		R0702	MRC Hydraulic Power Unit.702
+MRC Hydraulic Power Unit.702		R0702	Raising Cylinders.702
+Man Basket.702		R0702	70 Ancillary Systems.702
+Manlift.702		R0702	70 Ancillary Systems.702
+Manrider (DS).702		R0702	Hydraulic Hoists.702
+Manrider (ODS).702		R0702	Hydraulic Hoists.702
+Mast Raising Cylinder(DS).702		R0702	Raising Cylinders.702
+Mast Raising Cylinder(ODS).702		R0702	Raising Cylinders.702
+Mud Buckets.702		R0702	70 Ancillary Systems.702
+Mud Cleaner/Desilter#1.702		R0702	Processing Equipment.702
+Mud Cleaner/Desilter#2.702		R0702	Processing Equipment.702
+Mud House.702		R0702	40 Mud System.702
+Mud Pump #1 - AC Motor.702		R0702	Mud Pump Assembly #1.702
+Mud Pump #1.702		R0702	Mud Pump Assembly #1.702
+Mud Pump #2 - AC Motor.702		R0702	Mud Pump Assembly #2.702
+Mud Pump #2.702		R0702	Mud Pump Assembly #2.702
+Mud Pump #3 - AC Motor.702		R0702	Mud Pump Assembly #3.702
+Mud Pump #3.702		R0702	Mud Pump Assembly #3.702
+Mud Pump Assembly #1.702		R0702	Mud Pumps.702
+Mud Pump Assembly #2.702		R0702	Mud Pumps.702
+Mud Pump Assembly #3.702		R0702	Mud Pumps.702
+Mud Pumps.702		R0702	Active Mud System.702
+Mud Tanks.702		R0702	Active Mud System.702
+Pad Eyes.702		R0702	70 Ancillary Systems.702
+Parking Brake.702		R0702	Drawworks Skid.702
+Parts House/Lube Skid.702		R0702	70 Ancillary Systems.702
+Parts House/Tool Box.702		R0702	70 Ancillary Systems.702
+Personnel Hoisting Equip.702		R0702	Safety Systems.702
+Pipe Baskets.702		R0702	70 Ancillary Systems.702
+Pipe Delivery System-Winch.702		R0702	Hydraulic Hoists.702
+Power Slips.702		R0702	Slips.702
+Processing Equipment.702		R0702	Active Mud System.702
+Pump Back System.702		R0702	Active Mud System.702
+Pump Pressure Gauge #1.702		R0702	Mud Pump Assembly #1.702
+Pump Pressure Gauge #2.702		R0702	Mud Pump Assembly #2.702
+Racking Board Winch.702		R0702	Derrick.702
+Raising Cylinders.702		R0702	Hoisting Structure.702
+Relief Valve #1.702		R0702	Mud Pump Assembly #1.702
+Relief Valve #2.702		R0702	Mud Pump Assembly #2.702
+Reserve.702		R0702	Electric Chain Hoists.702
+Rig 702 - Flex 3 W3 A	Flex3 Walking Rig Arabia	R0702	
+Rig 702 Spare Holding Area.702		R0702	Rig 702 - Flex 3 W3 A
+Rig Manager House.702		R0702	70 Ancillary Systems.702
+Rotary Hose.702		R0702	Rotary Hoses.702
+Rotary Hoses.702		R0702	High Pressure Piping Sys.702
+Rotary Table Assembly.702		R0702	20 Rotating System.702
+Rotating Mouse Hole.702		R0702	20 Rotating System.702
+Safety Escape Line.702		R0702	Derrick.702
+Safety Systems.702		R0702	70 Ancillary Systems.702
+Sala Blocks.702		R0702	Personnel Hoisting Equip.702
+Saver Sub.702		R0702	70 Ancillary Systems.702
+Shale Shaker #1.702		R0702	Shale Shaker Skid.702
+Shale Shaker #2.702		R0702	Shale Shaker Skid.702
+Shale Shaker #3.702		R0702	Shale Shaker Skid.702
+Shale Shaker Skid.702		R0702	Processing Equipment.702
+Single.702		R0702	BOP Assembly.702
+Slings.702		R0702	Hoisting Systems.702
+Slips.702		R0702	50 Pipe Handling System.702
+Spacer Spool.702		R0702	70 Ancillary Systems.702
+Spinning Wrench.702		R0702	50 Pipe Handling System.702
+Standpipe Manifold.702		R0702	High Pressure Piping Sys.702
+Steam Cleaner #1.702		R0702	70 Ancillary Systems.702
+Steam Cleaner #2.702		R0702	70 Ancillary Systems.702
+Sub Hydraulic Power Unit.702		R0702	Hoisting Structure.702
+Substructure.702		R0702	Hoisting Structure.702
+Suction Dampner #1.702		R0702	Mud Pump Assembly #1.702
+Suction Dampner #2.702		R0702	Mud Pump Assembly #2.702
+TDS Motor #1.702		R0702	Top Drive.702
+TDS Motor #2.702		R0702	Top Drive.702
+TDS Motor DS.702		R0702	Top Drive.702
+TDS Motor ODS.702		R0702	Top Drive.702
+Table.702		R0702	Rotary Table Assembly.702
+Tank #1 - Processing.702		R0702	Mud Tanks.702
+Tank #2 - Mixing.702		R0702	Mud Tanks.702
+Tank #3 - Suction 1.702		R0702	Mud Tanks.702
+Tank #4 - Suction 2.702		R0702	Mud Tanks.702
+Tank #5 - Suction 3.702		R0702	Mud Tanks.702
+Tank #7 - Mixing #2.702		R0702	Mud Tanks.702
+Top Drive.702		R0702	20 Rotating System.702
+Torque Wrench.702		R0702	50 Pipe Handling System.702
+Traveling Block.702		R0702	Traveling Equipment.702
+Traveling Equipment.702		R0702	30 Hoisting System.702
+Trip Tank #1.702		R0702	Mud Tanks.702
+Tubulars.702		R0702	Rig 702 Spare Holding Area.702
+VFD House.702		R0702	VFD System.702
+VFD System.702		R0702	10 Power System.702
+Valves.702		R0702	70 Ancillary Systems.702
+Volume Tank #1.702		R0702	Mud Tanks.702
+Volume Tank #2.702		R0702	Mud Tanks.702
+Volume Tank #3.702		R0702	Mud Tanks.702
+Water Tank #1.702		R0702	70 Ancillary Systems.702
+Water Tank #2.702		R0702	70 Ancillary Systems.702
+Winch Hoist Cables.702		R0702	70 Ancillary Systems.702
+Wire Line Machine.702		R0702	70 Ancillary Systems.702
+Wire Rope/Cables.702		R0702	70 Ancillary Systems.702
+Annular.703		R0703	
+Choke & Kill Hose.703		R0703	
+10 Power System.704		R0704	Rig 704 - Flex 3 W3 A
+20 Rotating System.704		R0704	Rig 704 - Flex 3 W3 A
+30 Hoisting System.704		R0704	Rig 704 - Flex 3 W3 A
+40 Mud System.704		R0704	Rig 704 - Flex 3 W3 A
+50 Pipe Handling System.704		R0704	Rig 704 - Flex 3 W3 A
+60 Well Control System.704		R0704	Rig 704 - Flex 3 W3 A
+70 Ancillary Systems.704		R0704	Rig 704 - Flex 3 W3 A
+A001941	MRCF3, Parker, BB251800	R0704	Mast Raising Cylinder(DS).704
+A100870	Traveling Block-Split, Varco, Split 500T	R0704	Traveling Block.704
+A104202	Active/Mixing Tank, STI	R0704	Tank #2 - Mixing.704
+A108705	Mud Pump, Gardner Denver, PZ-11HP	R0704	Mud Pump #3.704
+A109304	Hydraulic Power Unit, Aberdeen Dynamics	R0704	MRC Hydraulic Power Unit.704
+A110132	Change/Meeting House, H&P	R0704	Change/Meeting House.704
+A110228	MCC House, Helmerich & Payne	R0704	MCC House-Mud System.704
+A110351	Derrick, STI, Flex3	R0704	Derrick.704
+A110559	Parts House/Lube Skid, H&P	R0704	Parts House/Lube Skid.704
+A110560	Parts House/Toolbox Skid, H&P	R0704	Parts House/Tool Box.704
+A110657	Mud Tank - Processing Skid, STI	R0704	Tank #1 - Processing.704
+A111097	Air Dryer, Great Lakes Air Products, GPS	R0704	Air Dryer.704
+A111105	FlexRig Crown Sheave Cluster, H&P - Flex3	R0704	
+A111106	Elevator Links, Varco BJ, 350T	R0704	Elevator Link #1.704
+A111107	Elevator Links, Varco BJ, 350T	R0704	Elevator Link #2.704
+A111109	Emergency Descent, DBI/Sala, Rollgliss	R0704	Safety Escape Line.704
+A111111	Discharge Dampner, PPC, RIBO-5000CS	R0704	Discharge Dampner #1.704
+A111115	Relief Valve, Rupture Pin, 3" 7500 Psi	R0704	Relief Valve #1.704
+A111117	Discharge Dampner, PPC, RIBO-5000CS	R0704	Discharge Dampner #3.704
+A111122	Relief Valve, Rupture Pin, 3" 7500 Psi	R0704	Rig 704 Spare Holding Area.704
+A111124	Rotary Hose, Phoenix, 3 1/2" X 75' 5000	R0704	Rotary Hose.704
+A111128	Drill Pipe Slips, Den-Con, 5" SDXL	R0704	Drill Pipe Slips #1.704
+A111129	Drill Collar Slips, Varco, R 5 1/2"-7"	R0704	Drill Collar Slips #1.704
+A111131	Drill Collar Slips, Varco, L 6 3/4-8 1/4	R0704	Drill Collar Slips #2.704
+A111133	Power Slips, Den-Con	R0704	Power Slips.704
+A111134	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0704	Drill Collar Clamp #1.704
+A111135	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0704	Drill Collar Clamp #2.704
+A111137	Drill Pipe Elevator, Varco, GG 5" 350T	R0704	Drill Pipe Elevator #1.704
+A111139	Drill Pipe Elevator, Varco, GG 5" 350T	R0704	Drill Pipe Elevator #2.704
+A111263	Drawworks Skid	R0704	Drawworks Skid.704
+A112309	Active/Mixing Tank, STI	R0704	Tank #7 - Mixing #2.704
+A112826	Choke Manifold, Cameron,	R0704	Choke Manifold Assembly.704
+A128435	Mud/Gas Separator, DBI	R0704	Gas Buster.704
+A131783	Mud Pump, Gardner Denver, PZ-11HP	R0704	Mud Pump #1.704
+A138691	Generator, Kato Manufacturing, AA27673013	R0704	Generator #5.704
+A146803	Water Tank	R0704	Water Tank #1.704
+A148787	Generator, Kato Manufacturing, AA27673013	R0704	Generator #2.704
+A1696	Shaker Skid, STI	R0704	Shale Shaker Skid.704
+A186781	Hyd Hoist, Braden, PD12C-59034-02L-1	R0704	Hydraulic Hoist (ODSF).704
+A192226	Generator, Kato Manufacturing, 6P6-3150	R0704	Generator #1.704
+A192784	Suction Tank, STI	R0704	Tank #3 - Suction 1.704
+A192861	Torque Wrench, Varco, ST80 Gen 3	R0704	Torque Wrench.704
+A209717	Mud Pump, Gardner Denver, PZ-11HP	R0704	Mud Pump #2.704
+A210245	Motor, AC/L, General Electric, 5GEB22D3	R0704	Drawworks-AC Motor #2.704
+A210246	Motor, AC/L, General Electric, 5GEB22D3	R0704	Drawworks-AC Motor #1.704
+A21702	MRCF3, Parker, BB251800	R0704	Mast Raising Cylinder(ODS).704
+A502012	Parking Brakes, Wichita, LKB-321	R0704	Parking Brake.704
+A502059	BOP Transporter, H&P	R0704	BOP Transporter.704
+A502064	Water Tank	R0704	Water Tank #2.704
+A503186	Drill Line Spool Rack, Tulsa P, TUAF-20	R0704	Drilling Line Spool Rack.704
+A504481	Driller's Cabin, Helmerich & Payne	R0704	Driller's Cabin House.704
+A510164	Engine, John Deere, 4045TF280	R0704	MRC Hyd Power Unit-Engine.704
+A520033	Shale Shaker, Brandt, King Cobra	R0704	Shale Shaker #1.704
+A520034	Shale Shaker, Brandt, King Cobra	R0704	Shale Shaker #3.704
+A520035	Shale Shaker, Brandt, King Cobra	R0704	Shale Shaker #2.704
+A52757	Engine, Caterpillar, 3512B, 4AW00718	R0704	Rig 704 Spare Holding Area.704
+A54647	Engine, Caterpillar, 3512B, 4AW00769	R0704	Generator Set #1-Engine.704
+A652196	Choke Hose	R0704	Choke Line Assembly.704
+A652197	Kill Hose	R0704	Kill Line Assembly.704
+A652200	Fire Extinguishers	R0704	Safety Systems.704
+A652202	Eye Wash Station	R0704	Safety Systems.704
+A701412	FlexHoist Drawworks, Merit Gear, Flex3	R0704	FlexHoist.704
+A703695	Hyd Hoist, Braden, PD12C-59051-02L-1	R0704	Hydraulic Hoist (DSB).704
+A704102	Generator, Kato Manufacturing, AA27673013	R0704	Generator #3.704
+A73564	Engine, Caterpillar, 3512B, 4AW00833	R0704	Generator Set #2-Engine.704
+A808954	HT Top Drive, Varco, TDS-11HP 500T	R0704	Top Drive.704
+A810512	Hyd Hoist, Braden, PD12C-59034-02L-1	R0704	Hydraulic Hoist (DSF).704
+A83889	Engine, Caterpillar, 3512B, 4AW01009	R0704	Generator Set #4-Engine.704
+A900787	Hydraulic Catwalk, Forum, 3000 30' Gen 2	R0704	Hydraulic Catwalk.704
+A93156	Engine, Caterpillar, 3512B, 4AW01503	R0704	Generator Set #3-Engine.704
+A95017	Generator, Kato Manufacturing, A27098017	R0704	Generator #4.704
+A951042	Mud Tank - Suction Skid, STI	R0704	Tank #4 - Suction 2.704
+A951043	Mud Tank - Suction Skid, STI	R0704	Tank #5 - Suction 3.704
+A98279	Choke Skid, Cameron, FLS 5M	R0704	Choke Manifold Skid #2.704
+A9999399	Steam Cleaner	R0704	Steam Cleaner #1.704
+Accumulator.704		R0704	60 Well Control System.704
+Active Mud System.704		R0704	40 Mud System.704
+Active.704		R0704	Electric Chain Hoists.704
+Air Compressor #1.704		R0704	Air Compressors.704
+Air Compressor #2.704		R0704	Air Compressors.704
+Air Compressors.704		R0704	10 Power System.704
+Air Dryer.704		R0704	Air Compressors.704
+Annular #1.704		R0704	BOP Assembly.704
+Annular #2.704		R0704	BOP Assembly.704
+B031507	Discharge Dampner, PPC, DR-130-7500CS	R0704	Discharge Dampner #2.704
+B031509	Relief Valve, Rupture Pin, 3" 7500 Psi	R0704	Relief Valve #2.704
+BOP Assembly.704		R0704	60 Well Control System.704
+BOP Control Hoses.704		R0704	Accumulator.704
+BOP Handling System.704		R0704	60 Well Control System.704
+BOP Test Stump.704		R0704	BOP Transporter.704
+BOP Transporter.704		R0704	60 Well Control System.704
+BOP Trolley/Hoist A.704		R0704	BOP Handling System.704
+BOP Trolley/Hoist B.704		R0704	BOP Handling System.704
+Beam Clamp.704		R0704	70 Ancillary Systems.704
+Belly Board Pad Eyes.704		R0704	70 Ancillary Systems.704
+Boiler.704		R0704	70 Ancillary Systems.704
+Boom Box HPU - Engine.704		R0704	Boom Box.704
+Boom Box Hyd Power Unit.704		R0704	Boom Box.704
+Boom Box.704		R0704	10 Power System.704
+Bug Blower.704		R0704	70 Ancillary Systems.704
+Cables.384		R0704	70 Ancillary Systems.704
+Casing Running Tools.704		R0704	50 Pipe Handling System.704
+Cellar Pumps.704		R0704	70 Ancillary Systems.704
+Cement.704		R0704	Electric Chain Hoists.704
+Centrifuges.704		R0704	70 Ancillary Systems.704
+Change/Meeting House.704		R0704	70 Ancillary Systems.704
+Chicksan Iron Slings.704		R0704	70 Ancillary Systems.704
+Choke Line Assembly.704		R0704	Choke Manifold.704
+Choke Manifold Assembly.704		R0704	Choke Manifold.704
+Choke Manifold Skid #1.704		R0704	Choke Manifold.704
+Choke Manifold Skid #2.704		R0704	Choke Manifold.704
+Choke Manifold.704		R0704	60 Well Control System.704
+Choke Panel #1.704		R0704	Choke Manifold.704
+Choke Panel #2.704		R0704	Choke Manifold.704
+Climb Assist Fall Arrest.704		R0704	Derrick.704
+Cold Start Compressor #1.704		R0704	Air Compressors.704
+Crew Quarters #1.704		R0704	70 Ancillary Systems.704
+Crew Quarters #2.704		R0704	70 Ancillary Systems.704
+Crew Quarters #3.704		R0704	70 Ancillary Systems.704
+Cup Testers.704		R0704	70 Ancillary Systems.704
+D072501	Drag Chain Support Frame, STI, 100' Capable	R0704	Drag Chain Support Frame.704
+D122110	Power Slips, Franks Int	R0704	50 Pipe Handling System.704
+Dead Line Anchor.704		R0704	Traveling Equipment.704
+Degasser.704		R0704	Processing Equipment.704
+Derrick.704		R0704	Hoisting Structure.704
+Diesel Tank #1.704		R0704	Fuel Distribution.704
+Discharge Dampner #1.704		R0704	Mud Pump Assembly #1.704
+Discharge Dampner #2.704		R0704	Mud Pump Assembly #2.704
+Discharge Dampner #3.704		R0704	Mud Pump Assembly #3.704
+Ditch Valves.704		R0704	70 Ancillary Systems.704
+Double #1 w/Booster.704		R0704	BOP Assembly.704
+Double #2.704		R0704	BOP Assembly.704
+Drag Chain Support Frame.704		R0704	Hoisting Structure.704
+Drawworks Skid.704		R0704	30 Hoisting System.704
+Drawworks-AC Motor #1.704		R0704	Drawworks Skid.704
+Drawworks-AC Motor #2.704		R0704	Drawworks Skid.704
+Drill Collar Clamp #1.704		R0704	Drill Collar Clamps.704
+Drill Collar Clamp #2.704		R0704	Drill Collar Clamps.704
+Drill Collar Clamps.704		R0704	50 Pipe Handling System.704
+Drill Collar Slips #1.704		R0704	Slips.704
+Drill Collar Slips #2.704		R0704	Slips.704
+Drill Pipe Elevator #1.704		R0704	Elevators.704
+Drill Pipe Elevator #2.704		R0704	Elevators.704
+Drill Pipe Elevator #3.704		R0704	Elevators.704
+Drill Pipe Slips #1.704		R0704	Slips.704
+Driller's Cabin Group.704		R0704	10 Power System.704
+Driller's Cabin House.704		R0704	Driller's Cabin Group.704
+Drilling Line Spool Rack.704		R0704	Traveling Equipment.704
+Drilling Spool/Mud Cross#1.704		R0704	60 Well Control System.704
+Drilling Spool/Mud Cross#2.704		R0704	60 Well Control System.704
+Drum Lifter.704		R0704	70 Ancillary Systems.704
+Dynamic Brake Resistor.704		R0704	VFD House.704
+E106753	VFD House, Omron, Flex3	R0704	VFD House.704
+Electric Chain Hoists.704		R0704	70 Ancillary Systems.704
+Elevator Link #1.704		R0704	Traveling Equipment.704
+Elevator Link #2.704		R0704	Traveling Equipment.704
+Elevators.704		R0704	50 Pipe Handling System.704
+Emergency Brake.704		R0704	Drawworks Skid.704
+Flare Lines.704		R0704	70 Ancillary Systems.704
+FlexHoist.704		R0704	Drawworks Skid.704
+FlexRig Crown Assy.704		R0704	Traveling Equipment.704
+Flow Meters.704		R0704	70 Ancillary Systems.704
+Fuel Distribution.704		R0704	10 Power System.704
+Fuel Tank # 1.704		R0704	Fuel Distribution.704
+Full Body Harness.704		R0704	Personnel Hoisting Equip.704
+Gas Buster.704		R0704	60 Well Control System.704
+Generator #1.704		R0704	Generator Set #1.704
+Generator #2.704		R0704	Generator Set #2.704
+Generator #3.704		R0704	Generator Set #3.704
+Generator #4.704		R0704	Generator Set #4.704
+Generator #5.704		R0704	Generator Set #5.704
+Generator Set #1-Engine.704		R0704	Generator Set #1.704
+Generator Set #1.704		R0704	Generator Sets.704
+Generator Set #2-Engine.704		R0704	Generator Set #2.704
+Generator Set #2.704		R0704	Generator Sets.704
+Generator Set #3-Engine.704		R0704	Generator Set #3.704
+Generator Set #3.704		R0704	Generator Sets.704
+Generator Set #4-Engine.704		R0704	Generator Set #4.704
+Generator Set #4.704		R0704	Generator Sets.704
+Generator Set #5-Engine.704		R0704	Generator Set #5.704
+Generator Set #5.704		R0704	Generator Sets.704
+Generator Sets.704		R0704	10 Power System.704
+H041402	Mud Cleaner, Derrick, Hyperpool 4P	R0704	Mud Cleaner/Desilter#1.704
+H060808	Mud Cleaner, Derrick, Hyperpool 4P	R0704	Mud Cleaner/Desilter#2.704
+H080107	Emergency Brakes, Wichita, ATD-536AM	R0704	Emergency Brake.704
+H110806	Motor, AC/TD	R0704	TDS Motor DS.704
+H110807	Motor, AC/TD	R0704	TDS Motor ODS.704
+HA110489	Rig Manager House	R0704	Rig Manager House.704
+Heater.704		R0704	70 Ancillary Systems.704
+High Pressure Piping Sys.704		R0704	Active Mud System.704
+Hoisting Structure.704		R0704	30 Hoisting System.704
+Hoisting Systems.704		R0704	70 Ancillary Systems.704
+Hoses.704		R0704	70 Ancillary Systems.704
+Hydraulic Catwalk.704		R0704	50 Pipe Handling System.704
+Hydraulic Hoist (DSB).704		R0704	Hydraulic Hoists.704
+Hydraulic Hoist (DSF).704		R0704	Hydraulic Hoists.704
+Hydraulic Hoist (ODSB).704		R0704	Hydraulic Hoists.704
+Hydraulic Hoist (ODSF).704		R0704	Hydraulic Hoists.704
+Hydraulic Hoist String-up.704		R0704	Hydraulic Hoists.704
+Hydraulic Hoists.704		R0704	Hoisting Systems.704
+I010507	Rotary Table, American Block Co, RT-3750HC	R0704	Table.704
+Ignition Device.704		R0704	70 Ancillary Systems.704
+Instrumentation (VFD).704		R0704	VFD System.704
+J012405	Hyd Hoist, Braden, PD12C-59034-02L-1	R0704	Hydraulic Hoist (ODSB).704
+J012411	Hyd Hoist, Braden, PD12C-59034-02L-1	R0704	Hydraulic Hoist String-up.704
+J021025	FlexRig Crown Sheave Cluster, H&P - Flex3	R0704	FlexRig Crown Assy.704
+J021606	Hydraulic Power Unit, Aberdeen Dynamics, Substructure	R0704	Sub Hydraulic Power Unit.704
+J040905	Substructure, STI, Flex3 W3	R0704	Substructure.704
+J041101	Motor, AC/L, Houma Armature, HAW29B160	R0704	Mud Pump #3 - AC Motor.704
+J041105	Motor, AC/L, Houma Armature, HAW29B160	R0704	Mud Pump #1 - AC Motor.704
+J041107	Motor, AC/L, Houma Armature, HAW29B160	R0704	Mud Pump #2 - AC Motor.704
+J041611	Hydraulic Power Unit, Aberdeen Dynamics, Boom Box	R0704	Boom Box Hyd Power Unit.704
+J041612	Engine, DEUTZ, D 2.9 L4	R0704	Boom Box HPU - Engine.704
+J050204	Mud Tank - Volume Skid, STI	R0704	Volume Tank #1.704
+J050205	Mud Tank - Volume Skid, STI	R0704	Volume Tank #2.704
+J051303	Dead Line Anchor, American Block, FTR-100	R0704	Dead Line Anchor.704
+J051307	Degasser, Derrick, VACU-FLO 1200	R0704	Degasser.704
+J052001	MCC House - Substructure, STI	R0704	MCC House-Substructure.704
+J052002	Mud Tank - Volume Skid, STI	R0704	Volume Tank #3.704
+J052307	Steam Cleaner, H&P	R0704	Steam Cleaner #2.704
+J061101	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0704	Manrider (ODS).704
+J061102	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0704	Manrider (DS).704
+J070501	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0704	BOP Trolley/Hoist B.704
+J070503	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0704	BOP Trolley/Hoist A.704
+J071903	MCC House - Auxiliary, STI	R0704	Rig 704 Spare Holding Area.704
+J081501	FlexRig Crown Sheave Cluster, H&P - Flex	R0704	Rig 704 Spare Holding Area.704
+J090303	BOP Accumulator, Axon, TX670-0005/3	R0704	Accumulator.704
+J111305	BOP Annular, Cameron, 21 1/4"-2M DL	R0704	Annular #2.704
+J111306	BOP Annular, Cameron, 13 5/8"-10M DL	R0704	Annular #1.704
+J123101	BOP Double, Cameron, 13 5/8"-10M DBL U	R0704	Rig 704 Spare Holding Area.704
+J123102	BOP Double, Cameron, 13 5/8"-10M DBL U	R0704	Rig 704 Spare Holding Area.704
+K013106	Choke Skid, Cameron	R0704	Choke Manifold Skid #1.704
+K042415	Spinning Wrench, Varco, SSW-40	R0704	Spinning Wrench.704
+K050709	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0704	Drilling Spool/Mud Cross#1.704
+K050710	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0704	Drilling Spool/Mud Cross#2.704
+K172029	Engine Cold Start,Gardner Denver	R0704	Cold Start Compressor #1.704
+K444785	Cascade Air Compressors Electrical	R0704	Safety Systems.704
+K444786	Cascade Air Compressors Diesel	R0704	Safety Systems.704
+K70042	ELGi Air Compressors	R0704	Air Compressor #2.704
+K700421	ELGi Air Compressors	R0704	Air Compressor #1.704
+K701022	Electric Chain Hoists	R0704	Cement.704
+K701023	Electric Chain Hoists	R0704	Active.704
+K701024	Electric Chain Hoists	R0704	Reserve.704
+K70492	Fire Pump - Grundfos	R0704	Safety Systems.704
+K826172	Choke Line	R0704	Choke Line Assembly.704
+K826347	Kill Line	R0704	Kill Line Assembly.704
+KDH1004	Double 7 Ignition Device	R0704	Ignition Device.704
+Kill Line Assembly.704		R0704	Choke Manifold.704
+Lanyards.704		R0704	Personnel Hoisting Equip.704
+MCC House-Mud System.704		R0704	MCC System.704
+MCC House-Substructure.704		R0704	MCC System.704
+MCC System.704		R0704	10 Power System.704
+MRC Hyd Power Unit-Engine.704		R0704	MRC Hydraulic Power Unit.704
+MRC Hydraulic Power Unit.704		R0704	Raising Cylinders.704
+Man Basket.704		R0704	70 Ancillary Systems.704
+Manlift.704		R0704	70 Ancillary Systems.704
+Manrider (DS).704		R0704	Hydraulic Hoists.704
+Manrider (ODS).704		R0704	Hydraulic Hoists.704
+Mast Raising Cylinder(DS).704		R0704	Raising Cylinders.704
+Mast Raising Cylinder(ODS).704		R0704	Raising Cylinders.704
+Mud Buckets.704		R0704	70 Ancillary Systems.704
+Mud Cleaner/Desilter#1.704		R0704	Processing Equipment.704
+Mud Cleaner/Desilter#2.704		R0704	Processing Equipment.704
+Mud House.704		R0704	40 Mud System.704
+Mud Pump #1 - AC Motor.704		R0704	Mud Pump Assembly #1.704
+Mud Pump #1.704		R0704	Mud Pump Assembly #1.704
+Mud Pump #2 - AC Motor.704		R0704	Mud Pump Assembly #2.704
+Mud Pump #2.704		R0704	Mud Pump Assembly #2.704
+Mud Pump #3 - AC Motor.704		R0704	Mud Pump Assembly #3.704
+Mud Pump #3.704		R0704	Mud Pump Assembly #3.704
+Mud Pump Assembly #1.704		R0704	Mud Pumps.704
+Mud Pump Assembly #2.704		R0704	Mud Pumps.704
+Mud Pump Assembly #3.704		R0704	Mud Pumps.704
+Mud Pumps.704		R0704	Active Mud System.704
+Mud Tanks.704		R0704	Active Mud System.704
+Pad Eyes.704		R0704	70 Ancillary Systems.704
+Parking Brake.704		R0704	Drawworks Skid.704
+Parts House/Lube Skid.704		R0704	70 Ancillary Systems.704
+Parts House/Tool Box.704		R0704	70 Ancillary Systems.704
+Personnel Hoisting Equip.704		R0704	Safety Systems.704
+Pipe Baskets.704		R0704	70 Ancillary Systems.704
+Pipe Delivery System-Winch.704		R0704	Hydraulic Hoists.704
+Power Slips.704		R0704	Slips.704
+Processing Equipment.704		R0704	Active Mud System.704
+Pump Back System.704		R0704	Active Mud System.704
+Pump Pressure Gauge #1.704		R0704	Mud Pump Assembly #1.704
+Pump Pressure Gauge #2.704		R0704	Mud Pump Assembly #2.704
+Racking Board Winch.704		R0704	Derrick.704
+Raising Cylinders.704		R0704	Hoisting Structure.704
+Relief Valve #1.704		R0704	Mud Pump Assembly #1.704
+Relief Valve #2.704		R0704	Mud Pump Assembly #2.704
+Reserve.704		R0704	Electric Chain Hoists.704
+Rig 704 - Flex 3 W3 A	Flex3 Walking Rig Arabia	R0704	
+Rig 704 Spare Holding Area.704		R0704	Rig 704 - Flex 3 W3 A
+Rig Manager House.704		R0704	70 Ancillary Systems.704
+Rotary Hose.704		R0704	Rotary Hoses.704
+Rotary Hoses.704		R0704	High Pressure Piping Sys.704
+Rotary Table Assembly.704		R0704	20 Rotating System.704
+Rotating Mouse Hole.704		R0704	20 Rotating System.704
+Safety Escape Line.704		R0704	Derrick.704
+Safety Systems.704		R0704	70 Ancillary Systems.704
+Sala Blocks.704		R0704	Personnel Hoisting Equip.704
+Saver Sub.704		R0704	70 Ancillary Systems.704
+Shale Shaker #1.704		R0704	Shale Shaker Skid.704
+Shale Shaker #2.704		R0704	Shale Shaker Skid.704
+Shale Shaker #3.704		R0704	Shale Shaker Skid.704
+Shale Shaker Skid.704		R0704	Processing Equipment.704
+Single.704		R0704	BOP Assembly.704
+Slings.704		R0704	Hoisting Systems.704
+Slips.704		R0704	50 Pipe Handling System.704
+Spacer Spool.704		R0704	70 Ancillary Systems.704
+Spinning Wrench.704		R0704	50 Pipe Handling System.704
+Standpipe Manifold.704		R0704	High Pressure Piping Sys.704
+Steam Cleaner #1.704		R0704	70 Ancillary Systems.704
+Steam Cleaner #2.704		R0704	70 Ancillary Systems.704
+Sub Hydraulic Power Unit.704		R0704	Hoisting Structure.704
+Substructure.704		R0704	Hoisting Structure.704
+Suction Dampner #1.704		R0704	Mud Pump Assembly #1.704
+Suction Dampner #2.704		R0704	Mud Pump Assembly #2.704
+TDS Motor #1.704		R0704	Top Drive.704
+TDS Motor #2.704		R0704	Top Drive.704
+TDS Motor DS.704		R0704	Top Drive.704
+TDS Motor ODS.704		R0704	Top Drive.704
+Table.704		R0704	Rotary Table Assembly.704
+Tank #1 - Processing.704		R0704	Mud Tanks.704
+Tank #2 - Mixing.704		R0704	Mud Tanks.704
+Tank #3 - Suction 1.704		R0704	Mud Tanks.704
+Tank #4 - Suction 2.704		R0704	Mud Tanks.704
+Tank #5 - Suction 3.704		R0704	Mud Tanks.704
+Tank #7 - Mixing #2.704		R0704	Mud Tanks.704
+Top Drive.704		R0704	20 Rotating System.704
+Torque Wrench.704		R0704	50 Pipe Handling System.704
+Traveling Block.704		R0704	Traveling Equipment.704
+Traveling Equipment.704		R0704	30 Hoisting System.704
+Trip Tank #1.704		R0704	Mud Tanks.704
+Tubulars.704		R0704	Rig 704 Spare Holding Area.704
+VFD House.704		R0704	VFD System.704
+VFD System.704		R0704	10 Power System.704
+Valves.704		R0704	70 Ancillary Systems.704
+Volume Tank #1.704		R0704	Mud Tanks.704
+Volume Tank #2.704		R0704	Mud Tanks.704
+Volume Tank #3.704		R0704	Mud Tanks.704
+Water Tank #1.704		R0704	70 Ancillary Systems.704
+Water Tank #2.704		R0704	70 Ancillary Systems.704
+Winch Hoist Cables.704		R0704	70 Ancillary Systems.704
+Wire Line Machine.704		R0704	70 Ancillary Systems.704
+Wire Rope/Cables.704		R0704	70 Ancillary Systems.704
+10 Power System.705		R0705	Rig 705 - Flex 3 W3 A
+20 Rotating System.705		R0705	Rig 705 - Flex 3 W3 A
+30 Hoisting System.705		R0705	Rig 705 - Flex 3 W3 A
+40 Mud System.705		R0705	Rig 705 - Flex 3 W3 A
+50 Pipe Handling System.705		R0705	Rig 705 - Flex 3 W3 A
+60 Well Control System.705		R0705	Rig 705 - Flex 3 W3 A
+70 Ancillary Systems.705		R0705	Rig 705 - Flex 3 W3 A
+A101716	MRCF3, Parker, BB251800	R0705	Mast Raising Cylinder(DS).705
+A103991	Driller's Cabin	R0705	Driller's Cabin House.705
+A105776	Steam Cleaner, H&P	R0705	Steam Cleaner #1.705
+A106792	Traveling Block-Split, Varco, Split 500T	R0705	Traveling Block.705
+A108902	Hyd Hoist, Braden, PD12C-59034-02L-1	R0705	Hydraulic Hoist (DSF).705
+A109468	Torque Wrench, Varco, ST80 Gen 3	R0705	Torque Wrench.705
+A109769	Hyd Hoist, Braden, PD12C-SPL-59034-02L-1	R0705	Rig 705 Spare Holding Area.705
+A109839	Mud Pump, Gardner Denver, PZ-11HP	R0705	Mud Pump #1.705
+A109902	HT Top Drive, Varco, TDS-11HP 500T	R0705	Top Drive.705
+A110207	Hydraulic Power Unit, Aberdeen Dynamics	R0705	MRC Hydraulic Power Unit.705
+A110208	Mud Pump, Gardner Denver, PZ-11HP	R0705	Mud Pump #2.705
+A110289	Mud/Gas Separator, DBI	R0705	Gas Buster.705
+A110659	Water Tank, H&P	R0705	Water Tank #2.705
+A112654	Choke Manifold, Cameron,	R0705	Choke Manifold Assembly.705
+A128433	Choke Skid, Cameron, 5M	R0705	Choke Manifold Skid #2.705
+A132710	Water Tank	R0705	Water Tank #1.705
+A147670	Active/Mixing Tank, STI	R0705	Tank #7 - Mixing #2.705
+A148757	Generator, Kato Manufacturing, AA27673013	R0705	Generator #4.705
+A148758	Generator, Kato Manufacturing, AA27673013	R0705	Generator #2.705
+A148767	Generator, Kato Manufacturing, AA27673013	R0705	Generator #3.705
+A179718	Generator, Kato Manufacturing, AA27673013	R0705	Rig 705 Spare Holding Area.705
+A198906	BOP Transporter, H&P	R0705	BOP Transporter.705
+A209288	Suction Tank, STI	R0705	Tank #3 - Suction 1.705
+A501963	VFD House, Omron, Flex3	R0705	VFD House.705
+A501993	MCC House, RGT	R0705	MCC House-Mud System.705
+A502002	Air Dryer, Great Lakes Air Products, GPS	R0705	Air Dryer.705
+A502014	Elevator Links, Varco BJ, 350T	R0705	Elevator Link #1.705
+A502015	Elevator Links, Varco BJ, 350T	R0705	Elevator Link #2.705
+A502017	Derrick, STI, Flex3	R0705	Derrick.705
+A502018	Emergency Descent, DBI/Sala, Rollgliss	R0705	Safety Escape Line.705
+A502021	Engine, John Deere, 4045DF150	R0705	MRC Hyd Power Unit-Engine.705
+A502034	Processing Tank, STI	R0705	Tank #1 - Processing.705
+A502035	Active/Mixing Tank, STI	R0705	Tank #2 - Mixing.705
+A502037	Suction Tank, STI	R0705	Tank #4 - Suction 2.705
+A502039	Shaker Skid, STI	R0705	Shale Shaker Skid.705
+A502042	Rotary Hose, Phoenix, 3 1/2" X 75' 5000	R0705	Rotary Hose.705
+A502047	Drill Collar Slips, Varco, L 6 3/4-8 1/4	R0705	Drill Collar Slips #1.705
+A502048	Drill Collar Slips, Varco, R 5 1/2"-7"	R0705	Drill Collar Slips #2.705
+A502049	Power Slips, Den-Con, FG-5	R0705	Power Slips.705
+A502050	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0705	Drill Collar Clamp #1.705
+A502051	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0705	Drill Collar Clamp #2.705
+A502067	Change/Meeting House, H&P	R0705	Change/Meeting House.705
+A502068	Parts House/Lube Skid, H&P	R0705	Parts House/Lube Skid.705
+A502069	Parts House/Toolbox Skid, H&P	R0705	Parts House/Tool Box.705
+A503268	Generator, Kato Manufacturing, AA27673013	R0705	Generator #1.705
+A5041311	Choke Hose	R0705	Choke Line Assembly.705
+A5041751	Fire Extinguishers	R0705	Safety Systems.705
+A5041771	Eye Wash Station	R0705	Safety Systems.705
+A504703	Drill Line Spool Rack, Helmerich & Payne, Flex3	R0705	Drilling Line Spool Rack.705
+A505009	FlexHoist Drawworks, Merit Gear, Flex3	R0705	FlexHoist.705
+A506871	Hyd Hoist, Braden, PD12C-59034-02L-1	R0705	Hydraulic Hoist (ODSB).705
+A508081	Hyd Hoist, Braden, PD12C-59034-02L-1	R0705	Hydraulic Hoist (ODSF).705
+A57244	Engine, Caterpillar, 3512B, 4AW00764	R0705	Generator Set #4-Engine.705
+A57266	Engine, Caterpillar, 3512B, 4AW00742	R0705	Generator Set #1-Engine.705
+A58172	Mud Pump, Gardner Denver, PZ-11HP	R0705	Mud Pump #3.705
+A7039981	Kill Hose	R0705	Kill Line Assembly.705
+A809068	Motor, AC/L, General Electric, 5GEB22D3	R0705	Drawworks-AC Motor #1.705
+A809071	Motor, AC/L, General Electric, 5GEB22D3	R0705	Drawworks-AC Motor #2.705
+A810115	Parking Brakes, Wichita, LKB-321	R0705	Parking Brake.705
+A87343	Engine, Caterpillar, 3512B, 4AW01562	R0705	Generator Set #2-Engine.705
+A900870	Hyd Hoist, Braden, PD12C-59034-02L-1	R0705	Hydraulic Hoist (DSB).705
+A90791	Engine, Caterpillar, 3512B, 4AW01439	R0705	Generator Set #3-Engine.705
+A94139	Engine, Caterpillar, 3512B, 4AW01509	R0705	Rig 705 Spare Holding Area.705
+Accumulator.705		R0705	60 Well Control System.705
+Active Mud System.705		R0705	40 Mud System.705
+Active.705		R0705	Electric Chain Hoists.705
+Air Compressor #1.705		R0705	Air Compressors.705
+Air Compressor #2.705		R0705	Air Compressors.705
+Air Compressors.705		R0705	10 Power System.705
+Air Dryer.705		R0705	Air Compressors.705
+Annular #1.705		R0705	BOP Assembly.705
+Annular #2.705		R0705	BOP Assembly.705
+BOP Assembly.705		R0705	60 Well Control System.705
+BOP Control Hoses.705		R0705	Accumulator.705
+BOP Handling System.705		R0705	60 Well Control System.705
+BOP Test Stump.705		R0705	BOP Transporter.705
+BOP Transporter.705		R0705	60 Well Control System.705
+BOP Trolley/Hoist A.705		R0705	BOP Handling System.705
+BOP Trolley/Hoist B.705		R0705	BOP Handling System.705
+Beam Clamp.705		R0705	70 Ancillary Systems.705
+Belly Board Pad Eyes.705		R0705	70 Ancillary Systems.705
+Boiler.705		R0705	70 Ancillary Systems.705
+Boom Box HPU - Engine.705		R0705	Boom Box.705
+Boom Box Hyd Power Unit.705		R0705	Boom Box.705
+Boom Box.705		R0705	10 Power System.705
+Bug Blower.705		R0705	70 Ancillary Systems.705
+Cables.385		R0705	70 Ancillary Systems.705
+Casing Running Tools.705		R0705	50 Pipe Handling System.705
+Cellar Pumps.705		R0705	70 Ancillary Systems.705
+Cement.705		R0705	Electric Chain Hoists.705
+Centrifuges.705		R0705	70 Ancillary Systems.705
+Change/Meeting House.705		R0705	70 Ancillary Systems.705
+Chicksan Iron Slings.705		R0705	70 Ancillary Systems.705
+Choke Line Assembly.705		R0705	Choke Manifold.705
+Choke Manifold Assembly.705		R0705	Choke Manifold.705
+Choke Manifold Skid #1.705		R0705	Choke Manifold.705
+Choke Manifold Skid #2.705		R0705	Choke Manifold.705
+Choke Manifold.705		R0705	60 Well Control System.705
+Choke Panel #1.705		R0705	Choke Manifold.705
+Choke Panel #2.705		R0705	Choke Manifold.705
+Climb Assist Fall Arrest.705		R0705	Derrick.705
+Cold Start Compressor #1.705		R0705	Air Compressors.705
+Crew Quarters #1.705		R0705	70 Ancillary Systems.705
+Crew Quarters #2.705		R0705	70 Ancillary Systems.705
+Crew Quarters #3.705		R0705	70 Ancillary Systems.705
+Cup Testers.705		R0705	70 Ancillary Systems.705
+D062605	Suction Tank, STI	R0705	Tank #5 - Suction 3.705
+D070603	Drag Chain Support Frame, STI, 100' Capable	R0705	Drag Chain Support Frame.705
+D081612	Power Slips, Franks Int	R0705	Power Slips.705
+D702470	Shale Shaker - Derrick, Hyperpool	R0705	Shale Shaker #1.705
+D702471	Shale Shaker - Derrick, Hyperpool	R0705	Shale Shaker #3.705
+D702472	Shale Shaker - Derrick, Hyperpool	R0705	Shale Shaker #2.705
+Dead Line Anchor.705		R0705	Traveling Equipment.705
+Degasser.705		R0705	Processing Equipment.705
+Derrick.705		R0705	Hoisting Structure.705
+Diesel Tank #1.705		R0705	Fuel Tank # 1.705
+Discharge Dampner #1.705		R0705	Mud Pump Assembly #1.705
+Discharge Dampner #2.705		R0705	Mud Pump Assembly #2.705
+Discharge Dampner #3.705		R0705	Mud Pump Assembly #3.705
+Ditch Valves.705		R0705	70 Ancillary Systems.705
+Double #1 w/Booster.705		R0705	BOP Assembly.705
+Double #2.705		R0705	BOP Assembly.705
+Drag Chain Support Frame.705		R0705	Hoisting Structure.705
+Drawworks Skid.705		R0705	30 Hoisting System.705
+Drawworks-AC Motor #1.705		R0705	Drawworks Skid.705
+Drawworks-AC Motor #2.705		R0705	Drawworks Skid.705
+Drill Collar Clamp #1.705		R0705	Drill Collar Clamps.705
+Drill Collar Clamp #2.705		R0705	Drill Collar Clamps.705
+Drill Collar Clamps.705		R0705	50 Pipe Handling System.705
+Drill Collar Slips #1.705		R0705	Slips.705
+Drill Collar Slips #2.705		R0705	Slips.705
+Drill Pipe Elevator #1.705		R0705	Elevators.705
+Drill Pipe Elevator #2.705		R0705	Elevators.705
+Drill Pipe Elevator #3.705		R0705	Elevators.705
+Drill Pipe Slips #1.705		R0705	Slips.705
+Driller's Cabin Group.705		R0705	10 Power System.705
+Driller's Cabin House.705		R0705	Driller's Cabin Group.705
+Drilling Line Spool Rack.705		R0705	Traveling Equipment.705
+Drilling Spool/Mud Cross#1.705		R0705	60 Well Control System.705
+Drilling Spool/Mud Cross#2.705		R0705	60 Well Control System.705
+Drum Lifter.705		R0705	70 Ancillary Systems.705
+Dynamic Brake Resistor.705		R0705	VFD House.705
+E040401	MRCF3, Parker, BB251800	R0705	Mast Raising Cylinder(ODS).705
+E99994012	Drawworks Skid, H&P, Flex3	R0705	Drawworks Skid.705
+Electric Chain Hoists.705		R0705	70 Ancillary Systems.705
+Elevator Link #1.705		R0705	Traveling Equipment.705
+Elevator Link #2.705		R0705	Traveling Equipment.705
+Elevators.705		R0705	50 Pipe Handling System.705
+Emergency Brake.705		R0705	Drawworks Skid.705
+Flare Lines.705		R0705	70 Ancillary Systems.705
+FlexHoist.705		R0705	Drawworks Skid.705
+FlexRig Crown Assy.705		R0705	Traveling Equipment.705
+Flow Meters.705		R0705	70 Ancillary Systems.705
+Fuel Distribution.705		R0705	10 Power System.705
+Fuel Tank # 1.705		R0705	Fuel Distribution.705
+Full Body Harness.705		R0705	Personnel Hoisting Equip.705
+G051901	FlexRig Crown Sheave Cluster, H&P - Flex3	R0705	FlexRig Crown Assy.705
+G060207	Motor, AC/TD	R0705	TDS Motor ODS.705
+G061405	Motor, AC/TD	R0705	TDS Motor DS.705
+Gas Buster.705		R0705	60 Well Control System.705
+Generator #1.705		R0705	Generator Set #1.705
+Generator #2.705		R0705	Generator Set #2.705
+Generator #3.705		R0705	Generator Set #3.705
+Generator #4.705		R0705	Generator Set #4.705
+Generator Set #1-Engine.705		R0705	Generator Set #1.705
+Generator Set #1.705		R0705	Generator Sets.705
+Generator Set #2-Engine.705		R0705	Generator Set #2.705
+Generator Set #2.705		R0705	Generator Sets.705
+Generator Set #3-Engine.705		R0705	Generator Set #3.705
+Generator Set #3.705		R0705	Generator Sets.705
+Generator Set #4-Engine.705		R0705	Generator Set #4.705
+Generator Set #4.705		R0705	Generator Sets.705
+Generator Sets.705		R0705	10 Power System.705
+H070702	Emergency Brakes, Wichita, ATD-536AM	R0705	Emergency Brake.705
+HA502066	Rig Manager House, DBI, RM200	R0705	Rig Manager House.705
+Heater.705		R0705	70 Ancillary Systems.705
+High Pressure Piping Sys.705		R0705	Active Mud System.705
+Hoisting Structure.705		R0705	30 Hoisting System.705
+Hoisting Systems.705		R0705	70 Ancillary Systems.705
+Hoses.705		R0705	70 Ancillary Systems.705
+Hydraulic Catwalk.705		R0705	50 Pipe Handling System.705
+Hydraulic Hoist (DSB).705		R0705	Hydraulic Hoists.705
+Hydraulic Hoist (DSF).705		R0705	Hydraulic Hoists.705
+Hydraulic Hoist (ODSB).705		R0705	Hydraulic Hoists.705
+Hydraulic Hoist (ODSF).705		R0705	Hydraulic Hoists.705
+Hydraulic Hoist String-up.705		R0705	Hydraulic Hoists.705
+Hydraulic Hoists.705		R0705	Hoisting Systems.705
+Ignition Device.705		R0705	70 Ancillary Systems.705
+Instrumentation (VFD).705		R0705	VFD System.705
+J020202	Motor, AC/L, Houma Armature, HAW29B160	R0705	Mud Pump #3 - AC Motor.705
+J040902	Rotary Table, American Block Co, RT-3750HC	R0705	Table.705
+J041103	Motor, AC/L, Houma Armature, HAW29B160	R0705	Mud Pump #2 - AC Motor.705
+J051302	Substructure, STI, Flex3 W3	R0705	Substructure.705
+J051305	Degasser, Derrick, VACU-FLO 1200	R0705	Degasser.705
+J051309	Mud Cleaner, Derrick, Hyperpool 4P	R0705	Mud Cleaner/Desilter#1.705
+J051313	Mud Cleaner, Derrick, Hyperpool 4P	R0705	Mud Cleaner/Desilter#2.705
+J052302	Mud Tank - Volume Skid, STI	R0705	Volume Tank #3.705
+J052303	Mud Tank - Volume Skid, STI	R0705	Volume Tank #1.705
+J052304	Dead Line Anchor, American Block, FTR-100	R0705	Dead Line Anchor.705
+J052305	Mud Tank - Volume Skid, STI	R0705	Volume Tank #2.705
+J052308	Hydraulic Power Unit, Aberdeen Dynamics, Substructure	R0705	Sub Hydraulic Power Unit.705
+J060701	Steam Cleaner, H&P	R0705	Steam Cleaner #2.705
+J060704	MCC House - Substructure, STI	R0705	MCC House-Substructure.705
+J060705	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0705	Manrider (DS).705
+J060706	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0705	Manrider (ODS).705
+J062401	Motor, AC/L, Houma Armature, HAW29B160	R0705	Mud Pump #1 - AC Motor.705
+J062406	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0705	BOP Trolley/Hoist B.705
+J062407	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0705	BOP Trolley/Hoist A.705
+J062701	Engine, DEUTZ, D 2.9 L4	R0705	Boom Box HPU - Engine.705
+J062702	Hydraulic Power Unit, Aberdeen Dynamics, Boom Box	R0705	Boom Box Hyd Power Unit.705
+J080812	MCC House - Auxiliary, STI	R0705	
+J092401	BOP Accumulator, Axon, TX670-0005/3	R0705	Accumulator.705
+J101501	Hydraulic Catwalk, Forum, S-3000	R0705	Hydraulic Catwalk.705
+J123103	BOP Annular, Cameron, 13 5/8"-10M DL	R0705	Annular #1.705
+K012901	BOP Double, Cameron, 13 5/8"-10M DBL U	R0705	Double #1 w/Booster.705
+K012902	BOP Annular, Cameron, 21 1/4"-2M DL	R0705	Annular #2.705
+K012907	BOP Double, Cameron, 13 5/8"-10M DBL U	R0705	Double #2.705
+K013107	Choke Skid, Cameron	R0705	Choke Manifold Skid #1.705
+K042414	Spinning Wrench, Varco, SSW-40	R0705	Spinning Wrench.705
+K050711	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0705	Drilling Spool/Mud Cross#1.705
+K050712	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0705	Drilling Spool/Mud Cross#2.705
+K172030	Engine Cold Start,Gardner Denver	R0705	Cold Start Compressor #1.705
+K444787	Cascade Air Compressors Electrical	R0705	Safety Systems.705
+K444788	Cascade Air Compressors Diesel	R0705	Safety Systems.705
+K70052	ELGi Air Compressors	R0705	Air Compressor #2.705
+K700521	ELGi Air Compressors	R0705	Air Compressor #1.705
+K701025	Electric Chain Hoists	R0705	Cement.705
+K701026	Electric Chain Hoists	R0705	Active.705
+K701027	Electric Chain Hoists	R0705	Reserve.705
+K70593	Fire Pump - Grundfos	R0705	Safety Systems.705
+K826173	Choke Line	R0705	Choke Line Assembly.705
+K826348	Kill Line	R0705	Kill Line Assembly.705
+KDH1005	Double 7 Ignition Device	R0705	Ignition Device.705
+Kill Line Assembly.705		R0705	Choke Manifold.705
+L010606	Discharge Dampner, PPC, DR-130-7500CS	R0705	Discharge Dampner #1.705
+L010607	Discharge Dampner, PPC, DR-130-7500CS	R0705	Discharge Dampner #2.705
+L010608	Discharge Dampner, PPC, DR-130-7500CS	R0705	Discharge Dampner #3.705
+Lanyards.705		R0705	Personnel Hoisting Equip.705
+MCC House-Mud System.705		R0705	MCC System.705
+MCC House-Substructure.705		R0705	MCC System.705
+MCC System.705		R0705	10 Power System.705
+MRC Hyd Power Unit-Engine.705		R0705	MRC Hydraulic Power Unit.705
+MRC Hydraulic Power Unit.705		R0705	Raising Cylinders.705
+Man Basket.705		R0705	70 Ancillary Systems.705
+Manlift.705		R0705	70 Ancillary Systems.705
+Manrider (DS).705		R0705	Hydraulic Hoists.705
+Manrider (ODS).705		R0705	Hydraulic Hoists.705
+Mast Raising Cylinder(DS).705		R0705	Raising Cylinders.705
+Mast Raising Cylinder(ODS).705		R0705	Raising Cylinders.705
+Mud Buckets.705		R0705	70 Ancillary Systems.705
+Mud Cleaner/Desilter#1.705		R0705	Processing Equipment.705
+Mud Cleaner/Desilter#2.705		R0705	Processing Equipment.705
+Mud House.705		R0705	40 Mud System.705
+Mud Pump #1 - AC Motor.705		R0705	Mud Pump Assembly #1.705
+Mud Pump #1.705		R0705	Mud Pump Assembly #1.705
+Mud Pump #2 - AC Motor.705		R0705	Mud Pump Assembly #2.705
+Mud Pump #2.705		R0705	Mud Pump Assembly #2.705
+Mud Pump #3 - AC Motor.705		R0705	Mud Pump Assembly #3.705
+Mud Pump #3.705		R0705	Mud Pump Assembly #3.705
+Mud Pump Assembly #1.705		R0705	Mud Pumps.705
+Mud Pump Assembly #2.705		R0705	Mud Pumps.705
+Mud Pump Assembly #3.705		R0705	Mud Pumps.705
+Mud Pumps.705		R0705	Active Mud System.705
+Mud Tanks.705		R0705	Active Mud System.705
+Pad Eyes.705		R0705	70 Ancillary Systems.705
+Parking Brake.705		R0705	Drawworks Skid.705
+Parts House/Lube Skid.705		R0705	70 Ancillary Systems.705
+Parts House/Tool Box.705		R0705	70 Ancillary Systems.705
+Personnel Hoisting Equip.705		R0705	Safety Systems.705
+Pipe Baskets.705		R0705	70 Ancillary Systems.705
+Pipe Delivery System-Winch.705		R0705	Hydraulic Hoists.705
+Power Slips.705		R0705	Slips.705
+Processing Equipment.705		R0705	Active Mud System.705
+Pump Back System.705		R0705	Active Mud System.705
+Pump Pressure Gauge #1.705		R0705	Mud Pump Assembly #1.705
+Pump Pressure Gauge #2.705		R0705	Mud Pump Assembly #2.705
+Racking Board Winch.705		R0705	Derrick.705
+Raising Cylinders.705		R0705	Hoisting Structure.705
+Relief Valve #1.705		R0705	Mud Pump Assembly #1.705
+Relief Valve #2.705		R0705	Mud Pump Assembly #2.705
+Reserve.705		R0705	Electric Chain Hoists.705
+Rig 705 - Flex 3 W3 A	Flex3 Walking Rig Arabia	R0705	
+Rig 705 Spare Holding Area.705		R0705	Rig 705 - Flex 3 W3 A
+Rig Manager House.705		R0705	70 Ancillary Systems.705
+Rotary Hose.705		R0705	Rotary Hoses.705
+Rotary Hoses.705		R0705	High Pressure Piping Sys.705
+Rotary Table Assembly.705		R0705	20 Rotating System.705
+Rotating Mouse Hole.705		R0705	20 Rotating System.705
+Safety Escape Line.705		R0705	Derrick.705
+Safety Systems.705		R0705	70 Ancillary Systems.705
+Sala Blocks.705		R0705	Personnel Hoisting Equip.705
+Saver Sub.705		R0705	70 Ancillary Systems.705
+Shale Shaker #1.705		R0705	Shale Shaker Skid.705
+Shale Shaker #2.705		R0705	Shale Shaker Skid.705
+Shale Shaker #3.705		R0705	Shale Shaker Skid.705
+Shale Shaker Skid.705		R0705	Processing Equipment.705
+Single.705		R0705	BOP Assembly.705
+Slings.705		R0705	Hoisting Systems.705
+Slips.705		R0705	50 Pipe Handling System.705
+Spacer Spool.705		R0705	70 Ancillary Systems.705
+Spinning Wrench.705		R0705	50 Pipe Handling System.705
+Standpipe Manifold.705		R0705	High Pressure Piping Sys.705
+Steam Cleaner #1.705		R0705	70 Ancillary Systems.705
+Steam Cleaner #2.705		R0705	70 Ancillary Systems.705
+Sub Hydraulic Power Unit.705		R0705	Hoisting Structure.705
+Substructure.705		R0705	Hoisting Structure.705
+Suction Dampner #1.705		R0705	Mud Pump Assembly #1.705
+Suction Dampner #2.705		R0705	Mud Pump Assembly #2.705
+TDS Motor DS.705		R0705	Top Drive.705
+TDS Motor ODS.705		R0705	Top Drive.705
+Table.705		R0705	Rotary Table Assembly.705
+Tank #1 - Processing.705		R0705	Mud Tanks.705
+Tank #2 - Mixing.705		R0705	Mud Tanks.705
+Tank #3 - Suction 1.705		R0705	Mud Tanks.705
+Tank #4 - Suction 2.705		R0705	Mud Tanks.705
+Tank #5 - Suction 3.705		R0705	Mud Tanks.705
+Tank #7 - Mixing #2.705		R0705	Mud Tanks.705
+Top Drive.705		R0705	20 Rotating System.705
+Torque Wrench.705		R0705	50 Pipe Handling System.705
+Traveling Block.705		R0705	Traveling Equipment.705
+Traveling Equipment.705		R0705	30 Hoisting System.705
+Trip Tank #1.705		R0705	Mud Tanks.705
+Tubulars.705		R0705	Rig 705 Spare Holding Area.705
+VFD House.705		R0705	VFD System.705
+VFD System.705		R0705	10 Power System.705
+Valves.705		R0705	70 Ancillary Systems.705
+Volume Tank #1.705		R0705	Mud Tanks.705
+Volume Tank #2.705		R0705	Mud Tanks.705
+Volume Tank #3.705		R0705	Mud Tanks.705
+Water Tank #1.705		R0705	70 Ancillary Systems.705
+Water Tank #2.705		R0705	70 Ancillary Systems.705
+Winch Hoist Cables.705		R0705	70 Ancillary Systems.705
+Wire Line Machine.705		R0705	70 Ancillary Systems.705
+Wire Rope/Cables.705		R0705	70 Ancillary Systems.705
+10 Power System.706		R0706	Rig 706 - Flex 3 W3 A
+20 Rotating System.706		R0706	Rig 706 - Flex 3 W3 A
+30 Hoisting System.706		R0706	Rig 706 - Flex 3 W3 A
+40 Mud System.706		R0706	Rig 706 - Flex 3 W3 A
+50 Pipe Handling System.706		R0706	Rig 706 - Flex 3 W3 A
+60 Well Control System.706		R0706	Rig 706 - Flex 3 W3 A
+70 Ancillary Systems.706		R0706	Rig 706 - Flex 3 W3 A
+A000085	Mud Pump, Gardner Denver, PZ-11HP	R0706	Mud Pump #2.706
+A101344	Mud Tank - Suction Skid, STI	R0706	Tank #3 - Suction 1.706
+A101346	Mud Tank - Suction Skid, STI	R0706	Tank #5 - Suction 3.706
+A104017	Generator, Kato Manufacturing, AA27673008	R0706	Generator #1.706
+A107347	Drawworks Skid	R0706	Drawworks Skid.706
+A110174	Steam Cleaner, H&P	R0706	Steam Cleaner #1.706
+A110195	Engine, John Deere, 4045TF280	R0706	MRC Hyd Power Unit-Engine.706
+A111357	Hyd Hoist, Braden, PD12C-59034-02L-1	R0706	Hydraulic Hoist (DSB).706
+A111441	Generator, Kato Manufacturing, A27098017	R0706	Generator #3.706
+A112776	Choke Manifold, Cameron,	R0706	Choke Manifold Assembly.706
+A120950	Generator, Kato Manufacturing, AA27673008	R0706	Generator #2.706
+A146638	Active/Mixing Tank, STI	R0706	Tank #2 - Mixing.706
+A192563	Driller's Cabin	R0706	Driller's Cabin House.706
+A203745	Hyd Hoist, Braden, PD12C-59034-02L-1	R0706	Hydraulic Hoist (ODSB).706
+A409	Drill Line Spool Rack, Helmerich & Payne, Flex3	R0706	Drilling Line Spool Rack.706
+A500096	Motor, AC/L, General Electric, 5GEB22D3	R0706	Drawworks-AC Motor #1.706
+A500149	Hyd Hoist, Braden, PD12C-59034-02L-1	R0706	Hydraulic Hoist (ODSF).706
+A502020	Hydraulic Power Unit, Aberdeen Dynamics	R0706	MRC Hydraulic Power Unit.706
+A503405	Traveling Block-Split, Varco, Split 500T	R0706	Traveling Block.706
+A504102	HT Top Drive, Varco, TDS-11HP 500T	R0706	Top Drive.706
+A504580	Water Tank, H&P	R0706	Water Tank #1.706
+A506294	BOP Transporter, H&P	R0706	BOP Transporter.706
+A507074	Air Dryer, Great Lakes Air Products, GPS	R0706	Air Dryer.706
+A507081	Elevator Links, Varco BJ, 350T	R0706	Elevator Link #1.706
+A507082	Elevator Links, Varco BJ, 350T	R0706	Elevator Link #2.706
+A507083	Emergency Descent, DBI/Sala, Rollgliss	R0706	Safety Escape Line.706
+A507092	Processing Tank, STI	R0706	Tank #1 - Processing.706
+A507096	Rotary Hose, Phoenix, 3 1/2" X 75' 5000	R0706	Rotary Hose.706
+A507099	Drill Pipe Slips, Den-Con, 5" SDXL	R0706	Drill Pipe Slips #1.706
+A507100	Drill Collar Slips, Varco, R 5 1/2"-7"	R0706	Drill Collar Slips #1.706
+A507101	Drill Collar Slips, Varco, L 6 3/4-8 1/4	R0706	Drill Collar Slips #2.706
+A507102	Power Slips, Den-Con, FG-5	R0706	Power Slips.706
+A507103	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0706	Drill Collar Clamp #1.706
+A507104	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0706	Drill Collar Clamp #2.706
+A507105	Drill Pipe Elevator, Varco, GG 5" 350T	R0706	Drill Pipe Elevator #1.706
+A507106	Drill Pipe Elevator, Varco, GG 5" 350T	R0706	Drill Pipe Elevator #2.706
+A507114	Parts House/Toolbox Skid, H&P	R0706	Parts House/Tool Box.706
+A510634	Generator, Kato Manufacturing, A27673013	R0706	Generator #4.706
+A519187	Choke Hose	R0706	Choke Line Assembly.706
+A519188	Kill Hose	R0706	Kill Line Assembly.706
+A519191	Fire Extinguishers	R0706	Safety Systems.706
+A519193	Eye Wash Station	R0706	Safety Systems.706
+A55735	Suction Tank, STI	R0706	Tank #4 - Suction 2.706
+A58857	Generator, Kato Manufacturing, 270980006	R0706	Rig 706 Spare Holding Area.706
+A700037	Mud Pump, Gardner Denver, PZ-11HP	R0706	Mud Pump #3.706
+A73045	MRCF3, Parker, BB251800	R0706	Mast Raising Cylinder(ODS).706
+A73669	MRCF3, Parker, BB251800	R0706	Mast Raising Cylinder(DS).706
+A80874	Engine, Caterpillar, 3512B, 4AW01005	R0706	Generator Set #4-Engine.706
+A810109	FlexHoist Drawworks, Merit Gear, Flex3	R0706	FlexHoist.706
+A810154	Parts House/Lube Skid, H&P	R0706	Parts House/Lube Skid.706
+A810323	MCC House	R0706	MCC House-Mud System.706
+A810359	VFD House, Omron, Flex3	R0706	VFD House.706
+A8104255	Shale Shaker - Derrick, Hyperpool	R0706	Shale Shaker #1.706
+A8104266	Shale Shaker - Derrick, Hyperpool	R0706	Shale Shaker #2.706
+A8104277	Shale Shaker - Derrick, Hyperpool	R0706	Shale Shaker #3.706
+A810430	Water Tank, H&P	R0706	Water Tank #2.706
+A810435	Mud/Gas Separator, DBI	R0706	Gas Buster.706
+A87354	Engine, Caterpillar, 3512B, 4AW01449	R0706	Generator Set #2-Engine.706
+A87901	Engine, Caterpillar, 3512B, 4AW01564	R0706	Rig 706 Spare Holding Area.706
+A89723	Engine, Caterpillar, 3512B, 4AW01568	R0706	Generator Set #3-Engine.706
+A904505	Hydraulic Catwalk, Forum, 3000 30' Gen 2	R0706	Hydraulic Catwalk.706
+A904716	Torque Wrench, Varco, ST80 Gen 3	R0706	Torque Wrench.706
+A906233	Motor, AC/L, General Electric, 5GEB22D3	R0706	Drawworks-AC Motor #2.706
+A906426	Mud Pump, Gardner Denver, PZ-11HP	R0706	Mud Pump #1.706
+A95339	Engine, Caterpillar, 3512B, 4AW01546	R0706	Generator Set #1-Engine.706
+A9999270	Parking Brakes, Wichita, LKB-321	R0706	Parking Brake.706
+A9999394	Change/Meeting House	R0706	Change/Meeting House.706
+A9999395	Active/Mixing Tank, STI	R0706	Tank #7 - Mixing #2.706
+A9999397	Derrick, STI, Flex3	R0706	Derrick.706
+A9999497	Choke Hose	R0706	Choke Line Assembly.706
+Accumulator.706		R0706	60 Well Control System.706
+Active Mud System.706		R0706	40 Mud System.706
+Active.706		R0706	Electric Chain Hoists.706
+Air Compressor #1.706		R0706	Air Compressors.706
+Air Compressor #2.706		R0706	Air Compressors.706
+Air Compressors.706		R0706	10 Power System.706
+Air Dryer.706		R0706	Air Compressors.706
+Annular #1.706		R0706	BOP Assembly.706
+Annular #2.706		R0706	BOP Assembly.706
+BOP Assembly.706		R0706	60 Well Control System.706
+BOP Control Hoses.706		R0706	Accumulator.706
+BOP Handling System.706		R0706	60 Well Control System.706
+BOP Test Stump.706		R0706	BOP Transporter.706
+BOP Transporter.706		R0706	60 Well Control System.706
+BOP Trolley/Hoist A.706		R0706	BOP Handling System.706
+BOP Trolley/Hoist B.706		R0706	BOP Handling System.706
+Beam Clamp.706		R0706	70 Ancillary Systems.706
+Belly Board Pad Eyes.706		R0706	70 Ancillary Systems.706
+Boiler.706		R0706	70 Ancillary Systems.706
+Boom Box HPU - Engine.706		R0706	Boom Box.706
+Boom Box Hyd Power Unit.706		R0706	Boom Box.706
+Boom Box.706		R0706	10 Power System.706
+Bug Blower.706		R0706	70 Ancillary Systems.706
+Cables.386		R0706	70 Ancillary Systems.706
+Casing Running Tools.706		R0706	50 Pipe Handling System.706
+Cellar Pumps.706		R0706	70 Ancillary Systems.706
+Cement.706		R0706	Electric Chain Hoists.706
+Centrifuges.706		R0706	70 Ancillary Systems.706
+Change/Meeting House.706		R0706	70 Ancillary Systems.706
+Chicksan Iron Slings.706		R0706	70 Ancillary Systems.706
+Choke Line Assembly.706		R0706	Choke Manifold.706
+Choke Manifold Assembly.706		R0706	Choke Manifold.706
+Choke Manifold Skid #1.706		R0706	Choke Manifold.706
+Choke Manifold Skid #2.706		R0706	Choke Manifold.706
+Choke Manifold.706		R0706	60 Well Control System.706
+Choke Panel #1.706		R0706	Choke Manifold.706
+Choke Panel #2.706		R0706	Choke Manifold.706
+Climb Assist Fall Arrest.706		R0706	Derrick.706
+Cold Start Compressor #1.706		R0706	Air Compressors.706
+Crew Quarters #1.706		R0706	70 Ancillary Systems.706
+Crew Quarters #2.706		R0706	70 Ancillary Systems.706
+Crew Quarters #3.706		R0706	70 Ancillary Systems.706
+Cup Testers.706		R0706	70 Ancillary Systems.706
+D072401	Drag Chain Support Frame, STI, 100' Capable	R0706	Drag Chain Support Frame.706
+D122106	Power Slips, Franks Int	R0706	Power Slips.706
+Dead Line Anchor.706		R0706	Traveling Equipment.706
+Degasser.706		R0706	Processing Equipment.706
+Derrick.706		R0706	Hoisting Structure.706
+Diesel Tank #1.706		R0706	Fuel Tank # 1.706
+Discharge Dampner #1.706		R0706	Mud Pump Assembly #1.706
+Discharge Dampner #2.706		R0706	Mud Pump Assembly #2.706
+Discharge Dampner #3.706		R0706	Mud Pump Assembly #3.706
+Ditch Valves.706		R0706	70 Ancillary Systems.706
+Double #1 w/Booster.706		R0706	BOP Assembly.706
+Double #2.706		R0706	BOP Assembly.706
+Drag Chain Support Frame.706		R0706	Hoisting Structure.706
+Drawworks Skid.706		R0706	30 Hoisting System.706
+Drawworks-AC Motor #1.706		R0706	Drawworks Skid.706
+Drawworks-AC Motor #2.706		R0706	Drawworks Skid.706
+Drill Collar Clamp #1.706		R0706	Drill Collar Clamps.706
+Drill Collar Clamp #2.706		R0706	Drill Collar Clamps.706
+Drill Collar Clamps.706		R0706	50 Pipe Handling System.706
+Drill Collar Slips #1.706		R0706	Slips.706
+Drill Collar Slips #2.706		R0706	Slips.706
+Drill Pipe Elevator #1.706		R0706	Elevators.706
+Drill Pipe Elevator #2.706		R0706	Elevators.706
+Drill Pipe Elevator #3.706		R0706	Elevators.706
+Drill Pipe Slips #1.706		R0706	Slips.706
+Driller's Cabin Group.706		R0706	10 Power System.706
+Driller's Cabin House.706		R0706	Driller's Cabin Group.706
+Drilling Line Spool Rack.706		R0706	Traveling Equipment.706
+Drilling Spool/Mud Cross#1.706		R0706	60 Well Control System.706
+Drilling Spool/Mud Cross#2.706		R0706	60 Well Control System.706
+Drum Lifter.706		R0706	70 Ancillary Systems.706
+Dynamic Brake Resistor.706		R0706	VFD House.706
+E810429	Shaker Skid, STI	R0706	Shale Shaker Skid.706
+Electric Chain Hoists.706		R0706	70 Ancillary Systems.706
+Elevator Link #1.706		R0706	Traveling Equipment.706
+Elevator Link #2.706		R0706	Traveling Equipment.706
+Elevators.706		R0706	50 Pipe Handling System.706
+Emergency Brake.706		R0706	Drawworks Skid.706
+Flare Lines.706		R0706	70 Ancillary Systems.706
+FlexHoist.706		R0706	Drawworks Skid.706
+FlexRig Crown Assy.706		R0706	Traveling Equipment.706
+Flow Meters.706		R0706	70 Ancillary Systems.706
+Fuel Distribution.706		R0706	10 Power System.706
+Fuel Tank # 1.706		R0706	Fuel Distribution.706
+Full Body Harness.706		R0706	Personnel Hoisting Equip.706
+G011407	Hyd Hoist, Braden, PD12C-SPL-59034-02L-1	R0706	Hydraulic Hoist (DSF).706
+G060601	Emergency Brakes, Wichita, ATD-536AM	R0706	Emergency Brake.706
+G1110022	FlexRig Crown Sheave Cluster, H&P - Flex3	R0706	FlexRig Crown Assy.706
+Gas Buster.706		R0706	60 Well Control System.706
+Generator #1.706		R0706	Generator Set #1.706
+Generator #2.706		R0706	Generator Set #2.706
+Generator #3.706		R0706	Generator Set #3.706
+Generator #4.706		R0706	Generator Set #4.706
+Generator #5.706		R0706	Generator Set #5.706
+Generator Set #1-Engine.706		R0706	Generator Set #1.706
+Generator Set #1.706		R0706	Generator Sets.706
+Generator Set #2-Engine.706		R0706	Generator Set #2.706
+Generator Set #2.706		R0706	Generator Sets.706
+Generator Set #3-Engine.706		R0706	Generator Set #3.706
+Generator Set #3.706		R0706	Generator Sets.706
+Generator Set #4-Engine.706		R0706	Generator Set #4.706
+Generator Set #4.706		R0706	Generator Sets.706
+Generator Set #5-Engine.706		R0706	Generator Set #5.706
+Generator Set #5.706		R0706	Generator Sets.706
+Generator Sets.706		R0706	10 Power System.706
+HA999939	Rig Manager House	R0706	Rig Manager House.706
+Heater.706		R0706	70 Ancillary Systems.706
+High Pressure Piping Sys.706		R0706	Active Mud System.706
+Hoisting Structure.706		R0706	30 Hoisting System.706
+Hoisting Systems.706		R0706	70 Ancillary Systems.706
+Hoses.706		R0706	70 Ancillary Systems.706
+Hydraulic Catwalk.706		R0706	50 Pipe Handling System.706
+Hydraulic Hoist (DSB).706		R0706	Hydraulic Hoists.706
+Hydraulic Hoist (DSF).706		R0706	Hydraulic Hoists.706
+Hydraulic Hoist (ODSB).706		R0706	Hydraulic Hoists.706
+Hydraulic Hoist (ODSF).706		R0706	Hydraulic Hoists.706
+Hydraulic Hoist String-up.706		R0706	Hydraulic Hoists.706
+Hydraulic Hoists.706		R0706	Hoisting Systems.706
+Ignition Device.706		R0706	70 Ancillary Systems.706
+Instrumentation (VFD).706		R0706	VFD System.706
+J012406	Hyd Hoist, Braden, PD12C-59034-02L-1	R0706	Rig 706 Spare Holding Area.706
+J020201	Motor, AC/L, Houma Armature, HAW29B160	R0706	Mud Pump #1 - AC Motor.706
+J020203	Motor, AC/L, Houma Armature, HAW29B160	R0706	Mud Pump #2 - AC Motor.706
+J020605	Motor, AC/TD	R0706	TDS Motor ODS.706
+J020612	Motor, AC/TD, 600HP Form	R0706	TDS Motor DS.706
+J040901	Rotary Table, American Block Co, RT-3750HC	R0706	Table.706
+J041106	Motor, AC/L, Houma Armature, HAW29B160	R0706	Mud Pump #3 - AC Motor.706
+J042604	Degasser, Derrick, VACU-FLO 1200	R0706	Degasser.706
+J051306	Mud Cleaner, Derrick, Hyperpool 4P	R0706	Mud Cleaner/Desilter#1.706
+J051312	Mud Cleaner, Derrick, Hyperpool 4P	R0706	Mud Cleaner/Desilter#2.706
+J060702	Dead Line Anchor, American Block, FTR-100	R0706	Dead Line Anchor.706
+J060703	Hydraulic Power Unit, Aberdeen Dynamics, Substructure	R0706	Sub Hydraulic Power Unit.706
+J062403	Substructure, STI, Flex3 W3	R0706	Substructure.706
+J062704	Mud Tank - Volume Skid, STI	R0706	Volume Tank #1.706
+J062705	Mud Tank - Volume Skid, STI	R0706	Volume Tank #3.706
+J062706	Steam Cleaner, H&P	R0706	Steam Cleaner #2.706
+J062707	Mud Tank - Volume Skid, STI	R0706	Volume Tank #2.706
+J062708	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0706	Manrider (ODS).706
+J062709	MCC House - Substructure, STI	R0706	MCC House-Substructure.706
+J070502	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0706	BOP Trolley/Hoist A.706
+J070505	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0706	BOP Trolley/Hoist B.706
+J071901	Hydraulic Power Unit, Aberdeen Dynamics, Boom Box	R0706	Boom Box Hyd Power Unit.706
+J071902	Engine, DEUTZ, D 2.9 L4	R0706	Boom Box HPU - Engine.706
+J081201	MCC House - Auxiliary, STI	R0706	MCC House-Mud System.706
+J09012024	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0706	Manrider (DS).706
+J102101	BOP Accumulator, Axon, TX670-0005/3	R0706	Accumulator.706
+K012903	BOP Annular, Cameron, 21 1/4"-2M DL	R0706	Annular #2.706
+K012904	BOP Double, Cameron, 13 5/8"-10M DBL U	R0706	Double #1 w/Booster.706
+K012905	BOP Double, Cameron, 13 5/8"-10M DBL U	R0706	Double #2.706
+K012908	BOP Annular, Cameron, 13 5/8"-10M DL	R0706	Annular #1.706
+K040911	Choke Skid, Cameron	R0706	Choke Manifold Skid #1.706
+K042403	Fuel Tank, 500BBL	R0706	Rig 706 Spare Holding Area.706
+K042404	Spinning Wrench, Varco, SSW-40	R0706	Spinning Wrench.706
+K042405	Fuel Tank, 4000GAL Gasoline	R0706	Rig 706 Spare Holding Area.706
+K042407	Bulk Tank, P-Tank (Cement)	R0706	Rig 706 Spare Holding Area.706
+K042408	Reserve Tank	R0706	Rig 706 Spare Holding Area.706
+K042409	Fuel Tank, 1000BBL	R0706	Rig 706 Spare Holding Area.706
+K050713	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0706	Drilling Spool/Mud Cross#1.706
+K050714	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0706	Drilling Spool/Mud Cross#2.706
+K172031	Engine Cold Start,Ingersoll Rand	R0706	Cold Start Compressor #1.706
+K444789	Cascade Air Compressors Electrical	R0706	Safety Systems.706
+K444790	Cascade Air Compressors Diesel	R0706	Safety Systems.706
+K70061	ELGi Air Compressors	R0706	Air Compressor #1.706
+K70062	ELGi Air Compressors	R0706	Air Compressor #2.706
+K701028	Electric Chain Hoists	R0706	Cement.706
+K701029	Electric Chain Hoists	R0706	Active.706
+K701030	Electric Chain Hoists	R0706	Reserve.706
+K70694	Fire Pump - Grundfos	R0706	Safety Systems.706
+K826174	Choke Line	R0706	Choke Line Assembly.706
+K826349	Kill Line	R0706	Kill Line Assembly.706
+KDH1006	Double 7 Ignition Device	R0706	Ignition Device.706
+Kill Line Assembly.706		R0706	Choke Manifold.706
+L010609	Discharge Dampner, PPC, DR-130-7500CS	R0706	Discharge Dampner #1.706
+L010610	Discharge Dampner, PPC, DR-130-7500CS	R0706	Discharge Dampner #2.706
+L010611	Discharge Dampner, PPC, DR-130-7500CS	R0706	Discharge Dampner #3.706
+Lanyards.706		R0706	Personnel Hoisting Equip.706
+MCC House-Mud System.706		R0706	MCC System.706
+MCC House-Substructure.706		R0706	MCC System.706
+MCC System.706		R0706	10 Power System.706
+MRC Hyd Power Unit-Engine.706		R0706	MRC Hydraulic Power Unit.706
+MRC Hydraulic Power Unit.706		R0706	Raising Cylinders.706
+Man Basket.706		R0706	70 Ancillary Systems.706
+Manlift.706		R0706	70 Ancillary Systems.706
+Manrider (DS).706		R0706	Hydraulic Hoists.706
+Manrider (ODS).706		R0706	Hydraulic Hoists.706
+Mast Raising Cylinder(DS).706		R0706	Raising Cylinders.706
+Mast Raising Cylinder(ODS).706		R0706	Raising Cylinders.706
+Mud Buckets.706		R0706	70 Ancillary Systems.706
+Mud Cleaner/Desilter#1.706		R0706	Processing Equipment.706
+Mud Cleaner/Desilter#2.706		R0706	Processing Equipment.706
+Mud House.706		R0706	40 Mud System.706
+Mud Pump #1 - AC Motor.706		R0706	Mud Pump Assembly #1.706
+Mud Pump #1.706		R0706	Mud Pump Assembly #1.706
+Mud Pump #2 - AC Motor.706		R0706	Mud Pump Assembly #2.706
+Mud Pump #2.706		R0706	Mud Pump Assembly #2.706
+Mud Pump #3 - AC Motor.706		R0706	Mud Pump Assembly #3.706
+Mud Pump #3.706		R0706	Mud Pump Assembly #3.706
+Mud Pump Assembly #1.706		R0706	Mud Pumps.706
+Mud Pump Assembly #2.706		R0706	Mud Pumps.706
+Mud Pump Assembly #3.706		R0706	Mud Pumps.706
+Mud Pumps.706		R0706	Active Mud System.706
+Mud Tanks.706		R0706	Active Mud System.706
+Pad Eyes.706		R0706	70 Ancillary Systems.706
+Parking Brake.706		R0706	Drawworks Skid.706
+Parts House/Lube Skid.706		R0706	70 Ancillary Systems.706
+Parts House/Tool Box.706		R0706	70 Ancillary Systems.706
+Personnel Hoisting Equip.706		R0706	Safety Systems.706
+Pipe Baskets.706		R0706	70 Ancillary Systems.706
+Pipe Delivery System-Winch.706		R0706	Hydraulic Hoists.706
+Power Slips.706		R0706	Slips.706
+Processing Equipment.706		R0706	Active Mud System.706
+Pump Back System.706		R0706	Active Mud System.706
+Pump Pressure Gauge #1.706		R0706	Mud Pump Assembly #1.706
+Pump Pressure Gauge #2.706		R0706	Mud Pump Assembly #2.706
+Racking Board Winch.706		R0706	Derrick.706
+Raising Cylinders.706		R0706	Hoisting Structure.706
+Relief Valve #1.706		R0706	Mud Pump Assembly #1.706
+Relief Valve #2.706		R0706	Mud Pump Assembly #2.706
+Reserve.706		R0706	Electric Chain Hoists.706
+Rig 706 - Flex 3 W3 A	Flex3 Walking Rig Arabia	R0706	
+Rig 706 Spare Holding Area.706		R0706	Rig 706 - Flex 3 W3 A
+Rig Manager House.706		R0706	70 Ancillary Systems.706
+Rotary Hose.706		R0706	Rotary Hoses.706
+Rotary Hoses.706		R0706	High Pressure Piping Sys.706
+Rotary Table Assembly.706		R0706	20 Rotating System.706
+Rotating Mouse Hole.706		R0706	20 Rotating System.706
+Safety Escape Line.706		R0706	Derrick.706
+Safety Systems.706		R0706	70 Ancillary Systems.706
+Sala Blocks.706		R0706	Personnel Hoisting Equip.706
+Saver Sub.706		R0706	70 Ancillary Systems.706
+Shale Shaker #1.706		R0706	Shale Shaker Skid.706
+Shale Shaker #2.706		R0706	Shale Shaker Skid.706
+Shale Shaker #3.706		R0706	Shale Shaker Skid.706
+Shale Shaker Skid.706		R0706	Processing Equipment.706
+Single.706		R0706	BOP Assembly.706
+Slings.706		R0706	Hoisting Systems.706
+Slips.706		R0706	50 Pipe Handling System.706
+Spacer Spool.706		R0706	70 Ancillary Systems.706
+Spinning Wrench.706		R0706	50 Pipe Handling System.706
+Standpipe Manifold.706		R0706	High Pressure Piping Sys.706
+Steam Cleaner #1.706		R0706	70 Ancillary Systems.706
+Steam Cleaner #2.706		R0706	70 Ancillary Systems.706
+Sub Hydraulic Power Unit.706		R0706	Hoisting Structure.706
+Substructure.706		R0706	Hoisting Structure.706
+Suction Dampner #1.706		R0706	Mud Pump Assembly #1.706
+Suction Dampner #2.706		R0706	Mud Pump Assembly #2.706
+TDS Motor #1.706		R0706	Top Drive.706
+TDS Motor #2.706		R0706	Top Drive.706
+TDS Motor DS.706		R0706	Top Drive.706
+TDS Motor ODS.706		R0706	Top Drive.706
+Table.706		R0706	Rotary Table Assembly.706
+Tank #1 - Processing.706		R0706	Mud Tanks.706
+Tank #2 - Mixing.706		R0706	Mud Tanks.706
+Tank #3 - Suction 1.706		R0706	Mud Tanks.706
+Tank #4 - Suction 2.706		R0706	Mud Tanks.706
+Tank #5 - Suction 3.706		R0706	Mud Tanks.706
+Tank #7 - Mixing #2.706		R0706	Mud Tanks.706
+Top Drive.706		R0706	20 Rotating System.706
+Torque Wrench.706		R0706	50 Pipe Handling System.706
+Traveling Block.706		R0706	Traveling Equipment.706
+Traveling Equipment.706		R0706	30 Hoisting System.706
+Trip Tank #1.706		R0706	Mud Tanks.706
+Tubulars.706		R0706	Rig 706 Spare Holding Area.706
+VFD House.706		R0706	VFD System.706
+VFD System.706		R0706	10 Power System.706
+Valves.706		R0706	70 Ancillary Systems.706
+Volume Tank #1.706		R0706	Mud Tanks.706
+Volume Tank #2.706		R0706	Mud Tanks.706
+Volume Tank #3.706		R0706	Mud Tanks.706
+Water Tank #1.706		R0706	70 Ancillary Systems.706
+Water Tank #2.706		R0706	70 Ancillary Systems.706
+Winch Hoist Cables.706		R0706	70 Ancillary Systems.706
+Wire Line Machine.706		R0706	70 Ancillary Systems.706
+Wire Rope/Cables.706		R0706	70 Ancillary Systems.706
+10 Power System.707		R0707	Rig 707 - Flex 3 W3 A
+20 Rotating System.707		R0707	Rig 707 - Flex 3 W3 A
+30 Hoisting System.707		R0707	Rig 707 - Flex 3 W3 A
+40 Mud System.707		R0707	Rig 707 - Flex 3 W3 A
+50 Pipe Handling System.707		R0707	Rig 707 - Flex 3 W3 A
+60 Well Control System.707		R0707	Rig 707 - Flex 3 W3 A
+70 Ancillary Systems.707		R0707	Rig 707 - Flex 3 W3 A
+A101037	Mud Pump, Gardner Denver, PZ-11HP	R0707	Mud Pump #3.707
+A101306	Generator, Kato Manufacturing, AA27673008	R0707	Generator #1.707
+A104121	VFD House, Omron, Flex3	R0707	VFD House.707
+A104675	HT Top Drive, Varco, TDS-11HP 500T	R0707	Top Drive.707
+A106531	MCC House, Helmerich & Payne	R0707	MCC House-Mud System.707
+A111844	Parking Brakes, Ind. Clutch, LKB-321	R0707	Parking Brake.707
+A113163	Drawworks Skid	R0707	Drawworks Skid.707
+A114955	Hyd Hoist, Braden, PD12C-59034-02L-1	R0707	Rig 707 Spare Holding Area.707
+A115198	Traveling Block-Split, Varco, Split 500T	R0707	Traveling Block.707
+A116300	Generator, Kato Manufacturing, AA27673008	R0707	Generator #2.707
+A142929	Generator, Kato Manufacturing, A27098017	R0707	Generator #5.707
+A1582	Mud Pump, Gardner Denver, PZ-11HP	R0707	Mud Pump #1.707
+A167139	FlexHoist Drawworks, Brad Foote, Flex3	R0707	FlexHoist.707
+A174451	MRCF3, Parker, BB251800	R0707	Mast Raising Cylinder(DS).707
+A180400	Water Tank	R0707	Water Tank #1.707
+A1837	Mud Tank - Suction Skid, STI	R0707	Tank #3 - Suction 1.707
+A199	Parts House/Toolbox Skid, H&P	R0707	Parts House/Tool Box.707
+A21054	Choke Manifold, Cameron, FLS 5M	R0707	Choke Manifold Assembly.707
+A210756	Mud/Gas Separator, DBI	R0707	Gas Buster.707
+A216	Derrick, STI, Flex3	R0707	Derrick.707
+A21609	Generator, Kato Manufacturing, A27673013	R0707	Generator #4.707
+A230	Mud Tank - Suction Skid, STI	R0707	Tank #4 - Suction 2.707
+A231	Parts House/Lube Skid, H&P	R0707	Parts House/Lube Skid.707
+A253	Change/Meeting House, H&P	R0707	Change/Meeting House.707
+A457	Water Tank, H&P	R0707	Water Tank #2.707
+A468	Hyd Hoist, Braden, PD12C-SPL-59034-02L-1	R0707	Hydraulic Hoist (DSF).707
+A502065	Steam Cleaner	R0707	Steam Cleaner #1.707
+A502260	Hyd Hoist, Braden, PD12C-59034-02L-1	R0707	Hydraulic Hoist (ODSB).707
+A504368	Driller's Cabin, Helmerich & Payne	R0707	Driller's Cabin House.707
+A504510	Drill Line Spool Rack, Helmerich & Payne	R0707	Drilling Line Spool Rack.707
+A504539	Active/Mixing Tank, STI	R0707	Tank #2 - Mixing.707
+A506357	BOP Transporter, H&P	R0707	BOP Transporter.707
+A507325	Air Dryer, Great Lakes Air Products, GPS	R0707	Air Dryer.707
+A507328	Rotary Table	R0707	Rig 707 Spare Holding Area.707
+A507331	FlexRig Crown Sheave Cluster, H&P - Flex3	R0707	FlexRig Crown Assy.707
+A507332	Elevator Links, Varco BJ, 350T	R0707	Elevator Link #1.707
+A507333	Elevator Links, Varco BJ, 350T	R0707	Elevator Link #2.707
+A507334	Emergency Descent, DBI/Sala, Rollgliss	R0707	Safety Escape Line.707
+A507335	Discharge Dampner, PPC, RIBO-5000CS	R0707	Discharge Dampner #1.707
+A507338	Relief Valve, Demco, 3" Shear, 5000 Psi	R0707	Relief Valve #1.707
+A507339	Discharge Dampner, PPC, RIBO-5000CS	R0707	Discharge Dampner #2.707
+A507342	Relief Valve, Demco, 3" Shear, 5000 Psi	R0707	Relief Valve #2.707
+A507343	Rotary Hose, Phoenix, 3 1/2" X 75' 5000	R0707	Rotary Hose.707
+A507346	Drill Pipe Slips, Den-Con, 5" SDXL	R0707	Drill Pipe Slips #1.707
+A507347	Drill Collar Slips, Varco, R 5 1/2"-7"	R0707	Drill Collar Slips #1.707
+A507348	Drill Collar Slips, Varco, L 6 3/4-8 1/4	R0707	Drill Collar Slips #2.707
+A507350	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0707	Drill Collar Clamp #1.707
+A507351	Safety Clamp, Varco, MP-R 6 3/4 - 8 1/4"	R0707	Drill Collar Clamp #2.707
+A507352	Drill Pipe Elevator, Varco, GG 5" 350T	R0707	Drill Pipe Elevator #1.707
+A507353	Drill Pipe Elevator, Varco, GG 5" 350T	R0707	Drill Pipe Elevator #2.707
+A520994	Choke Hose	R0707	Choke Line Assembly.707
+A520995	Kill Hose	R0707	Kill Line Assembly.707
+A520998	Fire Extinguishers	R0707	Safety Systems.707
+A521000	Eye Wash Station	R0707	Safety Systems.707
+A60479	Suction Tank, STI	R0707	Tank #5 - Suction 3.707
+A66939	Engine, Caterpillar, 3512B, 4AW00584	R0707	Generator Set #3-Engine.707
+A702443	Torque Wrench, Varco, ST80 Gen 3	R0707	Torque Wrench.707
+A703703	Motor, AC/L, General Electric, 5GEB22D3	R0707	Drawworks-AC Motor #1.707
+A707	Shaker Skid, STI	R0707	Shale Shaker Skid.707
+A810300	Engine, John Deere, 4045TF280	R0707	MRC Hyd Power Unit-Engine.707
+A810324	Hydraulic Power Unit, Aberdeen Dynamics	R0707	MRC Hydraulic Power Unit.707
+A810941	Generator, Kato Manufacturing, A27673013	R0707	Generator #3.707
+A82303	Engine, Caterpillar, 3512B, 4AW01007	R0707	Generator Set #1-Engine.707
+A88428	Engine, Caterpillar, 3512B, 4AW01551	R0707	Generator Set #4-Engine.707
+A904456	Motor, AC/L, General Electric, 5GEB22D3	R0707	Drawworks-AC Motor #2.707
+A904506	Hydraulic Catwalk, Forum, 3000 30' Gen 2	R0707	Hydraulic Catwalk.707
+A904570	Processing Tank, STI	R0707	Tank #1 - Processing.707
+A904576	Active/Mixing Tank, STI	R0707	Tank #7 - Mixing #2.707
+A94320	Engine, Caterpillar, 3512B, 4AW01465	R0707	Generator Set #2-Engine.707
+A95683	Engine, Caterpillar, 3512B, 4AW01463	R0707	Generator Set #5-Engine.707
+A98594	Mud Pump, Gardner Denver, PZ-11HP	R0707	Mud Pump #2.707
+Accumulator.707		R0707	60 Well Control System.707
+Active Mud System.707		R0707	40 Mud System.707
+Active.707		R0707	Electric Chain Hoists.707
+Air Compressor #1.707		R0707	Air Compressors.707
+Air Compressor #2.707		R0707	Air Compressors.707
+Air Compressors.707		R0707	10 Power System.707
+Air Dryer.707		R0707	Air Compressors.707
+Annular #1.707		R0707	BOP Assembly.707
+Annular #2.707		R0707	BOP Assembly.707
+BOP Assembly.707		R0707	60 Well Control System.707
+BOP Control Hoses.707		R0707	Accumulator.707
+BOP Handling System.707		R0707	60 Well Control System.707
+BOP Test Stump.707		R0707	BOP Transporter.707
+BOP Transporter.707		R0707	60 Well Control System.707
+BOP Trolley/Hoist A.707		R0707	BOP Handling System.707
+BOP Trolley/Hoist B.707		R0707	BOP Handling System.707
+Beam Clamp.707		R0707	70 Ancillary Systems.707
+Belly Board Pad Eyes.707		R0707	70 Ancillary Systems.707
+Boiler.707		R0707	70 Ancillary Systems.707
+Boom Box HPU - Engine.707		R0707	Boom Box.707
+Boom Box Hyd Power Unit.707		R0707	Boom Box.707
+Boom Box.707		R0707	10 Power System.707
+Bug Blower.707		R0707	70 Ancillary Systems.707
+C081096	Drag Chain Support Frame, STI, 100' Capable	R0707	Drag Chain Support Frame.707
+Cables.387		R0707	70 Ancillary Systems.707
+Casing Running Tools.707		R0707	50 Pipe Handling System.707
+Cellar Pumps.707		R0707	70 Ancillary Systems.707
+Cement.707		R0707	Electric Chain Hoists.707
+Centrifuges.707		R0707	70 Ancillary Systems.707
+Change/Meeting House.707		R0707	70 Ancillary Systems.707
+Chicksan Iron Slings.707		R0707	70 Ancillary Systems.707
+Choke Line Assembly.707		R0707	Choke Manifold.707
+Choke Manifold Assembly.707		R0707	Choke Manifold.707
+Choke Manifold Skid #1.707		R0707	Choke Manifold.707
+Choke Manifold Skid #2.707		R0707	Choke Manifold.707
+Choke Manifold.707		R0707	60 Well Control System.707
+Choke Panel #1.707		R0707	Choke Manifold.707
+Choke Panel #2.707		R0707	Choke Manifold.707
+Climb Assist Fall Arrest.707		R0707	Derrick.707
+Cold Start Compressor #1.707		R0707	Air Compressors.707
+Crew Quarters #1.707		R0707	70 Ancillary Systems.707
+Crew Quarters #2.707		R0707	70 Ancillary Systems.707
+Crew Quarters #3.707		R0707	70 Ancillary Systems.707
+Cup Testers.707		R0707	70 Ancillary Systems.707
+Dead Line Anchor.707		R0707	Traveling Equipment.707
+Degasser.707		R0707	Processing Equipment.707
+Derrick.707		R0707	Hoisting Structure.707
+Diesel Tank #1.707		R0707	Fuel Tank # 1.707
+Discharge Dampner #1.707		R0707	Mud Pump Assembly #1.707
+Discharge Dampner #2.707		R0707	Mud Pump Assembly #2.707
+Discharge Dampner #3.707		R0707	Mud Pump Assembly #3.707
+Ditch Valves.707		R0707	70 Ancillary Systems.707
+Double #1 w/Booster.707		R0707	BOP Assembly.707
+Double #2.707		R0707	BOP Assembly.707
+Drag Chain Support Frame.707		R0707	Hoisting Structure.707
+Drawworks Skid.707		R0707	30 Hoisting System.707
+Drawworks-AC Motor #1.707		R0707	Drawworks Skid.707
+Drawworks-AC Motor #2.707		R0707	Drawworks Skid.707
+Drill Collar Clamp #1.707		R0707	Drill Collar Clamps.707
+Drill Collar Clamp #2.707		R0707	Drill Collar Clamps.707
+Drill Collar Clamps.707		R0707	50 Pipe Handling System.707
+Drill Collar Slips #1.707		R0707	Slips.707
+Drill Collar Slips #2.707		R0707	Slips.707
+Drill Pipe Elevator #1.707		R0707	Elevators.707
+Drill Pipe Elevator #2.707		R0707	Elevators.707
+Drill Pipe Elevator #3.707		R0707	Elevators.707
+Drill Pipe Slips #1.707		R0707	Slips.707
+Driller's Cabin Group.707		R0707	10 Power System.707
+Driller's Cabin House.707		R0707	Driller's Cabin Group.707
+Drilling Line Spool Rack.707		R0707	Traveling Equipment.707
+Drilling Spool/Mud Cross#1.707		R0707	60 Well Control System.707
+Drilling Spool/Mud Cross#2.707		R0707	60 Well Control System.707
+Drum Lifter.707		R0707	70 Ancillary Systems.707
+Dynamic Brake Resistor.707		R0707	VFD House.707
+Electric Chain Hoists.707		R0707	70 Ancillary Systems.707
+Elevator Link #1.707		R0707	Traveling Equipment.707
+Elevator Link #2.707		R0707	Traveling Equipment.707
+Elevators.707		R0707	50 Pipe Handling System.707
+Emergency Brake.707		R0707	Drawworks Skid.707
+Flare Lines.707		R0707	70 Ancillary Systems.707
+FlexHoist.707		R0707	Drawworks Skid.707
+FlexRig Crown Assy.707		R0707	Traveling Equipment.707
+Flow Meters.707		R0707	70 Ancillary Systems.707
+Fuel Distribution.707		R0707	10 Power System.707
+Fuel Tank # 1.707		R0707	Fuel Distribution.707
+Full Body Harness.707		R0707	Personnel Hoisting Equip.707
+G121606	Motor, AC/TD	R0707	TDS Motor DS.707
+G121611	Motor, AC/TD	R0707	TDS Motor ODS.707
+G67512	Shale Shaker - Derrick, Hyperpool	R0707	Shale Shaker #2.707
+G67612	Shale Shaker - Derrick, Hyperpool	R0707	Shale Shaker #3.707
+G67712	Shale Shaker - Derrick, Hyperpool	R0707	Shale Shaker #1.707
+Gas Buster.707		R0707	60 Well Control System.707
+Generator #1.707		R0707	Generator Set #1.707
+Generator #2.707		R0707	Generator Set #2.707
+Generator #3.707		R0707	Generator Set #3.707
+Generator #4.707		R0707	Generator Set #4.707
+Generator #5.707		R0707	Generator Set #5.707
+Generator Set #1-Engine.707		R0707	Generator Set #1.707
+Generator Set #1.707		R0707	Generator Sets.707
+Generator Set #2-Engine.707		R0707	Generator Set #2.707
+Generator Set #2.707		R0707	Generator Sets.707
+Generator Set #3-Engine.707		R0707	Generator Set #3.707
+Generator Set #3.707		R0707	Generator Sets.707
+Generator Set #4-Engine.707		R0707	Generator Set #4.707
+Generator Set #4.707		R0707	Generator Sets.707
+Generator Set #5-Engine.707		R0707	Generator Set #5.707
+Generator Set #5.707		R0707	Generator Sets.707
+Generator Sets.707		R0707	10 Power System.707
+H050301	Emergency Brakes, Wichita, ATD-536AM	R0707	Emergency Brake.707
+H092104	MRCF3, Parker, BB251800	R0707	Mast Raising Cylinder(ODS).707
+H112803	Rotary Table, American Block Co, RT-3750HC	R0707	Table.707
+HA666	Rig Manager Hose, DBI, RM200	R0707	Rig Manager House.707
+Heater.707		R0707	70 Ancillary Systems.707
+High Pressure Piping Sys.707		R0707	Active Mud System.707
+Hoisting Structure.707		R0707	30 Hoisting System.707
+Hoisting Systems.707		R0707	70 Ancillary Systems.707
+Hoses.707		R0707	70 Ancillary Systems.707
+Hydraulic Catwalk.707		R0707	50 Pipe Handling System.707
+Hydraulic Hoist (DSB).707		R0707	Hydraulic Hoists.707
+Hydraulic Hoist (DSF).707		R0707	Hydraulic Hoists.707
+Hydraulic Hoist (ODSB).707		R0707	Hydraulic Hoists.707
+Hydraulic Hoist (ODSF).707		R0707	Hydraulic Hoists.707
+Hydraulic Hoist String-up.707		R0707	Hydraulic Hoists.707
+Hydraulic Hoists.707		R0707	Hoisting Systems.707
+Ignition Device.707		R0707	70 Ancillary Systems.707
+Instrumentation (VFD).707		R0707	VFD System.707
+J021405	Motor, AC/L, General Electric, 5GEB29B1	R0707	Mud Pump #1 - AC Motor.707
+J040904	Degasser, Derrick, VACU-FLO 1200	R0707	Degasser.707
+J051308	Mud Cleaner, Derrick, Hyperpool 4P	R0707	Mud Cleaner/Desilter#1.707
+J051311	Mud Cleaner, Derrick, Hyperpool 4P	R0707	Mud Cleaner/Desilter#2.707
+J052306	Mud Tank - Volume Skid, STI	R0707	Volume Tank #1.707
+J061803	Dead Line Anchor, American Block, FTR-100	R0707	Dead Line Anchor.707
+J062405	Mud Tank - Volume Skid, STI	R0707	Volume Tank #2.707
+J070504	Hydraulic Power Unit, Aberdeen Dynamics, Substructure	R0707	Sub Hydraulic Power Unit.707
+J072902	Mud Tank - Volume Skid, STI	R0707	Volume Tank #3.707
+J080806	Engine, DEUTZ, D 2.9 L4	R0707	Boom Box HPU - Engine.707
+J080808	Substructure, STI, Flex3 W3	R0707	Substructure.707
+J080814	MCC House - Substructure, STI	R0707	MCC House-Substructure.707
+J080816	Hydraulic Power Unit, Aberdeen Dynamics, Boom Box	R0707	Boom Box Hyd Power Unit.707
+J080817	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0707	Manrider (ODS).707
+J080818	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0707	BOP Trolley/Hoist B.707
+J080819	BOP Trolley Hoist, JD Neuhaus, EH50-H	R0707	BOP Trolley/Hoist A.707
+J080820	Air Hoist, Ingersoll Rand, MR150KA1AC-CE	R0707	Manrider (DS).707
+J080821	Steam Cleaner, H&P	R0707	Steam Cleaner #2.707
+J090301	MCC House - Auxiliary, STI	R0707	MCC House-Substructure.707
+J090904	Motor, AC/L, General Electric, 5GEB29B1	R0707	Mud Pump #2 - AC Motor.707
+J090905	Motor, AC/L, General Electric, 5GEB29B1	R0707	Mud Pump #3 - AC Motor.707
+K012906	BOP Annular, Cameron, 21 1/4"-2M DL	R0707	Annular #2.707
+K012909	BOP Annular, Cameron, 13 5/8"-10M DL	R0707	Annular #1.707
+K040903	BOP Double, Cameron, 13 5/8"-10M DBL U	R0707	Double #1 w/Booster.707
+K040910	BOP Double, Cameron, 13 5/8"-10M DBL U	R0707	Double #2.707
+K042425	Spinning Wrench, Varco, SSW-40	R0707	Rig 707 Spare Holding Area.707
+K050607	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0707	Drilling Spool/Mud Cross#1.707
+K050608	Drilling Spool/Mud Cross, Cameron, 13 5/8"	R0707	Drilling Spool/Mud Cross#2.707
+K081901	BOP Accumulator, Axon, TX670-0005/3	R0707	Accumulator.707
+K172032	Engine Cold Start,Ingersoll Rand	R0707	Cold Start Compressor #1.707
+K311205	BOP Double - Cameron - 13 5/8"-10M	R0707	Double #1 w/Booster.707
+K312205	BOP Double - Cameron - 13 5/8"-10M	R0707	Double #2.707
+K444791	Cascade Air Compressors Electrical	R0707	Safety Systems.707
+K444792	Cascade Air Compressors Diesel	R0707	Safety Systems.707
+K70071	ELGi Air Compressors	R0707	Air Compressor #1.707
+K70072	ELGi Air Compressors	R0707	Air Compressor #2.707
+K701031	Electric Chain Hoists	R0707	Cement.707
+K701032	Electric Chain Hoists	R0707	Active.707
+K701033	Electric Chain Hoists	R0707	Reserve.707
+K70795	Fire Pump - Grundfos	R0707	Safety Systems.707
+K826175	Choke Line	R0707	Choke Line Assembly.707
+K826350	Kill Line	R0707	Kill Line Assembly.707
+KDH1007	Double 7 Ignition Device	R0707	Ignition Device.707
+Kill Line Assembly.707		R0707	Choke Manifold.707
+L010612	Discharge Dampner, PPC, DR-130-7500CS	R0707	Discharge Dampner #3.707
+Lanyards.707		R0707	Personnel Hoisting Equip.707
+MCC House-Mud System.707		R0707	MCC System.707
+MCC House-Substructure.707		R0707	MCC System.707
+MCC System.707		R0707	10 Power System.707
+MRC Hyd Power Unit-Engine.707		R0707	MRC Hydraulic Power Unit.707
+MRC Hydraulic Power Unit.707		R0707	Raising Cylinders.707
+Man Basket.707		R0707	70 Ancillary Systems.707
+Manlift.707		R0707	70 Ancillary Systems.707
+Manrider (DS).707		R0707	Hydraulic Hoists.707
+Manrider (ODS).707		R0707	Hydraulic Hoists.707
+Mast Raising Cylinder(DS).707		R0707	Raising Cylinders.707
+Mast Raising Cylinder(ODS).707		R0707	Raising Cylinders.707
+Mud Buckets.707		R0707	70 Ancillary Systems.707
+Mud Cleaner/Desilter#1.707		R0707	Processing Equipment.707
+Mud Cleaner/Desilter#2.707		R0707	Processing Equipment.707
+Mud House.707		R0707	40 Mud System.707
+Mud Pump #1 - AC Motor.707		R0707	Mud Pump Assembly #1.707
+Mud Pump #1.707		R0707	Mud Pump Assembly #1.707
+Mud Pump #2 - AC Motor.707		R0707	Mud Pump Assembly #2.707
+Mud Pump #2.707		R0707	Mud Pump Assembly #2.707
+Mud Pump #3 - AC Motor.707		R0707	Mud Pump Assembly #3.707
+Mud Pump #3.707		R0707	Mud Pump Assembly #3.707
+Mud Pump Assembly #1.707		R0707	Mud Pumps.707
+Mud Pump Assembly #2.707		R0707	Mud Pumps.707
+Mud Pump Assembly #3.707		R0707	Mud Pumps.707
+Mud Pumps.707		R0707	Active Mud System.707
+Mud Tanks.707		R0707	Active Mud System.707
+Pad Eyes.707		R0707	70 Ancillary Systems.707
+Parking Brake.707		R0707	Drawworks Skid.707
+Parts House/Lube Skid.707		R0707	70 Ancillary Systems.707
+Parts House/Tool Box.707		R0707	70 Ancillary Systems.707
+Personnel Hoisting Equip.707		R0707	Safety Systems.707
+Pipe Baskets.707		R0707	70 Ancillary Systems.707
+Pipe Delivery System-Winch.707		R0707	Hydraulic Hoists.707
+Power Slips.707		R0707	Slips.707
+Processing Equipment.707		R0707	Active Mud System.707
+Pump Back System.707		R0707	Active Mud System.707
+Pump Pressure Gauge #1.707		R0707	Mud Pump Assembly #1.707
+Pump Pressure Gauge #2.707		R0707	Mud Pump Assembly #2.707
+Racking Board Winch.707		R0707	Derrick.707
+Raising Cylinders.707		R0707	Hoisting Structure.707
+Relief Valve #1.707		R0707	Mud Pump Assembly #1.707
+Relief Valve #2.707		R0707	Mud Pump Assembly #2.707
+Reserve.707		R0707	Electric Chain Hoists.707
+Rig 707 - Flex 3 W3 A	Flex3 Walking Rig Arabia	R0707	
+Rig 707 Spare Holding Area.707		R0707	Rig 707 - Flex 3 W3 A
+Rig Manager House.707		R0707	70 Ancillary Systems.707
+Rotary Hose.707		R0707	Rotary Hoses.707
+Rotary Hoses.707		R0707	High Pressure Piping Sys.707
+Rotary Table Assembly.707		R0707	20 Rotating System.707
+Rotating Mouse Hole.707		R0707	20 Rotating System.707
+Safety Escape Line.707		R0707	Derrick.707
+Safety Systems.707		R0707	70 Ancillary Systems.707
+Sala Blocks.707		R0707	Personnel Hoisting Equip.707
+Saver Sub.707		R0707	70 Ancillary Systems.707
+Shale Shaker #1.707		R0707	Shale Shaker Skid.707
+Shale Shaker #2.707		R0707	Shale Shaker Skid.707
+Shale Shaker #3.707		R0707	Shale Shaker Skid.707
+Shale Shaker Skid.707		R0707	Processing Equipment.707
+Single.707		R0707	BOP Assembly.707
+Slings.707		R0707	Hoisting Systems.707
+Slips.707		R0707	50 Pipe Handling System.707
+Spacer Spool.707		R0707	70 Ancillary Systems.707
+Standpipe Manifold.707		R0707	High Pressure Piping Sys.707
+Steam Cleaner #1.707		R0707	70 Ancillary Systems.707
+Steam Cleaner #2.707		R0707	70 Ancillary Systems.707
+Sub Hydraulic Power Unit.707		R0707	Hoisting Structure.707
+Substructure.707		R0707	Hoisting Structure.707
+Suction Dampner #1.707		R0707	Mud Pump Assembly #1.707
+Suction Dampner #2.707		R0707	Mud Pump Assembly #2.707
+TDS Motor #1.707		R0707	Top Drive.707
+TDS Motor #2.707		R0707	Top Drive.707
+TDS Motor DS.707		R0707	Top Drive.707
+TDS Motor ODS.707		R0707	Top Drive.707
+Table.707		R0707	Rotary Table Assembly.707
+Tank #1 - Processing.707		R0707	Mud Tanks.707
+Tank #2 - Mixing.707		R0707	Mud Tanks.707
+Tank #3 - Suction 1.707		R0707	Mud Tanks.707
+Tank #4 - Suction 2.707		R0707	Mud Tanks.707
+Tank #5 - Suction 3.707		R0707	Mud Tanks.707
+Tank #7 - Mixing #2.707		R0707	Mud Tanks.707
+Top Drive.707		R0707	20 Rotating System.707
+Torque Wrench.707		R0707	50 Pipe Handling System.707
+Traveling Block.707		R0707	Traveling Equipment.707
+Traveling Equipment.707		R0707	30 Hoisting System.707
+Trip Tank #1.707		R0707	Mud Tanks.707
+Tubulars.707		R0707	Rig 707 Spare Holding Area.707
+VFD House.707		R0707	VFD System.707
+VFD System.707		R0707	10 Power System.707
+Valves.707		R0707	70 Ancillary Systems.707
+Volume Tank #1.707		R0707	Mud Tanks.707
+Volume Tank #2.707		R0707	Mud Tanks.707
+Volume Tank #3.707		R0707	Mud Tanks.707
+Water Tank #1.707		R0707	70 Ancillary Systems.707
+Water Tank #2.707		R0707	70 Ancillary Systems.707
+Winch Hoist Cables.707		R0707	70 Ancillary Systems.707
+Wire Line Machine.707		R0707	70 Ancillary Systems.707
+Wire Rope/Cables.707		R0707	70 Ancillary Systems.707
