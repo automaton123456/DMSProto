@@ -1,0 +1,30 @@
+MANDT DOC_TYPE DOC_GROUP WORKFLOW_ACTIVE WORKFLOW_NUMBER APPROVAL_RULE   DOCUMENT_IND DOCUMENT_PER_OL DOCUMENT_PER_GR APPROVAL_EXTRA      APPROVAL_CONDITION
+
+200   CAT      CT                                                        X
+200   CER      CE        X               WS99900008      ZPM_DMS_WFR_WOC X                                            ZPM_DMS_COMPLETE_WO ZPM_DMS_CERT_COND
+200   CER      CM                                                        X
+200   CER      CO        X               WS99900008      ZPM_DMS_WFR_WOC X                                            ZPM_DMS_COMPLETE_WO ZPM_DMS_CERT_COND
+200   CER      ER        X               WS99900008      ZPM_DMS_WFR_WOC X                                            ZPM_DMS_COMPLETE_WO ZPM_DMS_CERT_COND
+200   CER      EX                                                        X
+200   CER      IR                                                        X
+200   CER      OS        X               WS99900008      ZPM_DMS_WFR_WOC X                                            ZPM_DMS_COMPLETE_WO ZPM_DMS_CERT_COND
+200   CER      RR                                                        X
+200   CER      SF                                                        X
+200   CER      TP        X               WS99900008      ZPM_DMS_WFR_WOC X                                            ZPM_DMS_COMPLETE_WO ZPM_DMS_CERT_COND
+200   GRP      AC        X               WS99900008      ZPM_DMS_WFR_MWC              X               X               ZPM_DMS_COMPLETE_WO
+200   GRP      AD                                                        X
+200   GRP      CR        X               WS99900008      ZPM_DMS_WFR_MWC              X               X               ZPM_DMS_COMPLETE_WO
+200   GRP      CS        X               WS99900008      ZPM_DMS_WFR_MWC              X               X               ZPM_DMS_COMPLETE_WO
+200   GRP      EA                                                                     X               X
+200   GRP      EC        X               WS99900008      ZPM_DMS_WFR_WOC X                                            ZPM_DMS_COMPLETE_WO ZPM_DMS_CERT_COND
+200   GRP      EV        X               WS99900008      ZPM_DMS_WFR_MWC              X               X               ZPM_DMS_COMPLETE_WO
+200   GRP      RA                                                        X
+200   GRP      VR                                                        X
+200   MAN      DW                                                        X
+200   MAN      MA                                                        X
+200   MAN      PC                                                        X
+200   MAN      SC                                                        X
+200   MAN      SL                                                        X
+200   STC      CA                                                        X
+200   STU      HZ                                                        X
+200   STU      ST                                                        X
