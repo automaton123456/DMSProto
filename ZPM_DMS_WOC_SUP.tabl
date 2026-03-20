@@ -1,0 +1,7 @@
+MANDT	MANDT	CLNT	3	0	Client
+RIG	ZPM_EFR_RIGFL	CHAR	10	0	Rig FL code
+GEWRK	ZPM_OP_WRK_CENTRE	CHAR	32	0	Operation work center
+COUNTER	ZPM_EFR_COUNTER	INT1	3	0	EFR approver counter
+MAINT_DAYS_LOW	ZPM_WOC_DAYS_LOW	INT4	10	0	Maintenance package days low
+MAINT_DAYS_HIGH	ZPM_WOC_DAYS_HIGH	INT4	10	0	Maintenance package days high
+USERNAME	XUBNAME	CHAR	12	0	User Name in User Master Record
