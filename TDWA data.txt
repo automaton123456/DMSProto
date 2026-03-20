@@ -1,0 +1,15 @@
+Table: TDWA
+
+
+	MANDT	DOKAR	FLDSL	STAEN	PROJB	ALPHN	VERVG	NUMVG	INUMNR	ENUMNR	AENBL	ARCHF	ALTDY	ADYPROG	ZNRPROG	FHMDK	   FILELEN	KLASSE	KLASSENART	ORIG_DEL	ORIG_DSTRB	KPRO_USE	CLASS_INCLUDE	DEF_APPLICATION	DIST_APPLICATION	NEW_VERS_IGNORE	CM_RELEVANCE	DOKVR_INC	ACM_USE	ACM_ENABLE_OBJEC	DS_USE	SET_LCK_STS	VERSION_LIMIT	VER_LIMIT_MSG	NEW_VER_CNTRL	DARTXT
+
+	200	CAT	.*-+------.--			0			09	04	X		 0000		MCDOKZNR		0009999999	Z_DMS_CAT	017			X											           00			Catalogs & Brochures
+	200	CER	.*-+------.--			0			06	04	X		 0000		MCDOKZNR		0009999999	Z_DMS_CER	017			X											           00			Certificates
+	200	DOC	.*-+------.--			0			02	04	X		 0000		MCDOKZNR		0009999999	DOC_GENERAL	017			X											           00			General Document
+	200	EQU	.*-+------.--			0			13	04	X		 0000		MCDOKZNR		0009999999	DOC_GENERAL	017			X											           00			Equipment Document
+	200	GRP	.*-+------.--			0			07	04	X		 0000		MCDOKZNR		0009999999	Z_DMS_GRP	017			X											           00			General Reports
+	200	JOB	.*-+------.--			0			11	04	X		 0000		MCDOKZNR		0009999999	Z_DMS_JOB	017			X											           00			Job Plans
+	200	MAN	.*-+------.--			0			05	04	X		 0000		MCDOKZNR		0009999999	Z_DMS_MAN	017			X											           00			Manuals & Tech Info
+	200	MAT	.*-+------.--			0			12	04	X		 0000		MCDOKZNR		0009999999	DOC_GENERAL	017			X											           00			Material Document
+	200	STC	.*-+------.--			0			10	04	X		 0000		MCDOKZNR		0009999999	Z_DMS_STC	017			X											           00			Static & Calculation
+	200	STU	.*-+------.--			0			08	04	X		 0000		MCDOKZNR		0009999999	Z_DMS_STU	017			X											           00			Studies
