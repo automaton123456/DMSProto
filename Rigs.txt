@@ -1,3 +1,7 @@
+This is the mapping for a SAP rig to a rig in our new world
+Org - Is Rig ID
+Org Name - Is Rig Name
+
 Org	Org Name	Rig	SAP MaintPlant	Drilling/Stacked
 SCO	BRCOL.INTDRL.INVORG.SCO	BRCOL.INTDRL.INVORG.SCO	 	 
 KBM	BRSAU.KBM.INVORG	BRSAU.KBM.INVORG	 	 
