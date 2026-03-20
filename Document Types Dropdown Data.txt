@@ -1,0 +1,10 @@
+DDKey Text
+
+CAT	Catalogs & Brochures
+CER	Certificates
+EQU	Equipment Document
+GRP	General Reports
+MAN	Manuals & Tech Info
+MAT	Material Document
+STC	Static & Calculation
+STU	Studies
