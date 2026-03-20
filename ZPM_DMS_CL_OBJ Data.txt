@@ -1,0 +1,31 @@
+MANDT  DOC_GROUP  DOC_DATE_VIS  MANU_NAME_VIS  MANU_SERIAL_VIS ALERT_NUMBER_VIS  CERT_AUTH_VIS  CERT_NUM_VIS  ADD_DESCRIPTION_VIS DOC_LOCATION_VIS  WORK_ORDER_VIS  FUNC_LOCATION_VIS EQUIP_MASTER_VIS MATERIAL_MASTER_VIS  MANU_PART_NUM_VIS
+
+200    AC         M                                                                                           M                   M                 M*              D
+200    AD         M             O                                                O                            M                   M                                 MO                MO
+200    CA         M                                                                                           M                   M                                 MO                MO
+200    CE         M                            O                                 M              M             O                   M                 M               MO                MO                                    O
+200    CM         M             M              O                                 M              M             O                   M                                 MO                                 MO
+200    CO         M             M              O                                                M             O                   M                 AMO             MO                MO               D
+200    CR         M                                                                                           M                   M                 M*              D
+200    CS         M                                                                                           M                   M                 M*              D
+200    CT         M             M                                                                             M                   M
+200    DW         M             M              O                                                              O                   M                                 MO                MO               MO
+200    EA         M             M                              M                                              M                   M                                 M*
+200    EC         M                                                                                           O                   M                 AMO             MO                MO
+200    ER         M                                                                                           O                   M                 M               O
+200    EV         M                                                                                           M                   M                 M*              D
+200    EX                       M                                                               M                                 M
+200    HZ         M                                                              O                            M                   M                                 MO                MO
+200    IR         M                                                              M              O             M                   M                                 MO                MO
+200    MA         M             M              O                                                              O                   M                                 MO                MO               MO
+200    MC         M                                                                                           M                   M                                 O                 O                O
+200    OS         M                            O                                 M              M             O                   M                 M               MO                MO                                    O
+200    PC         M                            O                                                              O                   M                                 MO                MO               MO
+200    RA         M                                                              M              M             M                   M                                 MO                O
+200    RR         M                                                              M                            O                   M                                 MO                MO
+200    SC         M             M              O                                                              O                   M                                 MO                MO               MO
+200    SF         M                                                              M              O             M                   M                                 MO                MO
+200    SL         M             M              O                                                              O                   M                                 MO                MO               MO
+200    ST         M                                                              O                            M                   M                                 M*                M*
+200    TP         M             M              M                                                O             O                   M                 AMO             MO                MO
+200    VR         M                                                              M                            M                   M                                 MO                MO
