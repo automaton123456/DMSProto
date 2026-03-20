@@ -1,0 +1,5 @@
+MANDT	MANDT	CLNT	3	0	Client
+RIGFLCODE	ZPM_EFR_RIGFL	CHAR	10	0	Rig FL code
+GEWRK	GEWRK	CHAR	8	0	Main work center for maintenance tasks
+COUNTER	ZPM_EFR_COUNTER	INT1	3	0	EFR approver counter
+USERNAME	XUBNAME	CHAR	12	0	User Name in User Master Record
