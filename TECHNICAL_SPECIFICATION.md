@@ -35,13 +35,14 @@ Each data source is a service module with a standard interface, swappable for DB
 
 ### 3.1 Homepage (Dashboard)
 
-SAP Fiori-style shell with 3 tiles:
+SAP Fiori-style shell with 4 tiles:
 
 | Tile | Description | Badge |
 |---|---|---|
 | Create DMS Document | Opens blank upload form | — |
 | DMS Inbox | Items pending your approval | Count |
 | My DMS Forms | Your submitted documents | Count |
+| DMS Report | Search and view all DMS documents | — |
 
 ### 3.2 Create/Edit DMS Document Form
 
@@ -92,7 +93,7 @@ Table of workflow items pending current user's approval:
 | Date Created | Submission date |
 | Workflow Step | MSV Approval / E&M Approval |
 
-Click row → opens form in **approval mode** (see 3.5 Approval Screen below).
+Click row → opens form in **approval mode** (see 3.6 Approval Screen below).
 
 ### 3.4 My DMS Forms
 
@@ -108,7 +109,51 @@ Table of current user's submitted documents:
 
 Click row → opens form in view/edit mode depending on status. Rejected documents can be edited and resubmitted.
 
-### 3.5 Approval Screen
+### 3.5 DMS Report (Search)
+
+A searchable report screen for finding and viewing **all** DMS documents across the system, not limited to the current user's submissions or approvals.
+
+**Filter Bar** (UI5 `FilterBar` with adapt-filters dialog):
+
+| Filter | Type | Description |
+|---|---|---|
+| Document ID | Text input | Exact or partial match |
+| Rig | Dropdown (multi-select) | Filter by one or more rigs |
+| Document Type | Dropdown (multi-select) | CAT, CER, GRP, MAN, STC, STU |
+| Document Group | Dropdown (multi-select) | Filtered by selected Doc Type(s) |
+| Status | Dropdown (multi-select) | Draft, Pending MSV, Pending E&M, Approved, Rejected |
+| Originator | Text input / user picker | Search by creator name |
+| Date Created (From/To) | Date range picker | Filter by creation date range |
+| Work Order | Text input | Partial match on work order number |
+| Equipment | Text input | Partial match on equipment number or description |
+| Description | Text input | Partial match on Additional Description |
+
+**Results Table**:
+
+| Column | Source | Sortable |
+|---|---|---|
+| Document ID | Folder number | Yes |
+| Rig | Rig name | Yes |
+| Doc Type / Group | From document | Yes |
+| Description | Additional Description | Yes |
+| Originator | Document creator | Yes |
+| Status | Current workflow status | Yes |
+| Date Created | Submission date | Yes |
+| Work Order | First work order number | Yes |
+| Equipment | First equipment text | Yes |
+| Current Approver | Assigned approver (if pending) | Yes |
+
+**Behaviour**:
+- Table supports sorting by clicking column headers, pagination, and configurable column visibility
+- Click row → opens document via deep link (`/documents/{id}`) — form mode is determined by the standard rules in §3.7 Form Mode Matrix:
+  - If the current user is the assigned approver for the active step → **approval mode** (read-only + Approve/Reject)
+  - If the current user is the originator and status is Draft/Rejected → **edit mode**
+  - Otherwise → **read-only view**
+- The report is available to all authenticated users — no admin role required
+- Results can be exported to CSV/Excel via a toolbar button
+- URL supports filter parameters for bookmarking searches: `/report?rig=T0102&status=Pending+MSV+Approval`
+
+### 3.6 Approval Screen
 
 When a document is opened from the DMS Inbox, it renders in **read-only approval mode**. The approver can review all details but cannot modify any form fields.
 
@@ -137,7 +182,7 @@ When a document is opened from the DMS Inbox, it renders in **read-only approval
 - If provided, the reason is stored in `workflow.rejectionDetails` and visible to the originator on their "My DMS Forms" view
 - The originator sees the rejection reason on the form header as a `MessageStrip` of type `Error`
 
-### 3.6 Form Mode Matrix
+### 3.7 Form Mode Matrix
 
 The form behaviour changes based on how it is opened and the document status:
 
@@ -149,6 +194,7 @@ The form behaviour changes based on how it is opened and the document status:
 | My DMS Forms | Rejected | **Edit** | All editable | Resubmit, Cancel |
 | My DMS Forms | Completed | **Read-only** | Display only | Back |
 | DMS Inbox | Pending (your step) | **Read-only + Approval** | Display only | Approve, Reject, Back |
+| DMS Report | Any | Per status + user role | Per status + user role | Per status + user role |
 | Deep Link | Any | Per status rules above | Per status rules above | Per status rules above |
 
 ---
@@ -423,6 +469,8 @@ MSAL integration is straightforward — `@azure/msal-react` library, register ap
 | POST | /api/documents/:id/reject | Reject (with optional reason) |
 | GET | /api/inbox | Current user's approval items |
 | GET | /api/my-documents | Current user's documents |
+| GET | /api/report?rig=X&docType=X&status=X&... | Search all documents with filters |
+| GET | /api/report/export?rig=X&docType=X&... | Export search results as CSV |
 | GET | /api/tile-data | Homepage tile counts |
 | POST | /api/documents/:id/attachments | Upload attachments |
 | GET | /api/documents/:id/workflow | Workflow status and history for visualisation |
@@ -451,6 +499,7 @@ dms-web/
 │   │   │   ├── ApprovalScreen.tsx   # Read-only approval view
 │   │   │   ├── Inbox.tsx
 │   │   │   ├── MyDocuments.tsx
+│   │   │   ├── Report.tsx             # DMS Report search screen
 │   │   │   └── Admin.tsx            # Administration panel
 │   │   ├── components/
 │   │   │   ├── WorkflowTracker.tsx  # Visual workflow step indicator
@@ -618,6 +667,8 @@ All forms are accessible via direct URL, enabling bookmarking, sharing, and exte
 | `/documents/{id}/approve` | Open document in approval mode (redirects to view if not an approver) |
 | `/inbox` | DMS Inbox |
 | `/my-documents` | My DMS Forms |
+| `/report` | DMS Report (search all documents) |
+| `/report?rig={rig}&status={status}&...` | DMS Report with pre-applied filters |
 | `/admin` | Administration panel (admin users only) |
 
 ### 15.2 Form Mode from Deep Link
