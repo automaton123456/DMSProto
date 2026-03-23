@@ -28,6 +28,9 @@ Each data source is a service module with a standard interface, swappable for DB
 | Field Visibility Service | `ZPM_DMS_CL_OBJ` JSON | DB |
 | Approver Service | Department from Work Order | DB/API |
 | Attachment Naming Service | `ZPM_DMS_ATT_NAM` JSON | DB |
+| Notification Service | JSON file (in-app) + console/file (email) | DB + SMTP |
+| Report Service | Scans document storage | DB (indexed queries) |
+| Admin Service | JSON config files | DB |
 
 ---
 
@@ -74,9 +77,15 @@ Dynamic form driven by config. Flow:
 - Work orders must have Status="Released" AND WorkOrderType in ("Inspection Opex", "Inspection Capex")
 - At least one attachment required
 
-**Attachments Section**: File upload area, drag-and-drop, file list with delete
+**Attachments Section**: File upload area, drag-and-drop, file list with delete. See §17 for file type and size constraints.
 
-**Buttons**: Submit, Cancel | Approve, Reject (when opened from Inbox) | Resubmit (when rejected)
+**Buttons** (visibility depends on form mode — see §3.7):
+- **Edit mode**: Submit, Save as Draft, Cancel
+- **Approval mode** (approver viewing pending item from Inbox, Report, or Deep Link): Approve, Reject, Back
+- **Rejected** (originator re-editing): Resubmit, Cancel
+- **Read-only mode**: Back
+
+**Save as Draft**: Saves the form data without submitting for approval. Validation is relaxed — mandatory fields are not enforced, allowing partial completion. The document appears in "My DMS Forms" with status `Draft`. Drafts can be re-opened, completed, and submitted later. Drafts are not visible to approvers.
 
 ### 3.3 DMS Inbox
 
@@ -95,6 +104,8 @@ Table of workflow items pending current user's approval:
 
 Click row → opens form in **approval mode** (see 3.6 Approval Screen below).
 
+Table supports sorting by column headers and pagination. Filtered to items where the current user is an assigned approver for the active step.
+
 ### 3.4 My DMS Forms
 
 Table of current user's submitted documents:
@@ -108,6 +119,8 @@ Table of current user's submitted documents:
 | Date | Created date |
 
 Click row → opens form in view/edit mode depending on status. Rejected documents can be edited and resubmitted.
+
+Table supports sorting by column headers and pagination.
 
 ### 3.5 DMS Report (Search)
 
@@ -400,11 +413,28 @@ Approvers determined by **department** from the work order data (`OwningDepartme
   "workflow": {
     "required": true,
     "currentStep": "completed",
-    "msvApprover": "MANAGER1",
-    "msvApprovalDate": "2026-03-18",
-    "emApprover": "ENGINEER1",
-    "emApprovalDate": "2026-03-19",
-    "rejectionDetails": null
+    "steps": [
+      {
+        "step": 1,
+        "name": "MSV Approval",
+        "status": "approved",
+        "assignedApprovers": ["MANAGER1", "MANAGER2"],
+        "actionedBy": "MANAGER1",
+        "actionedByName": "Jane Doe",
+        "actionDate": "2026-03-18T14:30:00Z",
+        "rejectionReason": null
+      },
+      {
+        "step": 2,
+        "name": "E&M Approval",
+        "status": "approved",
+        "assignedApprovers": ["ENGINEER1"],
+        "actionedBy": "ENGINEER1",
+        "actionedByName": "Bob Engineer",
+        "actionDate": "2026-03-19T09:15:00Z",
+        "rejectionReason": null
+      }
+    ]
   },
   "attachments": [
     "CE_20260315_OIS_BOP-Inspection.pdf"
@@ -447,6 +477,36 @@ Example for CE: positions are DocGroup(1), DocDate(2), CertAuth(3), AddDescripti
 | Production | Microsoft MSAL (Azure AD SSO) |
 
 MSAL integration is straightforward — `@azure/msal-react` library, register app in Azure AD, configure redirect URIs. The user service abstraction means swapping from dropdown to MSAL only changes the auth module.
+
+### 10.1 User Data Model
+
+```json
+{
+  "users": [
+    {
+      "username": "SMITH_J",
+      "displayName": "John Smith",
+      "email": "john.smith@company.com",
+      "department": "MSV",
+      "role": "user"
+    },
+    {
+      "username": "ADMIN1",
+      "displayName": "Admin User",
+      "email": "admin@company.com",
+      "department": "IT",
+      "role": "admin"
+    }
+  ]
+}
+```
+
+**Roles**:
+
+| Role | Description |
+|---|---|
+| `user` | Default. Create/edit own documents, approve items assigned to them, view all documents via Report |
+| `admin` | All user permissions + access to Administration panel (§16) |
 
 ---
 
@@ -790,3 +850,53 @@ GUI for managing application settings that were previously hard-coded or in conf
   ]
 }
 ```
+
+---
+
+## 17. Attachment Constraints
+
+| Constraint | Value |
+|---|---|
+| Maximum file size (per file) | 20 MB |
+| Maximum total attachments per document | 50 MB |
+| Maximum number of attachments | 20 |
+| Allowed file types | `.pdf`, `.doc`, `.docx`, `.xls`, `.xlsx`, `.jpg`, `.jpeg`, `.png`, `.tif`, `.tiff`, `.msg`, `.txt`, `.csv`, `.zip` |
+| Blocked file types | Executables (`.exe`, `.bat`, `.cmd`, `.sh`, `.msi`), scripts (`.js`, `.vbs`, `.ps1`) |
+
+- File type validation is enforced on both client (before upload) and server (on receipt)
+- Files exceeding size limits are rejected with a clear error message before upload starts
+- Allowed file types are configurable via the Admin panel (§16)
+
+---
+
+## 18. Error Handling & User Feedback
+
+### 18.1 Validation Errors
+
+| Scenario | Feedback |
+|---|---|
+| Missing mandatory field on submit | Field highlighted in red with `ValueState.Error`; `MessageStrip` at top listing all errors |
+| Invalid work order (wrong status/type) | Inline error on Work Order field: "Work order must be Released and of type Inspection" |
+| Duplicate work order on same document | Inline error: "This work order is already linked" |
+| No attachments on submit | `MessageStrip` error: "At least one attachment is required" |
+| File type not allowed | Toast message on upload attempt: "File type .exe is not allowed" |
+| File too large | Toast message: "File exceeds maximum size of 20 MB" |
+
+### 18.2 Server / Network Errors
+
+| Scenario | Feedback |
+|---|---|
+| Network timeout | `MessageBox` with retry option: "Unable to reach the server. Please try again." |
+| Server error (500) | `MessageBox`: "An unexpected error occurred. Please try again or contact support." |
+| Unauthorized (401) | Redirect to login / user picker |
+| Forbidden (403) | `MessageStrip` error: "You do not have permission to perform this action" |
+| Conflict (409) — concurrent edit | `MessageBox`: "This document has been modified by another user. Please reload." |
+
+### 18.3 Approval Concurrency
+
+When multiple users are valid approvers for the same step (e.g., two MSV managers), the first to action the item wins:
+
+- On Approve/Reject, the server checks the document is still at the expected step and status
+- If another approver has already actioned it, the server returns `409 Conflict`
+- The UI displays: "This item has already been actioned by {name}. Returning to inbox."
+- The item is removed from the current user's inbox view on refresh
