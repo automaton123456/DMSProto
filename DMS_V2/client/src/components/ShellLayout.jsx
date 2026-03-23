@@ -6,7 +6,6 @@ import {
   Tag,
   Button,
   Icon,
-  Text,
   Avatar
 } from '@ui5/webcomponents-react';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -18,8 +17,6 @@ export default function ShellLayout({ children }) {
   const [notifications, setNotifications] = useState([]);
   const [showNotifs, setShowNotifs] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const notifBtnRef = useRef(null);
-  const userBtnRef = useRef(null);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -47,61 +44,55 @@ export default function ShellLayout({ children }) {
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
   };
 
+  // Company logo SVG
+  const companyLogo = (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <rect width="36" height="36" rx="4" fill="white" opacity="0.15"/>
+      <rect x="4" y="16" width="28" height="16" rx="2" fill="white"/>
+      <rect x="8" y="10" width="20" height="8" rx="1" fill="white" opacity="0.8"/>
+      <rect x="12" y="5" width="12" height="7" rx="1" fill="white" opacity="0.6"/>
+      <rect x="14" y="21" width="4" height="5" rx="0.5" fill="#0070f2"/>
+      <rect x="20" y="21" width="4" height="4" rx="0.5" fill="#0070f2" opacity="0.7"/>
+      <rect x="8" y="21" width="4" height="4" rx="0.5" fill="#0070f2" opacity="0.7"/>
+    </svg>
+  );
+
+  const initials = currentUser?.displayName?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U';
+
+  const navItems = [
+    <ShellBarItem key="home" icon="home" text="Home" onClick={() => navigate('/')} />,
+    <ShellBarItem key="inbox" icon="inbox" text="Inbox" onClick={() => navigate('/inbox')} />,
+    <ShellBarItem key="new-doc" icon="add-document" text="New Document" onClick={() => navigate('/documents/new')} />,
+    <ShellBarItem key="my-docs" icon="document-text" text="My Documents" onClick={() => navigate('/my-documents')} />,
+    <ShellBarItem key="report" icon="search" text="Report" onClick={() => navigate('/report')} />,
+  ];
+
+  if (currentUser?.role === 'admin') {
+    navItems.push(
+      <ShellBarItem key="admin" icon="action-settings" text="Admin Panel" onClick={() => navigate('/admin')} />
+    );
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <ShellBar
-        primaryTitle="DMS"
+        primaryTitle="DMS Proto"
         secondaryTitle="Document Management System"
-        logo={
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="6" fill="#0070f2"/>
-            <path d="M8 8h10l6 6v10H8V8z" fill="white" opacity="0.9"/>
-            <path d="M18 8v6h6" fill="none" stroke="#0070f2" strokeWidth="1.5"/>
-            <rect x="11" y="15" width="10" height="1.5" rx="0.75" fill="#0070f2"/>
-            <rect x="11" y="18" width="8" height="1.5" rx="0.75" fill="#0070f2"/>
-            <rect x="11" y="21" width="6" height="1.5" rx="0.75" fill="#0070f2"/>
-          </svg>
-        }
+        logo={companyLogo}
         onLogoClick={() => navigate('/')}
         profile={
           <Avatar
             size="XS"
-            initials={currentUser?.displayName?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U'}
+            initials={initials}
             colorScheme="Accent6"
             style={{ cursor: 'pointer' }}
           />
         }
-        onProfileClick={(e) => setShowUserMenu(!showUserMenu)}
+        onProfileClick={() => setShowUserMenu(!showUserMenu)}
         notificationsCount={unreadCount > 0 ? String(unreadCount) : undefined}
-        showNotifications
         onNotificationsClick={() => setShowNotifs(!showNotifs)}
       >
-        <ShellBarItem
-          icon="home"
-          text="Home"
-          onClick={() => navigate('/')}
-        />
-        <ShellBarItem
-          icon="inbox"
-          text="Inbox"
-          onClick={() => navigate('/inbox')}
-          count={unreadCount > 0 ? String(unreadCount) : undefined}
-        />
-        <ShellBarItem
-          icon="add-document"
-          text="New Document"
-          onClick={() => navigate('/documents/new')}
-        />
-        <ShellBarItem
-          icon="document-text"
-          text="My Documents"
-          onClick={() => navigate('/my-documents')}
-        />
-        <ShellBarItem
-          icon="search"
-          text="Report"
-          onClick={() => navigate('/report')}
-        />
+        {navItems}
       </ShellBar>
 
       {/* Notifications Popover */}
@@ -169,13 +160,13 @@ export default function ShellLayout({ children }) {
             boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
             borderRadius: '0.5rem',
             zIndex: 1000,
-            minWidth: '200px',
+            minWidth: '220px',
             padding: '0.5rem 0'
           }}
         >
           <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid #e8e8e8' }}>
             <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{currentUser?.displayName}</div>
-            <div style={{ fontSize: '0.75rem', color: '#6a6d70' }}>{currentUser?.role?.toUpperCase()}</div>
+            <div style={{ fontSize: '0.75rem', color: '#6a6d70', marginTop: '0.15rem' }}>{currentUser?.role?.toUpperCase()}</div>
           </div>
           {currentUser?.role === 'admin' && (
             <button
@@ -184,16 +175,16 @@ export default function ShellLayout({ children }) {
               onMouseEnter={e => e.currentTarget.style.background = '#f5f5f5'}
               onMouseLeave={e => e.currentTarget.style.background = 'none'}
             >
-              ⚙ Administration
+              <span style={{ fontSize: '1rem' }}>⚙</span> Administration
             </button>
           )}
           <button
             onClick={() => { setShowUserMenu(false); logout(); navigate('/login'); }}
-            style={{ width: '100%', padding: '0.65rem 1rem', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontSize: '0.85rem', color: '#b00' }}
+            style={{ width: '100%', padding: '0.65rem 1rem', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontSize: '0.85rem', color: '#b00', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
             onMouseEnter={e => e.currentTarget.style.background = '#fff5f5'}
             onMouseLeave={e => e.currentTarget.style.background = 'none'}
           >
-            Sign Out
+            <span style={{ fontSize: '1rem' }}>&#x2192;</span> Sign Out
           </button>
         </div>
       )}

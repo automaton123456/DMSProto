@@ -3,7 +3,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Title, Text, Card, Button, Select, Option, Input,
   Label, MessageStrip, Dialog, TextArea, BusyIndicator,
-  Breadcrumbs, BreadcrumbsItem, Tag, Icon, Bar
+  Tag, Icon, Bar
 } from '@ui5/webcomponents-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import WorkflowTracker from '../components/WorkflowTracker.jsx';
@@ -62,10 +62,11 @@ export default function DocumentForm({ mode: initialMode }) {
   const [eqResults, setEqResults] = useState([]);
   const [activeSearch, setActiveSearch] = useState(null); // 'wo-{idx}' or 'eq-{idx}'
 
-  // Dialogs
+  // Dialogs & success
   const [showRejectDialog, setShowRejectDialog] = useState(false);
   const [rejectReason, setRejectReason] = useState('');
   const [showApproveDialog, setShowApproveDialog] = useState(false);
+  const [successInfo, setSuccessInfo] = useState(null); // { documentId, status }
 
   const fileInputRef = useRef();
   const [dragover, setDragover] = useState(false);
@@ -262,7 +263,11 @@ export default function DocumentForm({ mode: initialMode }) {
       }
       if (result.error) { setError(result.error); setSaving(false); return; }
       await uploadPendingFiles(result.documentId);
-      navigate(action === 'draft' ? '/my-documents' : `/documents/${result.documentId}`);
+      if (action === 'draft') {
+        navigate('/my-documents');
+      } else {
+        setSuccessInfo({ documentId: result.documentId, status: result.status || 'Submitted' });
+      }
     } catch (e) {
       setError(e.message);
     }
@@ -316,6 +321,48 @@ export default function DocumentForm({ mode: initialMode }) {
     </div>
   );
 
+  if (successInfo) {
+    return (
+      <div style={{
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        justifyContent: 'center', minHeight: '70vh', gap: '1.25rem',
+        padding: '2rem', textAlign: 'center'
+      }}>
+        <div style={{
+          width: '80px', height: '80px', borderRadius: '50%',
+          background: '#107e3e', display: 'flex', alignItems: 'center',
+          justifyContent: 'center', boxShadow: '0 4px 20px rgba(16,126,62,0.3)'
+        }}>
+          <Icon name="accept" style={{ fontSize: '2.5rem', color: 'white' }} />
+        </div>
+        <Title level="H2" style={{ color: '#107e3e', marginBottom: 0 }}>Document Submitted Successfully</Title>
+        <div style={{ fontSize: '1rem', color: '#32363a', fontWeight: 600 }}>
+          Document <span style={{ color: '#0070f2' }}>{successInfo.documentId}</span> has been created
+        </div>
+        <div style={{
+          background: '#f0f7ff', border: '1px solid #d0e8ff', borderRadius: '0.5rem',
+          padding: '1rem 1.5rem', maxWidth: '480px', textAlign: 'left'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <Icon name="paper-plane" style={{ color: '#0070f2' }} />
+            <span style={{ fontWeight: 600, color: '#0070f2' }}>Submitted for Approval</span>
+          </div>
+          <div style={{ fontSize: '0.875rem', color: '#32363a', lineHeight: 1.6 }}>
+            Your document has been submitted and is now pending review by the designated approvers.
+            You will receive a notification once it has been reviewed.
+          </div>
+        </div>
+        <div style={{ fontSize: '0.875rem', color: '#6a6d70' }}>
+          You can track the status in <strong>My Documents</strong>
+        </div>
+        <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem' }}>
+          <Button design="Emphasized" icon="home" onClick={() => navigate('/')}>Go to Home</Button>
+          <Button design="Default" icon="document-text" onClick={() => navigate('/my-documents')}>My Documents</Button>
+        </div>
+      </div>
+    );
+  }
+
   const isNewForm = !id;
   const pageTitle = isNewForm ? 'Create DMS Document' : `Document ${doc?.documentId || id}`;
   const statusStyle = STATUS_STYLES[doc?.status] || {};
@@ -323,15 +370,32 @@ export default function DocumentForm({ mode: initialMode }) {
   return (
     <div className="page-container">
       {/* Breadcrumb */}
-      <Breadcrumbs style={{ marginBottom: '1rem' }}>
-        <BreadcrumbsItem onClick={() => navigate('/')}>Home</BreadcrumbsItem>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '1rem', fontSize: '0.875rem', flexWrap: 'wrap' }}>
+        <span
+          onClick={() => navigate('/')}
+          style={{ color: '#0070f2', cursor: 'pointer', textDecoration: 'none' }}
+          onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
+          onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
+        >Home</span>
+        <span style={{ color: '#8c8c8c' }}>/</span>
         {mode === 'approve' || mode === 'readonly' ? (
-          <BreadcrumbsItem onClick={() => navigate('/inbox')}>Inbox</BreadcrumbsItem>
+          <span
+            onClick={() => navigate('/inbox')}
+            style={{ color: '#0070f2', cursor: 'pointer', textDecoration: 'none' }}
+            onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
+            onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
+          >Inbox</span>
         ) : (
-          <BreadcrumbsItem onClick={() => navigate('/my-documents')}>My Documents</BreadcrumbsItem>
+          <span
+            onClick={() => navigate('/my-documents')}
+            style={{ color: '#0070f2', cursor: 'pointer', textDecoration: 'none' }}
+            onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'}
+            onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}
+          >My Documents</span>
         )}
-        <BreadcrumbsItem>{pageTitle}</BreadcrumbsItem>
-      </Breadcrumbs>
+        <span style={{ color: '#8c8c8c' }}>/</span>
+        <span style={{ color: '#32363a', fontWeight: 500 }}>{pageTitle}</span>
+      </div>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
