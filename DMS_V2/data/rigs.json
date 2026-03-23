@@ -1,4 +1,5 @@
 [
+  { "id": "R03094", "name": "Rig 03094", "status": "Drilling" },
   { "id": "R0394", "name": "Rig 394", "status": "Drilling" },
   { "id": "R0700", "name": "Rig 700", "status": "Drilling" },
   { "id": "R0701", "name": "Rig 701", "status": "Drilling" },

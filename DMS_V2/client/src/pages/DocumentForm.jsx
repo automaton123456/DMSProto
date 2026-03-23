@@ -68,6 +68,10 @@ export default function DocumentForm({ mode: initialMode }) {
   const [showApproveDialog, setShowApproveDialog] = useState(false);
   const [successInfo, setSuccessInfo] = useState(null); // { documentId, status }
 
+  // Value help dialogs
+  const [woHelp, setWoHelp] = useState({ open: false, rowIdx: null, search: '', results: [], searching: false });
+  const [eqHelp, setEqHelp] = useState({ open: false, rowIdx: null, search: '', results: [], searching: false });
+
   const fileInputRef = useRef();
   const [dragover, setDragover] = useState(false);
 
@@ -163,6 +167,36 @@ export default function DocumentForm({ mode: initialMode }) {
     const res = await fetch(`/api/equipment?search=${encodeURIComponent(search)}&rig=${rig}`);
     const data = await res.json();
     setEqResults(data);
+  };
+
+  // Value help handlers
+  const openWOHelp = (rowIdx) => setWoHelp({ open: true, rowIdx, search: '', results: [], searching: false });
+  const openEQHelp = (rowIdx) => setEqHelp({ open: true, rowIdx, search: '', results: [], searching: false });
+
+  const runWOHelpSearch = async () => {
+    if (!woHelp.search.trim()) return;
+    setWoHelp(prev => ({ ...prev, searching: true, results: [] }));
+    const res = await fetch(`/api/workorders?search=${encodeURIComponent(woHelp.search)}&rig=${rig}`);
+    const data = await res.json();
+    setWoHelp(prev => ({ ...prev, results: Array.isArray(data) ? data : [], searching: false }));
+  };
+
+  const runEQHelpSearch = async () => {
+    if (!eqHelp.search.trim()) return;
+    setEqHelp(prev => ({ ...prev, searching: true, results: [] }));
+    const res = await fetch(`/api/equipment?search=${encodeURIComponent(eqHelp.search)}&rig=${rig}`);
+    const data = await res.json();
+    setEqHelp(prev => ({ ...prev, results: Array.isArray(data) ? data : [], searching: false }));
+  };
+
+  const selectWOFromHelp = (wo) => {
+    selectWO(woHelp.rowIdx, wo);
+    setWoHelp({ open: false, rowIdx: null, search: '', results: [], searching: false });
+  };
+
+  const selectEQFromHelp = (eq) => {
+    selectEQ(eqHelp.rowIdx, eq);
+    setEqHelp({ open: false, rowIdx: null, search: '', results: [], searching: false });
   };
 
   const addObjectLink = () => {
@@ -591,18 +625,27 @@ export default function DocumentForm({ mode: initialMode }) {
                               <span style={{ fontWeight: 500 }}>{link.workOrder || '—'}</span>
                             ) : (
                               <div>
-                                <Input
-                                  value={link.workOrder}
-                                  onInput={e => {
-                                    const val = e.target.value;
-                                    setObjectLinks(prev => prev.map((l, i) => i === idx ? { ...l, workOrder: val, workOrderText: '' } : l));
-                                    setWoSearch(val);
-                                    setActiveSearch(`wo-${idx}`);
-                                    searchWO(val);
-                                  }}
-                                  placeholder="Search work orders..."
-                                  style={{ width: '100%' }}
-                                />
+                                <div style={{ display: 'flex', gap: '0.25rem' }}>
+                                  <Input
+                                    value={link.workOrder}
+                                    onInput={e => {
+                                      const val = e.target.value;
+                                      setObjectLinks(prev => prev.map((l, i) => i === idx ? { ...l, workOrder: val, workOrderText: '' } : l));
+                                      setWoSearch(val);
+                                      setActiveSearch(`wo-${idx}`);
+                                      searchWO(val);
+                                    }}
+                                    placeholder="Work order..."
+                                    style={{ flex: 1 }}
+                                  />
+                                  <Button
+                                    icon="value-help"
+                                    design="Transparent"
+                                    onClick={() => openWOHelp(idx)}
+                                    title="Search Work Orders"
+                                    style={{ flexShrink: 0 }}
+                                  />
+                                </div>
                                 {activeSearch === `wo-${idx}` && woResults.length > 0 && (
                                   <div style={{
                                     position: 'absolute', zIndex: 100, background: 'white',
@@ -642,18 +685,27 @@ export default function DocumentForm({ mode: initialMode }) {
                               <span style={{ fontWeight: 500 }}>{link.equipment || '—'}</span>
                             ) : (
                               <div>
-                                <Input
-                                  value={link.equipment}
-                                  onInput={e => {
-                                    const val = e.target.value;
-                                    setObjectLinks(prev => prev.map((l, i) => i === idx ? { ...l, equipment: val, equipmentText: '' } : l));
-                                    setEqSearch(val);
-                                    setActiveSearch(`eq-${idx}`);
-                                    searchEQ(val);
-                                  }}
-                                  placeholder="Search equipment..."
-                                  style={{ width: '100%' }}
-                                />
+                                <div style={{ display: 'flex', gap: '0.25rem' }}>
+                                  <Input
+                                    value={link.equipment}
+                                    onInput={e => {
+                                      const val = e.target.value;
+                                      setObjectLinks(prev => prev.map((l, i) => i === idx ? { ...l, equipment: val, equipmentText: '' } : l));
+                                      setEqSearch(val);
+                                      setActiveSearch(`eq-${idx}`);
+                                      searchEQ(val);
+                                    }}
+                                    placeholder="Equipment..."
+                                    style={{ flex: 1 }}
+                                  />
+                                  <Button
+                                    icon="value-help"
+                                    design="Transparent"
+                                    onClick={() => openEQHelp(idx)}
+                                    title="Search Equipment"
+                                    style={{ flexShrink: 0 }}
+                                  />
+                                </div>
                                 {activeSearch === `eq-${idx}` && eqResults.length > 0 && (
                                   <div style={{
                                     position: 'absolute', zIndex: 100, background: 'white',
@@ -913,6 +965,123 @@ export default function DocumentForm({ mode: initialMode }) {
             rows={4}
             style={{ width: '100%', marginTop: '0.5rem' }}
           />
+        </div>
+      </Dialog>
+
+      {/* ── Work Order Value Help Dialog ── */}
+      <Dialog
+        open={woHelp.open}
+        headerText="Work Order Search"
+        onAfterClose={() => setWoHelp({ open: false, rowIdx: null, search: '', results: [], searching: false })}
+        footer={
+          <Bar endContent={
+            <Button design="Transparent" onClick={() => setWoHelp({ open: false, rowIdx: null, search: '', results: [], searching: false })}>
+              Cancel
+            </Button>
+          } />
+        }
+      >
+        <div style={{ padding: '1rem', minWidth: '540px' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+            <Input
+              value={woHelp.search}
+              onInput={e => setWoHelp(prev => ({ ...prev, search: e.target.value }))}
+              onKeyDown={e => e.key === 'Enter' && runWOHelpSearch()}
+              placeholder="Search by work order number or description..."
+              style={{ flex: 1 }}
+            />
+            <Button icon="search" design="Emphasized" onClick={runWOHelpSearch} disabled={woHelp.searching}>
+              Search
+            </Button>
+          </div>
+          {woHelp.searching ? (
+            <div style={{ padding: '2rem', textAlign: 'center' }}>
+              <BusyIndicator active size="S" />
+            </div>
+          ) : woHelp.results.length === 0 ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#6a6d70', fontSize: '0.875rem' }}>
+              {woHelp.search ? 'No results found — try a different search term' : 'Enter a search term and click Search'}
+            </div>
+          ) : (
+            <div style={{ maxHeight: '320px', overflowY: 'auto', border: '1px solid #e8e8e8', borderRadius: '4px' }}>
+              <div style={{ padding: '0.4rem 0.75rem', background: '#f5f5f5', fontSize: '0.75rem', color: '#6a6d70', borderBottom: '1px solid #e8e8e8' }}>
+                {woHelp.results.length} result{woHelp.results.length !== 1 ? 's' : ''} — click a row to select
+              </div>
+              {woHelp.results.map(wo => (
+                <div
+                  key={wo.WipEntityId}
+                  onClick={() => selectWOFromHelp(wo)}
+                  style={{ padding: '0.75rem 1rem', cursor: 'pointer', borderBottom: '1px solid #f0f0f0' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#f0f7ff'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'white'}
+                >
+                  <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#0070f2' }}>{wo.WipEntityName}</div>
+                  <div style={{ fontSize: '0.82rem', color: '#32363a', marginTop: '0.15rem' }}>{wo.Description}</div>
+                  <div style={{ fontSize: '0.75rem', color: '#6a6d70', marginTop: '0.15rem' }}>
+                    Status: {wo.Status} &nbsp;|&nbsp; Type: {wo.WorkOrderTypeDisp}
+                    {wo.OwningDepartmentId && <> &nbsp;|&nbsp; Dept: {wo.OwningDepartmentId}</>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </Dialog>
+
+      {/* ── Equipment Value Help Dialog ── */}
+      <Dialog
+        open={eqHelp.open}
+        headerText="Equipment Search"
+        onAfterClose={() => setEqHelp({ open: false, rowIdx: null, search: '', results: [], searching: false })}
+        footer={
+          <Bar endContent={
+            <Button design="Transparent" onClick={() => setEqHelp({ open: false, rowIdx: null, search: '', results: [], searching: false })}>
+              Cancel
+            </Button>
+          } />
+        }
+      >
+        <div style={{ padding: '1rem', minWidth: '480px' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+            <Input
+              value={eqHelp.search}
+              onInput={e => setEqHelp(prev => ({ ...prev, search: e.target.value }))}
+              onKeyDown={e => e.key === 'Enter' && runEQHelpSearch()}
+              placeholder="Search by asset number or description..."
+              style={{ flex: 1 }}
+            />
+            <Button icon="search" design="Emphasized" onClick={runEQHelpSearch} disabled={eqHelp.searching}>
+              Search
+            </Button>
+          </div>
+          {eqHelp.searching ? (
+            <div style={{ padding: '2rem', textAlign: 'center' }}>
+              <BusyIndicator active size="S" />
+            </div>
+          ) : eqHelp.results.length === 0 ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#6a6d70', fontSize: '0.875rem' }}>
+              {eqHelp.search ? 'No results found — try a different search term' : 'Enter a search term and click Search'}
+            </div>
+          ) : (
+            <div style={{ maxHeight: '320px', overflowY: 'auto', border: '1px solid #e8e8e8', borderRadius: '4px' }}>
+              <div style={{ padding: '0.4rem 0.75rem', background: '#f5f5f5', fontSize: '0.75rem', color: '#6a6d70', borderBottom: '1px solid #e8e8e8' }}>
+                {eqHelp.results.length} result{eqHelp.results.length !== 1 ? 's' : ''} — click a row to select
+              </div>
+              {eqHelp.results.map(eq => (
+                <div
+                  key={eq.assetNumber}
+                  onClick={() => selectEQFromHelp(eq)}
+                  style={{ padding: '0.75rem 1rem', cursor: 'pointer', borderBottom: '1px solid #f0f0f0' }}
+                  onMouseEnter={e => e.currentTarget.style.background = '#f0f7ff'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'white'}
+                >
+                  <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#0070f2' }}>{eq.assetNumber}</div>
+                  <div style={{ fontSize: '0.82rem', color: '#32363a', marginTop: '0.15rem' }}>{eq.description}</div>
+                  {eq.rigId && <div style={{ fontSize: '0.75rem', color: '#6a6d70', marginTop: '0.15rem' }}>Rig: {eq.rigId}</div>}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </Dialog>
     </div>
