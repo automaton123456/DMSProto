@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  Title, Card, Button, Input, Select, Option, DatePicker,
+  Title, Card, Button, Input, Select, Option,
   BusyIndicator, Label, Icon, MessageStrip
 } from '@ui5/webcomponents-react';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -15,6 +15,14 @@ const STATUS_STYLES = {
 };
 
 const ALL_STATUSES = ['Draft', 'Pending MSV Approval', 'Pending E&M Approval', 'Approved', 'Rejected'];
+
+const nativeDateStyle = {
+  width: '100%', height: '2.25rem', padding: '0 0.625rem',
+  border: '1px solid var(--sapField_BorderColor, #bfbfbf)',
+  borderRadius: '0.25rem', fontSize: '0.875rem', fontFamily: 'inherit',
+  color: 'var(--sapTextColor, #32363a)', background: 'var(--sapField_Background, #fff)',
+  outline: 'none', boxSizing: 'border-box', cursor: 'pointer'
+};
 
 export default function Report() {
   const { currentUser } = useAuth();
@@ -165,11 +173,11 @@ export default function Report() {
             </div>
             <div>
               <Label>Date From</Label>
-              <DatePicker style={{ width: '100%' }} onChange={e => setDateFrom(e.detail.value)} />
+              <input type="date" onChange={e => setDateFrom(e.target.value)} style={nativeDateStyle} />
             </div>
             <div>
               <Label>Date To</Label>
-              <DatePicker style={{ width: '100%' }} onChange={e => setDateTo(e.detail.value)} />
+              <input type="date" onChange={e => setDateTo(e.target.value)} style={nativeDateStyle} />
             </div>
           </div>
 
