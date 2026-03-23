@@ -1,0 +1,62 @@
+{
+  "docTypes": [
+    { "code": "CAT", "description": "Catalogs & Brochures" },
+    { "code": "CER", "description": "Certificates" },
+    { "code": "GRP", "description": "General Reports" },
+    { "code": "MAN", "description": "Manuals & Tech Info" },
+    { "code": "STC", "description": "Static & Calculation" },
+    { "code": "STU", "description": "Studies" }
+  ],
+  "docGroups": {
+    "CAT": [{ "code": "CT", "description": "Catalogue / Brochures" }],
+    "CER": [
+      { "code": "CE", "description": "Certification" },
+      { "code": "CM", "description": "Material Certificate" },
+      { "code": "CO", "description": "Certificate of Origin" },
+      { "code": "ER", "description": "EX-Register" },
+      { "code": "EX", "description": "EX-Certificates" },
+      { "code": "IR", "description": "Inspection Reports" },
+      { "code": "OS", "description": "Oil Sample" },
+      { "code": "RR", "description": "Repair Reports" },
+      { "code": "SF", "description": "Statement of Facts" },
+      { "code": "TP", "description": "Technical Passports" }
+    ],
+    "GRP": [
+      { "code": "AC", "description": "Asset Cond. Assessment Process" },
+      { "code": "AD", "description": "Audit" },
+      { "code": "CR", "description": "Cost Attributes Review" },
+      { "code": "CS", "description": "Critical Spare Parts List" },
+      { "code": "EA", "description": "Equipment Alert" },
+      { "code": "EC", "description": "Equipment Status Report" },
+      { "code": "EV", "description": "Equipment Validation Process" },
+      { "code": "MC", "description": "Management of Change" },
+      { "code": "RA", "description": "Rig Acceptance / Commissioning" },
+      { "code": "VR", "description": "Visit Report" }
+    ],
+    "MAN": [
+      { "code": "DW", "description": "Drawing" },
+      { "code": "MA", "description": "Manuf. Operation Manual" },
+      { "code": "PC", "description": "Pictures / Photos" },
+      { "code": "SC", "description": "Specification & Standards" },
+      { "code": "SL", "description": "Spare Parts List" }
+    ],
+    "STC": [{ "code": "CA", "description": "Calculation / Static Calculation" }],
+    "STU": [
+      { "code": "HZ", "description": "HAZOP Study" },
+      { "code": "ST", "description": "Study & Test Reports" }
+    ]
+  },
+  "workflowRequired": ["CE", "CO", "ER", "OS", "TP", "AC", "CR", "CS", "EC", "EV"],
+  "workflowConfig": {
+    "CE": { "workflowActive": true },
+    "CO": { "workflowActive": true },
+    "ER": { "workflowActive": true },
+    "OS": { "workflowActive": true },
+    "TP": { "workflowActive": true },
+    "AC": { "workflowActive": true },
+    "CR": { "workflowActive": true },
+    "CS": { "workflowActive": true },
+    "EC": { "workflowActive": true },
+    "EV": { "workflowActive": true }
+  }
+}

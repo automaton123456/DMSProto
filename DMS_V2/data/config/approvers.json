@@ -1,0 +1,12 @@
+{
+  "msvApprovers": {
+    "default": ["MANAGER1", "DOE_J"],
+    "1813": ["MANAGER1"],
+    "2548": ["DOE_J"]
+  },
+  "emApprovers": {
+    "default": ["MANAGER2", "ENGINEER1"],
+    "1813": ["ENGINEER1"],
+    "2548": ["MANAGER2"]
+  }
+}
