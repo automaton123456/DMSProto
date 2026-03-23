@@ -123,6 +123,11 @@ export default function Report() {
 
   return (
     <div className="page-container">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '1rem', fontSize: '0.875rem', flexWrap: 'wrap' }}>
+        <span onClick={() => navigate('/')} style={{ color: '#0070f2', cursor: 'pointer' }} onMouseEnter={e => e.currentTarget.style.textDecoration = 'underline'} onMouseLeave={e => e.currentTarget.style.textDecoration = 'none'}>Home</span>
+        <span style={{ color: '#8c8c8c' }}>/</span>
+        <span style={{ color: '#32363a', fontWeight: 500 }}>DMS Report</span>
+      </div>
       <Title level="H2" style={{ marginBottom: '1.5rem' }}>DMS Report</Title>
 
       {/* Filter bar */}
