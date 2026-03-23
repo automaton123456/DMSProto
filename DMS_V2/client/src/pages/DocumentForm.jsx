@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  Title, Text, Card, Button, Select, Option, Input, DatePicker,
+  Title, Text, Card, Button, Select, Option, Input,
   Label, MessageStrip, Dialog, TextArea, BusyIndicator,
   Breadcrumbs, BreadcrumbsItem, Tag, Icon, Bar
 } from '@ui5/webcomponents-react';
@@ -381,8 +381,8 @@ export default function DocumentForm({ mode: initialMode }) {
               {isReadOnly ? (
                 <div style={{ padding: '0.5rem 0', fontWeight: 500 }}>{rig || '—'}</div>
               ) : (
-                <Select style={{ width: '100%' }} onChange={e => setRig(e.detail.selectedOption.dataset.value)} value={rig}>
-                  <Option data-value="">— Select Rig —</Option>
+                <Select key={`rig-${rig}`} style={{ width: '100%' }} onChange={e => setRig(e.detail.selectedOption.dataset.value)}>
+                  <Option data-value="" selected={!rig}>— Select Rig —</Option>
                   {rigs.map(r => <Option key={r.id} data-value={r.id} selected={r.id === rig}>{r.id} — {r.name}</Option>)}
                 </Select>
               )}
@@ -396,8 +396,8 @@ export default function DocumentForm({ mode: initialMode }) {
                   {docTypes.find(t => t.code === docType)?.description || docType || '—'}
                 </div>
               ) : (
-                <Select style={{ width: '100%' }} onChange={e => { setDocType(e.detail.selectedOption.dataset.value); setDocGroup(''); }}>
-                  <Option data-value="">— Select Type —</Option>
+                <Select key={`type-${docType}`} style={{ width: '100%' }} onChange={e => { setDocType(e.detail.selectedOption.dataset.value); setDocGroup(''); }}>
+                  <Option data-value="" selected={!docType}>— Select Type —</Option>
                   {docTypes.map(t => <Option key={t.code} data-value={t.code} selected={t.code === docType}>{t.code} — {t.description}</Option>)}
                 </Select>
               )}
@@ -411,8 +411,8 @@ export default function DocumentForm({ mode: initialMode }) {
                   {docGroups.find(g => g.code === docGroup)?.description || docGroup || '—'}
                 </div>
               ) : (
-                <Select style={{ width: '100%' }} onChange={e => setDocGroup(e.detail.selectedOption.dataset.value)} disabled={!docType}>
-                  <Option data-value="">— Select Group —</Option>
+                <Select key={`group-${docGroup}`} style={{ width: '100%' }} onChange={e => setDocGroup(e.detail.selectedOption.dataset.value)} disabled={!docType}>
+                  <Option data-value="" selected={!docGroup}>— Select Group —</Option>
                   {docGroups.map(g => <Option key={g.code} data-value={g.code} selected={g.code === docGroup}>{g.code} — {g.description}</Option>)}
                 </Select>
               )}
@@ -447,10 +447,26 @@ export default function DocumentForm({ mode: initialMode }) {
                         {value || '—'}
                       </div>
                     ) : key === 'docDate' ? (
-                      <DatePicker
-                        style={{ width: '100%' }}
+                      <input
+                        type="date"
                         value={value}
-                        onChange={e => setClassifications(prev => ({ ...prev, [key]: e.detail.value }))}
+                        onChange={e => setClassifications(prev => ({ ...prev, [key]: e.target.value }))}
+                        style={{
+                          width: '100%',
+                          height: '2.25rem',
+                          padding: '0 0.625rem',
+                          border: '1px solid var(--sapField_BorderColor, #bfbfbf)',
+                          borderRadius: '0.25rem',
+                          fontSize: '0.875rem',
+                          fontFamily: 'inherit',
+                          color: 'var(--sapTextColor, #32363a)',
+                          background: 'var(--sapField_Background, #fff)',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                          cursor: 'pointer'
+                        }}
+                        onFocus={e => e.target.style.borderColor = 'var(--sapField_Focus_BorderColor, #0070f2)'}
+                        onBlur={e => e.target.style.borderColor = 'var(--sapField_BorderColor, #bfbfbf)'}
                       />
                     ) : key === 'docLoc' ? (
                       <Input

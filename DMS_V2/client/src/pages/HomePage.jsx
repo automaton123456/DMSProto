@@ -14,8 +14,7 @@ const tiles = [
     title: 'Create DMS Document',
     subtitle: 'Upload a new document',
     icon: 'add-document',
-    color: '#0070f2',
-    bgGradient: 'linear-gradient(135deg, #0070f2 0%, #003d8f 100%)',
+    accentColor: '#0070f2',
     route: '/documents/new',
     countKey: null
   },
@@ -24,8 +23,7 @@ const tiles = [
     title: 'DMS Inbox',
     subtitle: 'Items pending your approval',
     icon: 'inbox',
-    color: '#e86826',
-    bgGradient: 'linear-gradient(135deg, #e86826 0%, #c04d00 100%)',
+    accentColor: '#e86826',
     route: '/inbox',
     countKey: 'inboxCount'
   },
@@ -34,8 +32,7 @@ const tiles = [
     title: 'My DMS Forms',
     subtitle: 'Your submitted documents',
     icon: 'my-sales-order',
-    color: '#107e3e',
-    bgGradient: 'linear-gradient(135deg, #107e3e 0%, #0a5229 100%)',
+    accentColor: '#107e3e',
     route: '/my-documents',
     countKey: 'myDocsCount'
   },
@@ -44,12 +41,106 @@ const tiles = [
     title: 'DMS Report',
     subtitle: 'Search all DMS documents',
     icon: 'bar-chart',
-    color: '#6c32a0',
-    bgGradient: 'linear-gradient(135deg, #6c32a0 0%, #46216b 100%)',
+    accentColor: '#6c32a0',
     route: '/report',
     countKey: null
   }
 ];
+
+const STATUS_STYLES = {
+  'Draft': { background: '#f0f0f0', color: '#666' },
+  'Approved': { background: '#e8f5e9', color: '#107e3e' },
+  'Rejected': { background: '#fce4ec', color: '#b00' },
+  'Pending MSV Approval': { background: '#fff3e0', color: '#b26000' },
+  'Pending E&M Approval': { background: '#e3f2fd', color: '#0070f2' }
+};
+
+function FioriTile({ tile, count, onClick }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: hovered ? '#f5f8ff' : 'white',
+        border: `1px solid ${hovered ? tile.accentColor : '#e0e0e0'}`,
+        borderTop: `4px solid ${tile.accentColor}`,
+        borderRadius: '0.5rem',
+        padding: '1.25rem 1.25rem 1rem',
+        cursor: 'pointer',
+        minHeight: '150px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        boxShadow: hovered
+          ? `0 4px 16px ${tile.accentColor}25`
+          : '0 1px 4px rgba(0,0,0,0.08)',
+        transition: 'all 0.15s ease',
+        position: 'relative',
+        userSelect: 'none'
+      }}
+    >
+      {/* Count badge top-right */}
+      {count > 0 && (
+        <div style={{
+          position: 'absolute',
+          top: '0.75rem',
+          right: '0.75rem',
+          background: tile.accentColor,
+          color: 'white',
+          borderRadius: '1rem',
+          padding: '0.15rem 0.55rem',
+          fontSize: '0.78rem',
+          fontWeight: 700,
+          minWidth: '22px',
+          textAlign: 'center',
+          lineHeight: '1.4'
+        }}>
+          {count}
+        </div>
+      )}
+
+      {/* Icon */}
+      <div style={{
+        width: '42px',
+        height: '42px',
+        borderRadius: '10px',
+        background: `${tile.accentColor}15`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: '0.75rem'
+      }}>
+        <Icon
+          name={tile.icon}
+          style={{ fontSize: '1.4rem', color: tile.accentColor }}
+        />
+      </div>
+
+      {/* Text */}
+      <div>
+        <div style={{
+          fontSize: '0.95rem',
+          fontWeight: 700,
+          color: '#32363a',
+          marginBottom: '0.3rem',
+          lineHeight: 1.3
+        }}>
+          {tile.title}
+        </div>
+        <div style={{
+          fontSize: '0.78rem',
+          color: '#6a6d70',
+          lineHeight: 1.4
+        }}>
+          {tile.subtitle}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function HomePage() {
   const { currentUser } = useAuth();
@@ -70,17 +161,6 @@ export default function HomePage() {
       .catch(() => {});
   }, [currentUser]);
 
-  const getStatusStyle = (status) => {
-    const map = {
-      'Draft': { background: '#f0f0f0', color: '#666' },
-      'Approved': { background: '#e8f5e9', color: '#107e3e' },
-      'Rejected': { background: '#fce4ec', color: '#b00' },
-      'Pending MSV Approval': { background: '#fff3e0', color: '#b26000' },
-      'Pending E&M Approval': { background: '#e3f2fd', color: '#0070f2' }
-    };
-    return map[status] || { background: '#f0f0f0', color: '#666' };
-  };
-
   return (
     <div className="page-container">
       {/* Welcome header */}
@@ -91,75 +171,26 @@ export default function HomePage() {
         </Text>
       </div>
 
-      {/* Main tiles */}
-      <div className="dashboard-tiles">
+      {/* Fiori-style tiles */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+        gap: '1rem',
+        marginBottom: '2.5rem'
+      }}>
         {tiles.map(tile => (
-          <div
+          <FioriTile
             key={tile.id}
+            tile={tile}
+            count={tile.countKey ? counts[tile.countKey] || 0 : 0}
             onClick={() => navigate(tile.route)}
-            className="tile-card"
-            style={{
-              background: tile.bgGradient,
-              color: 'white',
-              padding: '1.5rem',
-              minHeight: '160px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              boxShadow: `0 4px 16px ${tile.color}40`,
-              position: 'relative',
-              overflow: 'hidden'
-            }}
-          >
-            {/* Background icon */}
-            <div style={{
-              position: 'absolute',
-              right: '-10px',
-              bottom: '-10px',
-              opacity: 0.12,
-              fontSize: '100px',
-              lineHeight: 1,
-              pointerEvents: 'none'
-            }}>
-              <Icon name={tile.icon} style={{ fontSize: '100px', color: 'white' }} />
-            </div>
-
-            {/* Count badge */}
-            {tile.countKey && counts[tile.countKey] > 0 && (
-              <div style={{
-                position: 'absolute',
-                top: '0.75rem',
-                right: '0.75rem',
-                background: 'white',
-                color: tile.color,
-                borderRadius: '1rem',
-                padding: '0.15rem 0.6rem',
-                fontSize: '0.8rem',
-                fontWeight: 700,
-                minWidth: '24px',
-                textAlign: 'center'
-              }}>
-                {counts[tile.countKey]}
-              </div>
-            )}
-
-            {/* Content */}
-            <div>
-              <Icon name={tile.icon} style={{ fontSize: '2rem', color: 'white', marginBottom: '0.75rem' }} />
-              <div style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '0.3rem' }}>
-                {tile.title}
-              </div>
-              <div style={{ fontSize: '0.82rem', opacity: 0.85 }}>
-                {tile.subtitle}
-              </div>
-            </div>
-          </div>
+          />
         ))}
       </div>
 
       {/* Recent Documents */}
       {recentDocs.length > 0 && (
-        <div style={{ marginTop: '2rem' }}>
+        <div>
           <Title level="H4" style={{ marginBottom: '1rem' }}>Recent Documents</Title>
           <Card>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
@@ -175,7 +206,7 @@ export default function HomePage() {
                   <tr
                     key={doc.documentId}
                     onClick={() => navigate(`/documents/${doc.documentId}`)}
-                    style={{ cursor: 'pointer', transition: 'background 0.1s' }}
+                    style={{ cursor: 'pointer', transition: 'background 0.1s', borderBottom: '1px solid #f0f0f0' }}
                     onMouseEnter={e => e.currentTarget.style.background = '#f0f7ff'}
                     onMouseLeave={e => e.currentTarget.style.background = 'white'}
                   >
@@ -190,7 +221,7 @@ export default function HomePage() {
                     </td>
                     <td style={{ padding: '0.65rem 1rem' }}>
                       <span style={{
-                        ...getStatusStyle(doc.status),
+                        ...(STATUS_STYLES[doc.status] || {}),
                         padding: '0.2rem 0.6rem',
                         borderRadius: '1rem',
                         fontSize: '0.72rem',
