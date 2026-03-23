@@ -102,13 +102,6 @@ export default function ShellLayout({ children }) {
           text="Report"
           onClick={() => navigate('/report')}
         />
-        {currentUser?.role === 'admin' && (
-          <ShellBarItem
-            icon="settings"
-            text="Admin"
-            onClick={() => navigate('/admin')}
-          />
-        )}
       </ShellBar>
 
       {/* Notifications Popover */}
@@ -184,9 +177,21 @@ export default function ShellLayout({ children }) {
             <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{currentUser?.displayName}</div>
             <div style={{ fontSize: '0.75rem', color: '#6a6d70' }}>{currentUser?.role?.toUpperCase()}</div>
           </div>
+          {currentUser?.role === 'admin' && (
+            <button
+              onClick={() => { setShowUserMenu(false); navigate('/admin'); }}
+              style={{ width: '100%', padding: '0.65rem 1rem', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontSize: '0.85rem', color: '#32363a', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+              onMouseEnter={e => e.currentTarget.style.background = '#f5f5f5'}
+              onMouseLeave={e => e.currentTarget.style.background = 'none'}
+            >
+              ⚙ Administration
+            </button>
+          )}
           <button
             onClick={() => { setShowUserMenu(false); logout(); navigate('/login'); }}
             style={{ width: '100%', padding: '0.65rem 1rem', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', fontSize: '0.85rem', color: '#b00' }}
+            onMouseEnter={e => e.currentTarget.style.background = '#fff5f5'}
+            onMouseLeave={e => e.currentTarget.style.background = 'none'}
           >
             Sign Out
           </button>

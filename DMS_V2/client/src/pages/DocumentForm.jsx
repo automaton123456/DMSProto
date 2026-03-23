@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  Title, Text, Card, Button, Select, Option, Input, DatePicker,
+  Title, Text, Card, Button, Select, Option, Input,
   Label, MessageStrip, Dialog, TextArea, BusyIndicator,
   Breadcrumbs, BreadcrumbsItem, Tag, Icon, Bar
 } from '@ui5/webcomponents-react';
@@ -447,10 +447,26 @@ export default function DocumentForm({ mode: initialMode }) {
                         {value || '—'}
                       </div>
                     ) : key === 'docDate' ? (
-                      <DatePicker
-                        style={{ width: '100%' }}
+                      <input
+                        type="date"
                         value={value}
-                        onChange={e => setClassifications(prev => ({ ...prev, [key]: e.detail.value }))}
+                        onChange={e => setClassifications(prev => ({ ...prev, [key]: e.target.value }))}
+                        style={{
+                          width: '100%',
+                          height: '2.25rem',
+                          padding: '0 0.625rem',
+                          border: '1px solid var(--sapField_BorderColor, #bfbfbf)',
+                          borderRadius: '0.25rem',
+                          fontSize: '0.875rem',
+                          fontFamily: 'inherit',
+                          color: 'var(--sapTextColor, #32363a)',
+                          background: 'var(--sapField_Background, #fff)',
+                          outline: 'none',
+                          boxSizing: 'border-box',
+                          cursor: 'pointer'
+                        }}
+                        onFocus={e => e.target.style.borderColor = 'var(--sapField_Focus_BorderColor, #0070f2)'}
+                        onBlur={e => e.target.style.borderColor = 'var(--sapField_BorderColor, #bfbfbf)'}
                       />
                     ) : key === 'docLoc' ? (
                       <Input
