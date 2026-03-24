@@ -59,11 +59,10 @@ export default function Inbox() {
 
   return (
     <div className="page-container">
-      {/* Breadcrumb */}
       <nav aria-label="breadcrumb" className="mb-3">
         <ol className="breadcrumb" style={{ fontSize: '0.875rem' }}>
           <li className="breadcrumb-item">
-            <span style={{ color: '#0070f2', cursor: 'pointer' }} onClick={() => navigate('/')}>Home</span>
+            <span className="text-primary" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Home</span>
           </li>
           <li className="breadcrumb-item active">DMS Inbox</li>
         </ol>
@@ -71,10 +70,7 @@ export default function Inbox() {
 
       <div className="d-flex align-items-center gap-3 mb-4">
         <h3 className="fw-bold mb-0">DMS Inbox</h3>
-        <Badge
-          bg={items.length > 0 ? 'primary' : 'secondary'}
-          style={{ fontSize: '0.8rem', padding: '0.35rem 0.75rem' }}
-        >
+        <Badge bg={items.length > 0 ? 'primary' : 'secondary'} style={{ fontSize: '0.8rem', padding: '0.35rem 0.75rem' }}>
           {items.length} item{items.length !== 1 ? 's' : ''}
         </Badge>
       </div>
@@ -102,11 +98,7 @@ export default function Inbox() {
                     ['createdDate', 'Date Created'],
                     ['step', 'Workflow Step']
                   ].map(([key, label]) => (
-                    <th
-                      key={key}
-                      className="sortable-th"
-                      onClick={() => handleSort(key)}
-                    >
+                    <th key={key} className="sortable-th" onClick={() => handleSort(key)}>
                       {label}<SortIcon col={key} />
                     </th>
                   ))}
@@ -120,7 +112,7 @@ export default function Inbox() {
                     style={{ cursor: 'pointer' }}
                     onClick={() => navigate(`/documents/${doc.documentId}/approve`)}
                   >
-                    <td className="fw-semibold" style={{ color: '#0070f2' }}>{doc.documentId}</td>
+                    <td className="fw-semibold text-primary">{doc.documentId}</td>
                     <td>{doc.originator}</td>
                     <td>{doc.docType}/{doc.docGroup}</td>
                     <td className="text-muted" style={{ maxWidth: 200 }}>
@@ -138,7 +130,6 @@ export default function Inbox() {
                         size="sm"
                         variant="primary"
                         onClick={() => navigate(`/documents/${doc.documentId}/approve`)}
-                        style={{ background: 'linear-gradient(90deg,#0070f2,#003d8f)', border: 'none' }}
                       >
                         Review
                       </Button>

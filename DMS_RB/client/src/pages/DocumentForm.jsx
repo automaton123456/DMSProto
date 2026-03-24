@@ -286,14 +286,11 @@ export default function DocumentForm({ mode: initialMode }) {
     return (
       <div className="d-flex flex-column align-items-center justify-content-center text-center"
         style={{ minHeight: '70vh', gap: '1.25rem', padding: '2rem' }}>
-        <div style={{
-          width: 80, height: 80, borderRadius: '50%', background: '#107e3e',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 4px 20px rgba(16,126,62,0.3)', fontSize: '2.5rem'
-        }}>✓</div>
-        <h3 className="fw-bold" style={{ color: '#107e3e' }}>Document Submitted Successfully</h3>
+        <div className="bg-success rounded-circle d-flex align-items-center justify-content-center shadow"
+          style={{ width: 80, height: 80, fontSize: '2.5rem' }}>✓</div>
+        <h3 className="fw-bold text-success">Document Submitted Successfully</h3>
         <p className="fw-semibold">
-          Document <span style={{ color: '#0070f2' }}>{successInfo.documentId}</span> has been created
+          Document <span className="text-primary">{successInfo.documentId}</span> has been created
         </p>
         <Alert variant="info" style={{ maxWidth: 480, textAlign: 'left' }}>
           <strong>✈ Submitted for Approval</strong><br />
@@ -316,11 +313,11 @@ export default function DocumentForm({ mode: initialMode }) {
     <div className="page-container">
       {/* Breadcrumb */}
       <Breadcrumb className="mb-3" style={{ fontSize: '0.875rem' }}>
-        <Breadcrumb.Item onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Home</Breadcrumb.Item>
+        <Breadcrumb.Item onClick={() => navigate('/')}>Home</Breadcrumb.Item>
         {mode === 'approve' || mode === 'readonly' ? (
-          <Breadcrumb.Item onClick={() => navigate('/inbox')} style={{ cursor: 'pointer' }}>Inbox</Breadcrumb.Item>
+          <Breadcrumb.Item onClick={() => navigate('/inbox')}>Inbox</Breadcrumb.Item>
         ) : (
-          <Breadcrumb.Item onClick={() => navigate('/my-documents')} style={{ cursor: 'pointer' }}>My Documents</Breadcrumb.Item>
+          <Breadcrumb.Item onClick={() => navigate('/my-documents')}>My Documents</Breadcrumb.Item>
         )}
         <Breadcrumb.Item active>{pageTitle}</Breadcrumb.Item>
       </Breadcrumb>
@@ -423,7 +420,7 @@ export default function DocumentForm({ mode: initialMode }) {
                         {vis === 'M*' && <span className="text-muted ms-1" style={{ fontSize: '0.72rem' }}>(multiple)</span>}
                       </Form.Label>
                       {isReadOnly ? (
-                        <div className="fw-semibold pt-1" style={{ color: value ? '#32363a' : '#6a6d70' }}>
+                        <div className={`fw-semibold pt-1 ${value ? '' : 'text-muted'}`}>
                           {value || '—'}
                         </div>
                       ) : key === 'docDate' ? (
@@ -609,7 +606,7 @@ export default function DocumentForm({ mode: initialMode }) {
               onDrop={handleFileDrop}
               onClick={() => fileInputRef.current?.click()}
             >
-              <div style={{ fontSize: '2rem', color: '#0070f2' }}>☁</div>
+              <div className="text-primary" style={{ fontSize: '2rem' }}>☁</div>
               <div>
                 <strong>Drag & drop files here</strong> or click to browse<br />
                 <span className="text-muted" style={{ fontSize: '0.75rem' }}>PDF, DOC, XLS, images — max 20MB each</span>
@@ -624,8 +621,7 @@ export default function DocumentForm({ mode: initialMode }) {
                 FILES TO UPLOAD ({pendingFiles.length})
               </div>
               {pendingFiles.map((f, idx) => (
-                <div key={idx} className="d-flex align-items-center gap-2 p-2 rounded mb-1"
-                  style={{ background: '#f0f7ff' }}>
+                <div key={idx} className="d-flex align-items-center gap-2 p-2 rounded mb-1 bg-primary-subtle">
                   <span>📄</span>
                   <span className="flex-grow-1" style={{ fontSize: '0.85rem' }}>{f.name}</span>
                   <span className="text-muted" style={{ fontSize: '0.75rem' }}>{(f.size / 1024 / 1024).toFixed(2)} MB</span>
@@ -644,7 +640,7 @@ export default function DocumentForm({ mode: initialMode }) {
               )}
               {attachments.map((filename, idx) => (
                 <div key={idx} className="d-flex align-items-center gap-2 p-2 border-bottom">
-                  <span style={{ color: '#b00020' }}>📎</span>
+                  <span className="text-danger">📎</span>
                   <span className="flex-grow-1" style={{ fontSize: '0.85rem' }}>{filename}</span>
                   <Button
                     size="sm"
@@ -689,7 +685,6 @@ export default function DocumentForm({ mode: initialMode }) {
               variant="primary"
               onClick={() => handleSave('submit')}
               disabled={saving}
-              style={{ background: 'linear-gradient(90deg,#0070f2,#003d8f)', border: 'none' }}
             >
               {doc?.status === 'Rejected' ? '✈ Resubmit' : '✈ Submit'}
             </Button>

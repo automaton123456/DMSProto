@@ -54,11 +54,10 @@ export default function MyDocuments() {
 
   return (
     <div className="page-container">
-      {/* Breadcrumb */}
       <nav aria-label="breadcrumb" className="mb-3">
         <ol className="breadcrumb" style={{ fontSize: '0.875rem' }}>
           <li className="breadcrumb-item">
-            <span style={{ color: '#0070f2', cursor: 'pointer' }} onClick={() => navigate('/')}>Home</span>
+            <span className="text-primary" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Home</span>
           </li>
           <li className="breadcrumb-item active">My DMS Forms</li>
         </ol>
@@ -71,11 +70,7 @@ export default function MyDocuments() {
             {docs.length} document{docs.length !== 1 ? 's' : ''}
           </Badge>
         </div>
-        <Button
-          variant="primary"
-          onClick={() => navigate('/documents/new')}
-          style={{ background: 'linear-gradient(90deg,#0070f2,#003d8f)', border: 'none' }}
-        >
+        <Button variant="primary" onClick={() => navigate('/documents/new')}>
           ➕ New Document
         </Button>
       </div>
@@ -84,23 +79,15 @@ export default function MyDocuments() {
       {docs.length > 0 && (
         <div className="d-flex gap-2 mb-3 flex-wrap">
           {[['all', 'All', docs.length], ...Object.entries(statusCounts).map(([s, c]) => [s, s, c])].map(([val, label, count]) => (
-            <button
+            <Button
               key={val}
+              size="sm"
+              variant={statusFilter === val ? 'primary' : 'outline-secondary'}
               onClick={() => setStatusFilter(val)}
-              style={{
-                padding: '0.3rem 0.9rem',
-                borderRadius: '1rem',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                background: statusFilter === val ? '#0070f2' : '#f0f0f0',
-                color: statusFilter === val ? 'white' : '#32363a',
-                transition: 'all 0.15s'
-              }}
+              className="rounded-pill"
             >
               {label} ({count})
-            </button>
+            </Button>
           ))}
         </div>
       )}
@@ -111,11 +98,7 @@ export default function MyDocuments() {
             <div style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.3 }}>📄</div>
             <h5 className="text-muted">No documents yet</h5>
             <p className="text-muted mb-4">Create your first DMS document to get started</p>
-            <Button
-              variant="primary"
-              onClick={() => navigate('/documents/new')}
-              style={{ background: 'linear-gradient(90deg,#0070f2,#003d8f)', border: 'none' }}
-            >
+            <Button variant="primary" onClick={() => navigate('/documents/new')}>
               Create Document
             </Button>
           </Card.Body>
@@ -148,7 +131,7 @@ export default function MyDocuments() {
                     style={{ cursor: 'pointer' }}
                     onClick={() => navigate(`/documents/${doc.documentId}`)}
                   >
-                    <td className="fw-semibold" style={{ color: '#0070f2' }}>{doc.documentId}</td>
+                    <td className="fw-semibold text-primary">{doc.documentId}</td>
                     <td>{doc.rig}</td>
                     <td>{doc.docType}/{doc.docGroup}</td>
                     <td className="text-muted" style={{ maxWidth: 200 }}>

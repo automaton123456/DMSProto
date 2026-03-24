@@ -98,11 +98,10 @@ export default function Report() {
 
   return (
     <div className="page-container">
-      {/* Breadcrumb */}
       <nav aria-label="breadcrumb" className="mb-3">
         <ol className="breadcrumb" style={{ fontSize: '0.875rem' }}>
           <li className="breadcrumb-item">
-            <span style={{ color: '#0070f2', cursor: 'pointer' }} onClick={() => navigate('/')}>Home</span>
+            <span className="text-primary" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Home</span>
           </li>
           <li className="breadcrumb-item active">DMS Report</li>
         </ol>
@@ -110,7 +109,6 @@ export default function Report() {
 
       <h3 className="fw-bold mb-4">DMS Report</h3>
 
-      {/* Filter card */}
       <Card className="mb-4 shadow-sm">
         <Card.Body>
           <h6 className="text-muted fw-bold mb-3" style={{ letterSpacing: '0.05em' }}>SEARCH FILTERS</h6>
@@ -118,13 +116,7 @@ export default function Report() {
             <Col md={3}>
               <Form.Group>
                 <Form.Label className="fw-semibold small">Document ID</Form.Label>
-                <Form.Control
-                  size="sm"
-                  value={docId}
-                  onChange={e => setDocId(e.target.value)}
-                  placeholder="e.g. 000001"
-                  onKeyDown={e => e.key === 'Enter' && runSearch()}
-                />
+                <Form.Control size="sm" value={docId} onChange={e => setDocId(e.target.value)} placeholder="e.g. 000001" onKeyDown={e => e.key === 'Enter' && runSearch()} />
               </Form.Group>
             </Col>
             <Col md={3}>
@@ -157,49 +149,25 @@ export default function Report() {
             <Col md={3}>
               <Form.Group>
                 <Form.Label className="fw-semibold small">Description</Form.Label>
-                <Form.Control
-                  size="sm"
-                  value={descFilter}
-                  onChange={e => setDescFilter(e.target.value)}
-                  placeholder="Partial match"
-                  onKeyDown={e => e.key === 'Enter' && runSearch()}
-                />
+                <Form.Control size="sm" value={descFilter} onChange={e => setDescFilter(e.target.value)} placeholder="Partial match" onKeyDown={e => e.key === 'Enter' && runSearch()} />
               </Form.Group>
             </Col>
             <Col md={3}>
               <Form.Group>
                 <Form.Label className="fw-semibold small">Originator</Form.Label>
-                <Form.Control
-                  size="sm"
-                  value={originatorFilter}
-                  onChange={e => setOriginatorFilter(e.target.value)}
-                  placeholder="Username"
-                  onKeyDown={e => e.key === 'Enter' && runSearch()}
-                />
+                <Form.Control size="sm" value={originatorFilter} onChange={e => setOriginatorFilter(e.target.value)} placeholder="Username" onKeyDown={e => e.key === 'Enter' && runSearch()} />
               </Form.Group>
             </Col>
             <Col md={3}>
               <Form.Group>
                 <Form.Label className="fw-semibold small">Work Order</Form.Label>
-                <Form.Control
-                  size="sm"
-                  value={woFilter}
-                  onChange={e => setWoFilter(e.target.value)}
-                  placeholder="Partial match"
-                  onKeyDown={e => e.key === 'Enter' && runSearch()}
-                />
+                <Form.Control size="sm" value={woFilter} onChange={e => setWoFilter(e.target.value)} placeholder="Partial match" onKeyDown={e => e.key === 'Enter' && runSearch()} />
               </Form.Group>
             </Col>
             <Col md={3}>
               <Form.Group>
                 <Form.Label className="fw-semibold small">Equipment</Form.Label>
-                <Form.Control
-                  size="sm"
-                  value={eqFilter}
-                  onChange={e => setEqFilter(e.target.value)}
-                  placeholder="Partial match"
-                  onKeyDown={e => e.key === 'Enter' && runSearch()}
-                />
+                <Form.Control size="sm" value={eqFilter} onChange={e => setEqFilter(e.target.value)} placeholder="Partial match" onKeyDown={e => e.key === 'Enter' && runSearch()} />
               </Form.Group>
             </Col>
             <Col md={3}>
@@ -217,19 +185,10 @@ export default function Report() {
           </Row>
 
           <div className="d-flex gap-2">
-            <Button
-              variant="primary"
-              onClick={runSearch}
-              style={{ background: 'linear-gradient(90deg,#0070f2,#003d8f)', border: 'none' }}
-            >
-              🔍 Search
-            </Button>
+            <Button variant="primary" onClick={runSearch}>🔍 Search</Button>
             <Button variant="outline-secondary" onClick={clearFilters}>✕ Clear</Button>
             {results.length > 0 && (
-              <Button
-                variant="outline-success"
-                onClick={() => window.open(`/api/report/export?${buildQueryString()}`)}
-              >
+              <Button variant="outline-success" onClick={() => window.open(`/api/report/export?${buildQueryString()}`)}>
                 ⬇ Export CSV
               </Button>
             )}
@@ -237,7 +196,6 @@ export default function Report() {
         </Card.Body>
       </Card>
 
-      {/* Results */}
       {loading ? (
         <div className="d-flex justify-content-center py-5">
           <Spinner animation="border" variant="primary" />
@@ -246,9 +204,7 @@ export default function Report() {
         <Card className="shadow-sm">
           <Card.Header className="bg-white d-flex align-items-center gap-2">
             <span className="fw-semibold">{results.length} result{results.length !== 1 ? 's' : ''}</span>
-            {results.length > 0 && (
-              <span className="text-muted small">— click any row to open document</span>
-            )}
+            {results.length > 0 && <span className="text-muted small">— click any row to open document</span>}
           </Card.Header>
 
           {results.length === 0 ? (
@@ -279,12 +235,8 @@ export default function Report() {
                 </thead>
                 <tbody>
                   {sorted.map(doc => (
-                    <tr
-                      key={doc.documentId}
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => navigate(`/documents/${doc.documentId}`)}
-                    >
-                      <td className="fw-semibold" style={{ color: '#0070f2' }}>{doc.documentId}</td>
+                    <tr key={doc.documentId} style={{ cursor: 'pointer' }} onClick={() => navigate(`/documents/${doc.documentId}`)}>
+                      <td className="fw-semibold text-primary">{doc.documentId}</td>
                       <td>{doc.rig}</td>
                       <td>{doc.docType}/{doc.docGroup}</td>
                       <td className="text-muted" style={{ maxWidth: 180 }}>

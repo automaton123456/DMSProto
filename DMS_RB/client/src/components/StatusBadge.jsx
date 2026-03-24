@@ -1,28 +1,19 @@
 import React from 'react';
+import Badge from 'react-bootstrap/Badge';
 
-const STATUS_CLASS = {
-  'Draft': 'status-draft',
-  'Approved': 'status-approved',
-  'Rejected': 'status-rejected',
-  'Pending MSV Approval': 'status-msv',
-  'Pending E&M Approval': 'status-em'
+const STATUS_VARIANT = {
+  'Draft':                  ['secondary', null],
+  'Approved':               ['success',   null],
+  'Rejected':               ['danger',    null],
+  'Pending MSV Approval':   ['warning',   'dark'],
+  'Pending E&M Approval':   ['primary',   null],
 };
 
-export default function StatusBadge({ status, style = {} }) {
-  const cls = STATUS_CLASS[status] || 'status-draft';
+export default function StatusBadge({ status }) {
+  const [bg, text] = STATUS_VARIANT[status] || ['secondary', null];
   return (
-    <span
-      className={cls}
-      style={{
-        padding: '0.2rem 0.65rem',
-        borderRadius: '1rem',
-        fontSize: '0.72rem',
-        fontWeight: 700,
-        display: 'inline-block',
-        ...style
-      }}
-    >
+    <Badge bg={bg} text={text ?? undefined}>
       {status}
-    </span>
+    </Badge>
   );
 }

@@ -53,9 +53,9 @@ export default function NavbarLayout({ children }) {
   const isActive = (path) => location.pathname === path ? 'nav-link active fw-semibold' : 'nav-link';
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div className="d-flex flex-column min-vh-100">
       <Navbar
-        style={{ background: 'linear-gradient(90deg, #003d8f 0%, #0070f2 100%)' }}
+        bg="primary"
         variant="dark"
         expand="lg"
         sticky="top"
@@ -63,7 +63,8 @@ export default function NavbarLayout({ children }) {
       >
         <Navbar.Brand
           onClick={() => navigate('/')}
-          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+          style={{ cursor: 'pointer' }}
+          className="d-flex align-items-center gap-3"
         >
           {HP_LOGO_SVG}
           <div>
@@ -116,10 +117,7 @@ export default function NavbarLayout({ children }) {
                 {unreadCount > 0 && (
                   <Badge
                     bg="danger"
-                    style={{
-                      position: 'absolute', top: '-6px', right: '-6px',
-                      fontSize: '0.6rem', padding: '2px 5px', borderRadius: '10px'
-                    }}
+                    style={{ position: 'absolute', top: '-6px', right: '-6px', fontSize: '0.6rem', padding: '2px 5px', borderRadius: '10px' }}
                   >
                     {unreadCount}
                   </Badge>
@@ -134,17 +132,17 @@ export default function NavbarLayout({ children }) {
                   />
                   <div style={{
                     position: 'absolute', right: 0, top: '2.5rem',
-                    width: '360px', background: 'white',
+                    width: '360px', background: 'var(--bs-body-bg)',
                     boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
                     borderRadius: '0.5rem', zIndex: 1050,
                     maxHeight: '480px', display: 'flex', flexDirection: 'column',
-                    overflow: 'hidden'
+                    overflow: 'hidden', border: '1px solid var(--bs-border-color)'
                   }}>
                     <div style={{
-                      padding: '0.75rem 1rem', borderBottom: '1px solid #e8e8e8',
+                      padding: '0.75rem 1rem', borderBottom: '1px solid var(--bs-border-color)',
                       display: 'flex', justifyContent: 'space-between', alignItems: 'center'
                     }}>
-                      <span style={{ fontWeight: 600, fontSize: '0.9rem', color: '#32363a' }}>
+                      <span className="fw-semibold" style={{ fontSize: '0.9rem' }}>
                         Notifications{' '}
                         {unreadCount > 0 && (
                           <Badge bg="primary" style={{ fontSize: '0.7rem' }}>{unreadCount}</Badge>
@@ -153,7 +151,8 @@ export default function NavbarLayout({ children }) {
                       {unreadCount > 0 && (
                         <button
                           onClick={markAllRead}
-                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0070f2', fontSize: '0.8rem' }}
+                          className="btn btn-link btn-sm p-0 text-primary"
+                          style={{ fontSize: '0.8rem' }}
                         >
                           Mark all read
                         </button>
@@ -161,7 +160,7 @@ export default function NavbarLayout({ children }) {
                     </div>
                     <div style={{ overflowY: 'auto', flex: 1 }}>
                       {notifications.length === 0 ? (
-                        <div style={{ padding: '2rem', textAlign: 'center', color: '#6a6d70', fontSize: '0.9rem' }}>
+                        <div className="text-muted text-center" style={{ padding: '2rem', fontSize: '0.9rem' }}>
                           No notifications
                         </div>
                       ) : (
@@ -170,13 +169,15 @@ export default function NavbarLayout({ children }) {
                             key={n.id}
                             onClick={() => handleNotifClick(n)}
                             style={{
-                              padding: '0.75rem 1rem', borderBottom: '1px solid #f0f0f0', cursor: 'pointer',
-                              background: n.read ? 'white' : '#f0f7ff',
-                              borderLeft: n.read ? '3px solid transparent' : '3px solid #0070f2'
+                              padding: '0.75rem 1rem',
+                              borderBottom: '1px solid var(--bs-border-color-translucent)',
+                              cursor: 'pointer',
+                              background: n.read ? 'var(--bs-body-bg)' : 'var(--bs-primary-bg-subtle)',
+                              borderLeft: n.read ? '3px solid transparent' : '3px solid var(--bs-primary)'
                             }}
                           >
-                            <div style={{ fontSize: '0.83rem', color: '#32363a', marginBottom: '0.25rem' }}>{n.message}</div>
-                            <div style={{ fontSize: '0.72rem', color: '#6a6d70' }}>{new Date(n.createdAt).toLocaleString()}</div>
+                            <div style={{ fontSize: '0.83rem', marginBottom: '0.25rem' }}>{n.message}</div>
+                            <div className="text-muted" style={{ fontSize: '0.72rem' }}>{new Date(n.createdAt).toLocaleString()}</div>
                           </div>
                         ))
                       )}
@@ -189,7 +190,7 @@ export default function NavbarLayout({ children }) {
             {/* User dropdown */}
             <NavDropdown
               title={
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span className="d-inline-flex align-items-center gap-2">
                   <span style={{
                     width: 30, height: 30, borderRadius: '50%',
                     background: 'rgba(255,255,255,0.25)',
@@ -207,8 +208,8 @@ export default function NavbarLayout({ children }) {
               align="end"
             >
               <NavDropdown.Header>
-                <div style={{ fontWeight: 600 }}>{currentUser?.displayName}</div>
-                <div style={{ fontSize: '0.75rem', color: '#6a6d70' }}>{currentUser?.role?.toUpperCase()}</div>
+                <div className="fw-semibold">{currentUser?.displayName}</div>
+                <div className="text-muted" style={{ fontSize: '0.75rem' }}>{currentUser?.role?.toUpperCase()}</div>
               </NavDropdown.Header>
               <NavDropdown.Divider />
               {currentUser?.role === 'admin' && (
@@ -216,7 +217,7 @@ export default function NavbarLayout({ children }) {
               )}
               <NavDropdown.Item
                 onClick={() => { logout(); navigate('/login'); }}
-                style={{ color: '#b00020' }}
+                className="text-danger"
               >
                 → Sign Out
               </NavDropdown.Item>
@@ -225,7 +226,7 @@ export default function NavbarLayout({ children }) {
         </Navbar.Collapse>
       </Navbar>
 
-      <main style={{ flex: 1 }}>
+      <main className="flex-grow-1">
         {children}
       </main>
     </div>
