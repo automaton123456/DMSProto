@@ -1,0 +1,208 @@
+:root {
+  --hp-blue: #0070f2;
+  --hp-dark-blue: #003d8f;
+  --hp-green: #107e3e;
+  --hp-orange: #e86826;
+  --hp-purple: #6c32a0;
+  --hp-red: #b00020;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f8f9fa;
+  color: #32363a;
+}
+
+/* Status badge colours */
+.status-draft        { background: #f0f0f0 !important; color: #666 !important; }
+.status-approved     { background: #e8f5e9 !important; color: #107e3e !important; }
+.status-rejected     { background: #fce4ec !important; color: #b00020 !important; }
+.status-msv          { background: #fff3e0 !important; color: #b26000 !important; }
+.status-em           { background: #e3f2fd !important; color: #0070f2 !important; }
+
+/* Workflow tracker */
+.workflow-tracker {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.workflow-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 120px;
+  position: relative;
+}
+
+.workflow-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #dee2e6;
+  z-index: 0;
+}
+
+.workflow-step.completed:not(:last-child)::after { background: #107e3e; }
+.workflow-step.rejected:not(:last-child)::after  { background: #b00020; }
+
+.step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  z-index: 1;
+  border: 2px solid #dee2e6;
+  background: white;
+  color: #aaa;
+}
+
+.step-circle.completed { background: #107e3e; border-color: #107e3e; color: white; }
+.step-circle.active    { background: #0070f2; border-color: #0070f2; color: white; }
+.step-circle.rejected  { background: #b00020; border-color: #b00020; color: white; }
+
+.step-info {
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  color: #6a6d70;
+  padding: 0 0.25rem;
+}
+
+.step-name {
+  font-weight: 600;
+  color: #32363a;
+  margin-bottom: 0.2rem;
+  font-size: 0.8rem;
+}
+
+/* Drag & drop zone */
+.drop-zone {
+  border: 2px dashed #ced4da;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #f8f9fa;
+}
+
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: var(--hp-blue);
+  background: #e8f0fe;
+}
+
+/* Page container */
+.page-container {
+  padding: 1.5rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Sortable table header */
+.sortable-th {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.sortable-th:hover {
+  background: #e9ecef;
+}
+
+/* Form section card header */
+.section-header {
+  border-bottom: 3px solid var(--hp-blue);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #32363a;
+}
+
+/* Tile card */
+.tile-card {
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid #dee2e6;
+  min-height: 150px;
+  user-select: none;
+}
+
+.tile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 112, 242, 0.15) !important;
+}
+
+/* Sticky action bar */
+.action-bar {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  border-top: 1px solid #dee2e6;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
+  z-index: 50;
+  margin: 0 -2rem;
+}
+
+/* Object links table */
+.object-links-table {
+  width: 100%;
+  font-size: 0.875rem;
+}
+
+.object-links-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.object-links-table td {
+  padding: 0.5rem 0.75rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Autocomplete dropdown */
+.autocomplete-list {
+  position: absolute;
+  z-index: 200;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  min-width: 300px;
+}
+
+.autocomplete-item {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.autocomplete-item:hover { background: #f0f7ff; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .page-container { padding: 1rem; }
+  .action-bar { margin: 0 -1rem; }
+}

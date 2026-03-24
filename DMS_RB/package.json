@@ -1,0 +1,10 @@
+{
+  "name": "dms-rb",
+  "version": "1.0.0",
+  "description": "DMS Proto — React Bootstrap frontend (connects to DMS_V2 backend on :3000)",
+  "scripts": {
+    "dev": "npm run dev --prefix client",
+    "build": "npm run build --prefix client",
+    "install:client": "npm install --prefix client"
+  }
+}
