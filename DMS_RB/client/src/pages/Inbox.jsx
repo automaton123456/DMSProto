@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Spinner from 'react-bootstrap/Spinner';
 import Icon from '@mdi/react';
-import { mdiTrayDownload, mdiOpenInNew } from '@mdi/js';
+import { mdiTrayArrowDown, mdiOpenInNew } from '@mdi/js';
 import { useAuth } from '../context/AuthContext.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
 
@@ -73,7 +73,7 @@ export default function Inbox() {
       {items.length === 0 ? (
         <Card className="shadow-sm">
           <Card.Body className="text-center py-5">
-            <Icon path={mdiTrayDownload} size={2.5} className="text-muted mb-3" style={{ opacity: 0.3 }} />
+            <Icon path={mdiTrayArrowDown} size={2.5} className="text-muted mb-3" style={{ opacity: 0.3 }} />
             <h5 className="text-muted">Inbox is empty</h5>
             <p className="text-muted mb-0">No documents pending your approval</p>
           </Card.Body>
