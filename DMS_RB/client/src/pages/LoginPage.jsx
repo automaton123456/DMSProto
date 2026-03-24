@@ -18,41 +18,24 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(135deg, #0070f2 0%, #003d8f 100%)',
-      padding: '1rem'
-    }}>
+    <div className="min-vh-100 d-flex align-items-center justify-content-center bg-primary p-3">
       <Card style={{ width: '100%', maxWidth: '420px' }} className="shadow-lg">
         <Card.Body className="p-5 text-center">
-          {/* Logo */}
           <div className="mb-4">
-            <div style={{
-              width: 72, height: 72,
-              background: 'linear-gradient(135deg, #0070f2, #003d8f)',
-              borderRadius: '16px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: '1rem',
-              boxShadow: '0 4px 16px rgba(0,112,242,0.3)'
-            }}>
+            <div className="bg-primary rounded-3 d-inline-flex align-items-center justify-content-center mb-3 shadow"
+              style={{ width: 72, height: 72 }}>
               <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
                 <path d="M8 6h16l8 8v20H8V6z" fill="white" opacity="0.95" />
-                <path d="M24 6v8h8" fill="none" stroke="#0070f2" strokeWidth="2" />
-                <rect x="12" y="18" width="16" height="2.5" rx="1.25" fill="#0070f2" />
-                <rect x="12" y="22" width="13" height="2.5" rx="1.25" fill="#0070f2" />
-                <rect x="12" y="26" width="10" height="2.5" rx="1.25" fill="#0070f2" />
+                <path d="M24 6v8h8" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="2" />
+                <rect x="12" y="18" width="16" height="2.5" rx="1.25" fill="rgba(255,255,255,0.8)" />
+                <rect x="12" y="22" width="13" height="2.5" rx="1.25" fill="rgba(255,255,255,0.8)" />
+                <rect x="12" y="26" width="10" height="2.5" rx="1.25" fill="rgba(255,255,255,0.8)" />
               </svg>
             </div>
             <h4 className="fw-bold mb-1">Document Management System</h4>
             <p className="text-muted small mb-0">DMS — React Bootstrap · Prototype Sign In</p>
           </div>
 
-          {/* User selector */}
           <Form.Group className="mb-4 text-start">
             <Form.Label className="fw-semibold">Select User</Form.Label>
             <Form.Select
@@ -73,7 +56,6 @@ export default function LoginPage() {
             className="w-100"
             disabled={!selected || loading}
             onClick={handleLogin}
-            style={{ background: 'linear-gradient(90deg, #0070f2, #003d8f)', border: 'none' }}
           >
             {loading ? (
               <><Spinner size="sm" className="me-2" />Signing In...</>

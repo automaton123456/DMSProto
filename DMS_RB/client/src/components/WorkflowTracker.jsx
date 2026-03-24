@@ -57,20 +57,20 @@ export default function WorkflowTracker({ workflow, originatorName, createdDate 
                 <div className="step-detail">
                   {status === 'completed' && (
                     <>
-                      <span style={{ color: '#107e3e', fontWeight: 600 }}>Approved</span><br />
+                      <span className="text-success fw-semibold">Approved</span><br />
                       {step.actionedByName}<br />
                       {formatDate(step.actionDate)}
                     </>
                   )}
                   {status === 'active' && (
                     <>
-                      <span style={{ color: '#0070f2', fontWeight: 600 }}>Pending</span><br />
+                      <span className="text-primary fw-semibold">Pending</span><br />
                       Awaiting: {step.assignedApprovers?.join(', ')}
                     </>
                   )}
                   {status === 'rejected' && (
                     <>
-                      <span style={{ color: '#b00020', fontWeight: 600 }}>Rejected</span><br />
+                      <span className="text-danger fw-semibold">Rejected</span><br />
                       {step.actionedByName}<br />
                       {formatDate(step.actionDate)}
                       {step.rejectionReason && (
@@ -80,7 +80,7 @@ export default function WorkflowTracker({ workflow, originatorName, createdDate 
                   )}
                   {status === 'upcoming' && (
                     <>
-                      <span style={{ color: '#6a6d70' }}>Upcoming</span><br />
+                      <span className="text-muted">Upcoming</span><br />
                       {step.assignedApprovers?.join(', ')}
                     </>
                   )}
@@ -96,9 +96,7 @@ export default function WorkflowTracker({ workflow, originatorName, createdDate 
             <StepCircle status="completed" />
             <div className="step-info">
               <div className="step-name">Filed</div>
-              <div className="step-detail" style={{ color: '#107e3e', fontWeight: 600 }}>
-                Completed
-              </div>
+              <div className="step-detail text-success fw-semibold">Completed</div>
             </div>
           </div>
         )}

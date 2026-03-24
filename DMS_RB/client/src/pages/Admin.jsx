@@ -111,7 +111,7 @@ export default function Admin() {
           <Col xs={6} md={3}>
             <Card className="text-center shadow-sm">
               <Card.Body>
-                <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#0070f2' }}>{stats.total}</div>
+                <div className="text-primary" style={{ fontSize: '2.5rem', fontWeight: 700 }}>{stats.total}</div>
                 <div className="text-muted small mt-1">Total Documents</div>
               </Card.Body>
             </Card>
@@ -143,7 +143,7 @@ export default function Admin() {
             </p>
             <Row className="g-4">
               <Col md={6}>
-                <h6 className="fw-bold mb-3" style={{ color: '#0070f2' }}>MSV Approvers</h6>
+                <h6 className="fw-bold mb-3 text-primary">MSV Approvers</h6>
                 <Form.Group>
                   <Form.Label className="fw-semibold">Default MSV Approvers</Form.Label>
                   <Form.Control
@@ -157,7 +157,7 @@ export default function Admin() {
                 </Form.Group>
               </Col>
               <Col md={6}>
-                <h6 className="fw-bold mb-3" style={{ color: '#6c32a0' }}>E&M Approvers</h6>
+                <h6 className="fw-bold mb-3 text-info">E&M Approvers</h6>
                 <Form.Group>
                   <Form.Label className="fw-semibold">Default E&M Approvers</Form.Label>
                   <Form.Control
@@ -172,11 +172,7 @@ export default function Admin() {
               </Col>
             </Row>
             <div className="mt-4">
-              <Button
-                variant="primary"
-                onClick={saveApprovers}
-                style={{ background: 'linear-gradient(90deg,#0070f2,#003d8f)', border: 'none' }}
-              >
+              <Button variant="primary" onClick={saveApprovers}>
                 💾 Save Approver Config
               </Button>
             </div>
