@@ -7,6 +7,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Spinner from 'react-bootstrap/Spinner';
+import Icon from '@mdi/react';
+import { mdiMagnify, mdiClose, mdiDownload, mdiChartBoxOutline } from '@mdi/js';
 import { useAuth } from '../context/AuthContext.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
 
@@ -58,8 +60,7 @@ export default function Report() {
   };
 
   const runSearch = async () => {
-    setLoading(true);
-    setSearched(true);
+    setLoading(true); setSearched(true);
     try {
       const qs = buildQueryString();
       const res = await fetch(`/api/report${qs ? '?' + qs : ''}`);
@@ -91,7 +92,7 @@ export default function Report() {
   });
 
   const SortIcon = ({ col }) => (
-    <span className="ms-1 text-muted" style={{ opacity: sortKey === col ? 1 : 0.4, fontSize: '0.75rem' }}>
+    <span className="ms-1 text-muted" style={{ opacity: sortKey === col ? 1 : 0.4, fontSize: '0.72rem' }}>
       {sortKey === col ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
     </span>
   );
@@ -99,7 +100,7 @@ export default function Report() {
   return (
     <div className="page-container">
       <nav aria-label="breadcrumb" className="mb-3">
-        <ol className="breadcrumb" style={{ fontSize: '0.875rem' }}>
+        <ol className="breadcrumb" style={{ fontSize: '0.8rem' }}>
           <li className="breadcrumb-item">
             <span className="text-primary" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Home</span>
           </li>
@@ -111,8 +112,8 @@ export default function Report() {
 
       <Card className="mb-4 shadow-sm">
         <Card.Body>
-          <h6 className="text-muted fw-bold mb-3" style={{ letterSpacing: '0.05em' }}>SEARCH FILTERS</h6>
-          <Row className="g-3 mb-3">
+          <h6 className="text-muted fw-bold mb-3" style={{ letterSpacing: '0.05em', fontSize: '0.72rem' }}>SEARCH FILTERS</h6>
+          <Row className="g-2 mb-3">
             <Col md={3}>
               <Form.Group>
                 <Form.Label className="fw-semibold small">Document ID</Form.Label>
@@ -185,11 +186,15 @@ export default function Report() {
           </Row>
 
           <div className="d-flex gap-2">
-            <Button variant="primary" onClick={runSearch}>🔍 Search</Button>
-            <Button variant="outline-secondary" onClick={clearFilters}>✕ Clear</Button>
+            <Button variant="primary" onClick={runSearch}>
+              <Icon path={mdiMagnify} size={0.7} className="me-1" />Search
+            </Button>
+            <Button variant="outline-secondary" onClick={clearFilters}>
+              <Icon path={mdiClose} size={0.7} className="me-1" />Clear
+            </Button>
             {results.length > 0 && (
               <Button variant="outline-success" onClick={() => window.open(`/api/report/export?${buildQueryString()}`)}>
-                ⬇ Export CSV
+                <Icon path={mdiDownload} size={0.7} className="me-1" />Export CSV
               </Button>
             )}
           </div>
@@ -203,29 +208,25 @@ export default function Report() {
       ) : searched ? (
         <Card className="shadow-sm">
           <Card.Header className="bg-white d-flex align-items-center gap-2">
-            <span className="fw-semibold">{results.length} result{results.length !== 1 ? 's' : ''}</span>
+            <span className="fw-semibold" style={{ fontSize: '0.875rem' }}>{results.length} result{results.length !== 1 ? 's' : ''}</span>
             {results.length > 0 && <span className="text-muted small">— click any row to open document</span>}
           </Card.Header>
 
           {results.length === 0 ? (
             <Card.Body className="text-center py-5">
-              <div style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.3 }}>🔍</div>
+              <Icon path={mdiMagnify} size={3} className="text-muted mb-3" style={{ opacity: 0.25 }} />
               <h5 className="text-muted">No documents found</h5>
               <p className="text-muted mb-0">Try adjusting your search filters</p>
             </Card.Body>
           ) : (
             <div style={{ overflowX: 'auto' }}>
-              <Table hover className="mb-0" style={{ fontSize: '0.875rem' }}>
+              <Table hover className="mb-0" style={{ fontSize: '0.8125rem' }}>
                 <thead className="table-light">
                   <tr>
                     {[
-                      ['documentId', 'Document ID'],
-                      ['rig', 'Rig'],
-                      ['docTypeGroup', 'Type/Group'],
-                      ['addDesc', 'Description'],
-                      ['originator', 'Originator'],
-                      ['status', 'Status'],
-                      ['createdDate', 'Date Created']
+                      ['documentId', 'Document ID'], ['rig', 'Rig'], ['docTypeGroup', 'Type/Group'],
+                      ['addDesc', 'Description'], ['originator', 'Originator'],
+                      ['status', 'Status'], ['createdDate', 'Date Created']
                     ].map(([key, label]) => (
                       <th key={key} className="sortable-th" onClick={() => handleSort(key)}>
                         {label}<SortIcon col={key} />
@@ -240,15 +241,11 @@ export default function Report() {
                       <td>{doc.rig}</td>
                       <td>{doc.docType}/{doc.docGroup}</td>
                       <td className="text-muted" style={{ maxWidth: 180 }}>
-                        <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {doc.classifications?.addDesc || '—'}
-                        </div>
+                        <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.classifications?.addDesc || '—'}</div>
                       </td>
                       <td>{doc.originator}</td>
                       <td><StatusBadge status={doc.status} /></td>
-                      <td className="text-muted" style={{ whiteSpace: 'nowrap' }}>
-                        {new Date(doc.createdDate).toLocaleDateString('en-GB')}
-                      </td>
+                      <td className="text-muted" style={{ whiteSpace: 'nowrap' }}>{new Date(doc.createdDate).toLocaleDateString('en-GB')}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -258,7 +255,7 @@ export default function Report() {
         </Card>
       ) : (
         <div className="text-center py-5 text-muted">
-          <div style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.3 }}>🔍</div>
+          <Icon path={mdiChartBoxOutline} size={3} className="mb-3" style={{ opacity: 0.2 }} />
           <p>Set filters above and click <strong>Search</strong> to find documents</p>
         </div>
       )}

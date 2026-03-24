@@ -5,14 +5,16 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Table from 'react-bootstrap/Table';
+import Icon from '@mdi/react';
+import { mdiFilePlusOutline, mdiTrayDownload, mdiFileDocumentMultipleOutline, mdiChartBoxOutline } from '@mdi/js';
 import { useAuth } from '../context/AuthContext.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
 
 const TILES = [
-  { id: 'create',   title: 'Create DMS Document', subtitle: 'Upload a new document',          icon: '📄', variant: 'primary',  route: '/documents/new',  countKey: null },
-  { id: 'inbox',    title: 'DMS Inbox',            subtitle: 'Items pending your approval',    icon: '📥', variant: 'warning',  route: '/inbox',           countKey: 'inboxCount' },
-  { id: 'my-docs',  title: 'My DMS Forms',         subtitle: 'Your submitted documents',       icon: '🗂️', variant: 'success',  route: '/my-documents',    countKey: 'myDocsCount' },
-  { id: 'report',   title: 'DMS Report',           subtitle: 'Search all DMS documents',       icon: '📊', variant: 'info',     route: '/report',          countKey: null },
+  { id: 'create',   title: 'Create DMS Document', subtitle: 'Upload a new document',          icon: mdiFilePlusOutline,               variant: 'primary',  route: '/documents/new',  countKey: null },
+  { id: 'inbox',    title: 'DMS Inbox',            subtitle: 'Items pending your approval',    icon: mdiTrayDownload,                  variant: 'warning',  route: '/inbox',           countKey: 'inboxCount' },
+  { id: 'my-docs',  title: 'My DMS Forms',         subtitle: 'Your submitted documents',       icon: mdiFileDocumentMultipleOutline,   variant: 'success',  route: '/my-documents',    countKey: 'myDocsCount' },
+  { id: 'report',   title: 'DMS Report',           subtitle: 'Search all DMS documents',       icon: mdiChartBoxOutline,               variant: 'info',     route: '/report',          countKey: null },
 ];
 
 export default function HomePage() {
@@ -61,8 +63,8 @@ export default function HomePage() {
                       </Badge>
                     )}
                     <div className={`bg-${tile.variant} bg-opacity-10 rounded-2 d-flex align-items-center justify-content-center mb-3`}
-                      style={{ width: 42, height: 42, fontSize: '1.4rem' }}>
-                      {tile.icon}
+                      style={{ width: 40, height: 40 }}>
+                      <Icon path={tile.icon} size={1} className={`text-${tile.variant}`} />
                     </div>
                   </div>
                   <div>

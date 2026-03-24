@@ -1,3 +1,27 @@
+/* Compact controls */
+.form-control,
+.form-select {
+  font-size: 0.875rem;
+  padding-top: 0.28rem;
+  padding-bottom: 0.28rem;
+}
+
+.btn:not(.btn-lg) {
+  font-size: 0.8125rem;
+  padding: 0.28rem 0.75rem;
+}
+
+.btn.btn-sm {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+}
+
+.nav-link {
+  font-size: 0.8125rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
 /* Workflow tracker */
 .workflow-tracker {
   display: flex;
