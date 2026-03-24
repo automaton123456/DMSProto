@@ -10,6 +10,8 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
+import Icon from '@mdi/react';
+import { mdiContentSave, mdiCogOutline } from '@mdi/js';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const STATUS_COLORS = {
@@ -173,7 +175,7 @@ export default function Admin() {
             </Row>
             <div className="mt-4">
               <Button variant="primary" onClick={saveApprovers}>
-                💾 Save Approver Config
+                <Icon path={mdiContentSave} size={0.7} className="me-1" />Save Approver Config
               </Button>
             </div>
           </Card.Body>

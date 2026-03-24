@@ -5,6 +5,8 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Spinner from 'react-bootstrap/Spinner';
+import Icon from '@mdi/react';
+import { mdiTrayDownload, mdiOpenInNew } from '@mdi/js';
 import { useAuth } from '../context/AuthContext.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
 
@@ -39,17 +41,10 @@ export default function Inbox() {
   });
 
   const SortIcon = ({ col }) => (
-    <span className="ms-1 text-muted" style={{ opacity: sortKey === col ? 1 : 0.4, fontSize: '0.75rem' }}>
+    <span className="ms-1 text-muted" style={{ opacity: sortKey === col ? 1 : 0.4, fontSize: '0.72rem' }}>
       {sortKey === col ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
     </span>
   );
-
-  const getCurrentStep = (doc) => {
-    if (!doc.workflow?.required) return '—';
-    if (doc.workflow.currentStep === 'msv') return 'MSV Approval';
-    if (doc.workflow.currentStep === 'em') return 'E&M Approval';
-    return doc.status;
-  };
 
   if (loading) return (
     <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
@@ -60,7 +55,7 @@ export default function Inbox() {
   return (
     <div className="page-container">
       <nav aria-label="breadcrumb" className="mb-3">
-        <ol className="breadcrumb" style={{ fontSize: '0.875rem' }}>
+        <ol className="breadcrumb" style={{ fontSize: '0.8rem' }}>
           <li className="breadcrumb-item">
             <span className="text-primary" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>Home</span>
           </li>
@@ -70,7 +65,7 @@ export default function Inbox() {
 
       <div className="d-flex align-items-center gap-3 mb-4">
         <h3 className="fw-bold mb-0">DMS Inbox</h3>
-        <Badge bg={items.length > 0 ? 'primary' : 'secondary'} style={{ fontSize: '0.8rem', padding: '0.35rem 0.75rem' }}>
+        <Badge bg={items.length > 0 ? 'primary' : 'secondary'} style={{ fontSize: '0.78rem', padding: '0.3rem 0.65rem' }}>
           {items.length} item{items.length !== 1 ? 's' : ''}
         </Badge>
       </div>
@@ -78,7 +73,7 @@ export default function Inbox() {
       {items.length === 0 ? (
         <Card className="shadow-sm">
           <Card.Body className="text-center py-5">
-            <div style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.3 }}>📥</div>
+            <Icon path={mdiTrayDownload} size={2.5} className="text-muted mb-3" style={{ opacity: 0.3 }} />
             <h5 className="text-muted">Inbox is empty</h5>
             <p className="text-muted mb-0">No documents pending your approval</p>
           </Card.Body>
@@ -86,7 +81,7 @@ export default function Inbox() {
       ) : (
         <Card className="shadow-sm">
           <div style={{ overflowX: 'auto' }}>
-            <Table hover className="mb-0" style={{ fontSize: '0.875rem' }}>
+            <Table hover className="mb-0" style={{ fontSize: '0.8125rem' }}>
               <thead className="table-light">
                 <tr>
                   {[
@@ -102,16 +97,12 @@ export default function Inbox() {
                       {label}<SortIcon col={key} />
                     </th>
                   ))}
-                  <th style={{ width: 100 }}>Actions</th>
+                  <th style={{ width: 90 }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {sorted.map(doc => (
-                  <tr
-                    key={doc.documentId}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => navigate(`/documents/${doc.documentId}/approve`)}
-                  >
+                  <tr key={doc.documentId} style={{ cursor: 'pointer' }} onClick={() => navigate(`/documents/${doc.documentId}/approve`)}>
                     <td className="fw-semibold text-primary">{doc.documentId}</td>
                     <td>{doc.originator}</td>
                     <td>{doc.docType}/{doc.docGroup}</td>
@@ -122,16 +113,10 @@ export default function Inbox() {
                     </td>
                     <td>{doc.rig}</td>
                     <td className="text-muted">{new Date(doc.createdDate).toLocaleDateString('en-GB')}</td>
-                    <td>
-                      <StatusBadge status={doc.status} />
-                    </td>
+                    <td><StatusBadge status={doc.status} /></td>
                     <td onClick={e => e.stopPropagation()}>
-                      <Button
-                        size="sm"
-                        variant="primary"
-                        onClick={() => navigate(`/documents/${doc.documentId}/approve`)}
-                      >
-                        Review
+                      <Button size="sm" variant="primary" onClick={() => navigate(`/documents/${doc.documentId}/approve`)}>
+                        <Icon path={mdiOpenInNew} size={0.65} className="me-1" />Review
                       </Button>
                     </td>
                   </tr>

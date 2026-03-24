@@ -10,6 +10,12 @@ import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Badge from 'react-bootstrap/Badge';
+import Icon from '@mdi/react';
+import {
+  mdiCloudUploadOutline, mdiFileOutline, mdiPaperclip, mdiDownload,
+  mdiTrashCanOutline, mdiSend, mdiContentSaveOutline, mdiCheck, mdiClose,
+  mdiArrowLeft, mdiHome, mdiMagnify
+} from '@mdi/js';
 import { useAuth } from '../context/AuthContext.jsx';
 import WorkflowTracker from '../components/WorkflowTracker.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
@@ -287,20 +293,22 @@ export default function DocumentForm({ mode: initialMode }) {
       <div className="d-flex flex-column align-items-center justify-content-center text-center"
         style={{ minHeight: '70vh', gap: '1.25rem', padding: '2rem' }}>
         <div className="bg-success rounded-circle d-flex align-items-center justify-content-center shadow"
-          style={{ width: 80, height: 80, fontSize: '2.5rem' }}>✓</div>
+          style={{ width: 80, height: 80 }}>
+          <Icon path={mdiCheck} size={2} color="white" />
+        </div>
         <h3 className="fw-bold text-success">Document Submitted Successfully</h3>
         <p className="fw-semibold">
           Document <span className="text-primary">{successInfo.documentId}</span> has been created
         </p>
         <Alert variant="info" style={{ maxWidth: 480, textAlign: 'left' }}>
-          <strong>✈ Submitted for Approval</strong><br />
+          <strong>Submitted for Approval</strong><br />
           Your document has been submitted and is now pending review by the designated approvers.
           You will receive a notification once it has been reviewed.
         </Alert>
         <p className="text-muted small">You can track the status in <strong>My Documents</strong></p>
         <div className="d-flex gap-2">
-          <Button variant="primary" onClick={() => navigate('/')}>🏠 Go to Home</Button>
-          <Button variant="outline-secondary" onClick={() => navigate('/my-documents')}>📄 My Documents</Button>
+          <Button variant="primary" onClick={() => navigate('/')}><Icon path={mdiHome} size={0.7} className="me-1" />Go to Home</Button>
+          <Button variant="outline-secondary" onClick={() => navigate('/my-documents')}>My Documents</Button>
         </div>
       </div>
     );
@@ -500,7 +508,7 @@ export default function DocumentForm({ mode: initialMode }) {
                                     }}
                                     placeholder="Work order..."
                                   />
-                                  <Button size="sm" variant="outline-secondary" onClick={() => openWOHelp(idx)} title="Search">🔍</Button>
+                                  <Button size="sm" variant="outline-secondary" onClick={() => openWOHelp(idx)} title="Search"><Icon path={mdiMagnify} size={0.6} /></Button>
                                 </div>
                                 {activeSearch === `wo-${idx}` && woResults.length > 0 && (
                                   <div className="autocomplete-list">
@@ -542,7 +550,7 @@ export default function DocumentForm({ mode: initialMode }) {
                                     }}
                                     placeholder="Equipment..."
                                   />
-                                  <Button size="sm" variant="outline-secondary" onClick={() => openEQHelp(idx)} title="Search">🔍</Button>
+                                  <Button size="sm" variant="outline-secondary" onClick={() => openEQHelp(idx)} title="Search"><Icon path={mdiMagnify} size={0.6} /></Button>
                                 </div>
                                 {activeSearch === `eq-${idx}` && eqResults.length > 0 && (
                                   <div className="autocomplete-list">
@@ -572,7 +580,7 @@ export default function DocumentForm({ mode: initialMode }) {
                               variant="outline-danger"
                               onClick={() => setObjectLinks(prev => prev.filter((_, i) => i !== idx))}
                             >
-                              🗑
+                              <Icon path={mdiTrashCanOutline} size={0.65} />
                             </Button>
                           </td>
                         )}
@@ -606,7 +614,7 @@ export default function DocumentForm({ mode: initialMode }) {
               onDrop={handleFileDrop}
               onClick={() => fileInputRef.current?.click()}
             >
-              <div className="text-primary" style={{ fontSize: '2rem' }}>☁</div>
+              <Icon path={mdiCloudUploadOutline} size={1.8} className="text-primary mb-1" />
               <div>
                 <strong>Drag & drop files here</strong> or click to browse<br />
                 <span className="text-muted" style={{ fontSize: '0.75rem' }}>PDF, DOC, XLS, images — max 20MB each</span>
@@ -622,10 +630,10 @@ export default function DocumentForm({ mode: initialMode }) {
               </div>
               {pendingFiles.map((f, idx) => (
                 <div key={idx} className="d-flex align-items-center gap-2 p-2 rounded mb-1 bg-primary-subtle">
-                  <span>📄</span>
+                  <Icon path={mdiFileOutline} size={0.8} className="text-muted" />
                   <span className="flex-grow-1" style={{ fontSize: '0.85rem' }}>{f.name}</span>
                   <span className="text-muted" style={{ fontSize: '0.75rem' }}>{(f.size / 1024 / 1024).toFixed(2)} MB</span>
-                  <Button size="sm" variant="outline-danger" onClick={() => setPendingFiles(prev => prev.filter((_, i) => i !== idx))}>✕</Button>
+                  <Button size="sm" variant="outline-danger" onClick={() => setPendingFiles(prev => prev.filter((_, i) => i !== idx))}><Icon path={mdiClose} size={0.6} /></Button>
                 </div>
               ))}
             </div>
@@ -640,17 +648,17 @@ export default function DocumentForm({ mode: initialMode }) {
               )}
               {attachments.map((filename, idx) => (
                 <div key={idx} className="d-flex align-items-center gap-2 p-2 border-bottom">
-                  <span className="text-danger">📎</span>
+                  <Icon path={mdiPaperclip} size={0.8} className="text-muted" />
                   <span className="flex-grow-1" style={{ fontSize: '0.85rem' }}>{filename}</span>
                   <Button
                     size="sm"
                     variant="outline-secondary"
                     onClick={() => window.open(`/api/documents/${id}/attachments/${encodeURIComponent(filename)}`)}
                   >
-                    ⬇
+                    <Icon path={mdiDownload} size={0.65} />
                   </Button>
                   {!isReadOnly && (
-                    <Button size="sm" variant="outline-danger" onClick={() => removeAttachment(filename)}>🗑</Button>
+                    <Button size="sm" variant="outline-danger" onClick={() => removeAttachment(filename)}><Icon path={mdiTrashCanOutline} size={0.65} /></Button>
                   )}
                 </div>
               ))}
@@ -686,14 +694,14 @@ export default function DocumentForm({ mode: initialMode }) {
               onClick={() => handleSave('submit')}
               disabled={saving}
             >
-              {doc?.status === 'Rejected' ? '✈ Resubmit' : '✈ Submit'}
+              <Icon path={mdiSend} size={0.7} className="me-1" />{doc?.status === 'Rejected' ? 'Resubmit' : 'Submit'}
             </Button>
             <Button variant="outline-secondary" onClick={() => handleSave('draft')} disabled={saving}>
-              💾 Save as Draft
+              <Icon path={mdiContentSaveOutline} size={0.7} className="me-1" />Save as Draft
             </Button>
             <div className="flex-grow-1" />
             {doc?.status === 'Draft' && id && (
-              <Button variant="outline-danger" onClick={handleDelete} disabled={saving}>🗑 Delete Draft</Button>
+              <Button variant="outline-danger" onClick={handleDelete} disabled={saving}><Icon path={mdiTrashCanOutline} size={0.7} className="me-1" />Delete Draft</Button>
             )}
             <Button variant="link" className="text-muted" onClick={() => navigate(-1)} disabled={saving}>Cancel</Button>
           </>
@@ -701,15 +709,15 @@ export default function DocumentForm({ mode: initialMode }) {
 
         {mode === 'approve' && (
           <>
-            <Button variant="success" onClick={() => setShowApproveModal(true)} disabled={saving}>✓ Approve</Button>
-            <Button variant="danger" onClick={() => setShowRejectModal(true)} disabled={saving}>✕ Reject</Button>
+            <Button variant="success" onClick={() => setShowApproveModal(true)} disabled={saving}><Icon path={mdiCheck} size={0.7} className="me-1" />Approve</Button>
+            <Button variant="danger" onClick={() => setShowRejectModal(true)} disabled={saving}><Icon path={mdiClose} size={0.7} className="me-1" />Reject</Button>
             <div className="flex-grow-1" />
-            <Button variant="link" className="text-muted" onClick={() => navigate('/inbox')}>← Back to Inbox</Button>
+            <Button variant="link" className="text-muted" onClick={() => navigate('/inbox')}><Icon path={mdiArrowLeft} size={0.7} className="me-1" />Back to Inbox</Button>
           </>
         )}
 
         {mode === 'readonly' && (
-          <Button variant="link" className="text-muted" onClick={() => navigate(-1)}>← Back</Button>
+          <Button variant="link" className="text-muted" onClick={() => navigate(-1)}><Icon path={mdiArrowLeft} size={0.7} className="me-1" />Back</Button>
         )}
 
         {saving && <Spinner size="sm" animation="border" variant="primary" className="ms-2" />}
@@ -726,7 +734,7 @@ export default function DocumentForm({ mode: initialMode }) {
         <Modal.Footer>
           <Button variant="outline-secondary" onClick={() => setShowApproveModal(false)}>Cancel</Button>
           <Button variant="success" onClick={handleApprove} disabled={saving}>
-            {saving ? <Spinner size="sm" /> : '✓ Approve'}
+            {saving ? <Spinner size="sm" /> : <><Icon path={mdiCheck} size={0.7} className="me-1" />Approve</>}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -752,7 +760,7 @@ export default function DocumentForm({ mode: initialMode }) {
         <Modal.Footer>
           <Button variant="outline-secondary" onClick={() => { setShowRejectModal(false); setRejectReason(''); }}>Cancel</Button>
           <Button variant="danger" onClick={handleReject} disabled={saving}>
-            {saving ? <Spinner size="sm" /> : '✕ Reject'}
+            {saving ? <Spinner size="sm" /> : <><Icon path={mdiClose} size={0.7} className="me-1" />Reject</>}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -771,7 +779,7 @@ export default function DocumentForm({ mode: initialMode }) {
               onKeyDown={e => e.key === 'Enter' && runWOHelpSearch()}
             />
             <Button variant="primary" onClick={runWOHelpSearch} disabled={woHelp.searching}>
-              {woHelp.searching ? <Spinner size="sm" /> : '🔍 Search'}
+              {woHelp.searching ? <Spinner size="sm" /> : <><Icon path={mdiMagnify} size={0.7} className="me-1" />Search</>}
             </Button>
           </div>
           <div style={{ maxHeight: 320, overflowY: 'auto' }}>
@@ -807,7 +815,7 @@ export default function DocumentForm({ mode: initialMode }) {
               onKeyDown={e => e.key === 'Enter' && runEQHelpSearch()}
             />
             <Button variant="primary" onClick={runEQHelpSearch} disabled={eqHelp.searching}>
-              {eqHelp.searching ? <Spinner size="sm" /> : '🔍 Search'}
+              {eqHelp.searching ? <Spinner size="sm" /> : <><Icon path={mdiMagnify} size={0.7} className="me-1" />Search</>}
             </Button>
           </div>
           <div style={{ maxHeight: 320, overflowY: 'auto' }}>

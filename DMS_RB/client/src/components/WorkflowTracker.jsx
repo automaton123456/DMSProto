@@ -1,11 +1,18 @@
 import React from 'react';
 import Alert from 'react-bootstrap/Alert';
+import Icon from '@mdi/react';
+import { mdiCheck, mdiClose, mdiCircleMedium, mdiCircleOutline } from '@mdi/js';
 
 function StepCircle({ status }) {
-  const icons = { completed: '✓', active: '●', rejected: '✗', upcoming: '○' };
+  const icons = {
+    completed: mdiCheck,
+    active: mdiCircleMedium,
+    rejected: mdiClose,
+    upcoming: mdiCircleOutline
+  };
   return (
     <div className={`step-circle ${status}`}>
-      {icons[status] || '○'}
+      <Icon path={icons[status] || mdiCircleOutline} size={0.65} />
     </div>
   );
 }
@@ -34,19 +41,14 @@ export default function WorkflowTracker({ workflow, originatorName, createdDate 
   return (
     <div style={{ overflowX: 'auto' }}>
       <div className="workflow-tracker">
-        {/* Submitted step */}
         <div className="workflow-step completed">
           <StepCircle status="completed" />
           <div className="step-info">
             <div className="step-name">Submitted</div>
-            <div className="step-detail">
-              {originatorName}<br />
-              {formatDate(createdDate)}
-            </div>
+            <div className="step-detail">{originatorName}<br />{formatDate(createdDate)}</div>
           </div>
         </div>
 
-        {/* Approval steps */}
         {workflow.steps.map((step) => {
           const status = getStepStatus(step);
           return (
@@ -56,33 +58,20 @@ export default function WorkflowTracker({ workflow, originatorName, createdDate 
                 <div className="step-name">{step.name}</div>
                 <div className="step-detail">
                   {status === 'completed' && (
-                    <>
-                      <span className="text-success fw-semibold">Approved</span><br />
-                      {step.actionedByName}<br />
-                      {formatDate(step.actionDate)}
-                    </>
+                    <><span className="text-success fw-semibold">Approved</span><br />{step.actionedByName}<br />{formatDate(step.actionDate)}</>
                   )}
                   {status === 'active' && (
-                    <>
-                      <span className="text-primary fw-semibold">Pending</span><br />
-                      Awaiting: {step.assignedApprovers?.join(', ')}
-                    </>
+                    <><span className="text-primary fw-semibold">Pending</span><br />Awaiting: {step.assignedApprovers?.join(', ')}</>
                   )}
                   {status === 'rejected' && (
                     <>
                       <span className="text-danger fw-semibold">Rejected</span><br />
-                      {step.actionedByName}<br />
-                      {formatDate(step.actionDate)}
-                      {step.rejectionReason && (
-                        <><br /><em>"{step.rejectionReason}"</em></>
-                      )}
+                      {step.actionedByName}<br />{formatDate(step.actionDate)}
+                      {step.rejectionReason && <><br /><em>"{step.rejectionReason}"</em></>}
                     </>
                   )}
                   {status === 'upcoming' && (
-                    <>
-                      <span className="text-muted">Upcoming</span><br />
-                      {step.assignedApprovers?.join(', ')}
-                    </>
+                    <><span className="text-muted">Upcoming</span><br />{step.assignedApprovers?.join(', ')}</>
                   )}
                 </div>
               </div>
@@ -90,7 +79,6 @@ export default function WorkflowTracker({ workflow, originatorName, createdDate 
           );
         })}
 
-        {/* Filed step */}
         {workflow.currentStep === 'completed' && (
           <div className="workflow-step completed">
             <StepCircle status="completed" />
