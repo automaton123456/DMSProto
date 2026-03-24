@@ -7,7 +7,7 @@ import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Icon from '@mdi/react';
 import {
-  mdiHome, mdiTrayDownload, mdiFilePlusOutline, mdiFileDocumentMultipleOutline,
+  mdiHome, mdiTrayArrowDown, mdiFilePlusOutline, mdiFileDocumentMultipleOutline,
   mdiMagnify, mdiCogOutline, mdiBellOutline, mdiLogoutVariant, mdiAccountCircleOutline
 } from '@mdi/js';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -75,7 +75,7 @@ export default function NavbarLayout({ children }) {
               <Icon path={mdiHome} size={0.7} className="me-1" />Home
             </Nav.Link>
             <Nav.Link className={isActive('/inbox')} onClick={() => navigate('/inbox')}>
-              <Icon path={mdiTrayDownload} size={0.7} className="me-1" />Inbox
+              <Icon path={mdiTrayArrowDown} size={0.7} className="me-1" />Inbox
               {unreadCount > 0 && (
                 <Badge bg="warning" text="dark" className="ms-1" style={{ fontSize: '0.62rem' }}>{unreadCount}</Badge>
               )}

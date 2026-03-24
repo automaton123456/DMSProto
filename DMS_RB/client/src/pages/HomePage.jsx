@@ -6,13 +6,13 @@ import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Table from 'react-bootstrap/Table';
 import Icon from '@mdi/react';
-import { mdiFilePlusOutline, mdiTrayDownload, mdiFileDocumentMultipleOutline, mdiChartBoxOutline } from '@mdi/js';
+import { mdiFilePlusOutline, mdiTrayArrowDown, mdiFileDocumentMultipleOutline, mdiChartBoxOutline } from '@mdi/js';
 import { useAuth } from '../context/AuthContext.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
 
 const TILES = [
   { id: 'create',   title: 'Create DMS Document', subtitle: 'Upload a new document',          icon: mdiFilePlusOutline,               variant: 'primary',  route: '/documents/new',  countKey: null },
-  { id: 'inbox',    title: 'DMS Inbox',            subtitle: 'Items pending your approval',    icon: mdiTrayDownload,                  variant: 'warning',  route: '/inbox',           countKey: 'inboxCount' },
+  { id: 'inbox',    title: 'DMS Inbox',            subtitle: 'Items pending your approval',    icon: mdiTrayArrowDown,                  variant: 'warning',  route: '/inbox',           countKey: 'inboxCount' },
   { id: 'my-docs',  title: 'My DMS Forms',         subtitle: 'Your submitted documents',       icon: mdiFileDocumentMultipleOutline,   variant: 'success',  route: '/my-documents',    countKey: 'myDocsCount' },
   { id: 'report',   title: 'DMS Report',           subtitle: 'Search all DMS documents',       icon: mdiChartBoxOutline,               variant: 'info',     route: '/report',          countKey: null },
 ];
