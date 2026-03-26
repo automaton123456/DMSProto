@@ -2,6 +2,15 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
+function normalizeUser(user) {
+  if (!user) return null;
+  return {
+    ...user,
+    displayName: user.displayName || user.display_name || user.username || '',
+    role: (user.role || 'user').toLowerCase().trim()
+  };
+}
+
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [users, setUsers] = useState([]);
@@ -11,11 +20,12 @@ export function AuthProvider({ children }) {
     fetch('/api/users')
       .then(r => r.json())
       .then(data => {
-        setUsers(data);
+        const normalizedUsers = (Array.isArray(data) ? data : []).map(normalizeUser);
+        setUsers(normalizedUsers);
         // Restore from session
         const saved = sessionStorage.getItem('dms_user');
         if (saved) {
-          const savedUser = data.find(u => u.username === saved);
+          const savedUser = normalizedUsers.find(u => u.username === saved);
           if (savedUser) setCurrentUser(savedUser);
         }
         setLoading(false);
@@ -27,7 +37,7 @@ export function AuthProvider({ children }) {
     fetch(`/api/users/${username}`)
       .then(r => r.json())
       .then(user => {
-        setCurrentUser(user);
+        setCurrentUser(normalizeUser(user));
         sessionStorage.setItem('dms_user', username);
       });
   };

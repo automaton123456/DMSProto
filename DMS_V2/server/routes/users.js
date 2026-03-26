@@ -5,8 +5,8 @@ const userRepo = require('../repositories/userRepository');
 router.get('/', (req, res) => {
   res.json(userRepo.getAll().map(u => ({
     username:    u.username,
-    displayName: u.display_name,
-    role:        u.role
+    displayName: u.display_name || u.username,
+    role:        String(u.role || 'user').toLowerCase().trim()
   })));
 });
 
