@@ -47,6 +47,14 @@ if errorlevel 1 (
     goto END
 )
 
+rem Pull latest code
+echo   Pulling latest code for DMS V2...
+cd /d "%ROOT%"
+git pull
+echo.
+echo   Waiting 5 seconds...
+timeout /t 5 /nobreak >nul
+
 rem Install dependencies if node_modules missing
 if not exist "%V2%\node_modules" (
     echo   Installing server dependencies...
@@ -84,6 +92,14 @@ if errorlevel 1 (
     goto END
 )
 
+rem Pull latest code
+echo   Pulling latest code for DMS RB...
+cd /d "%ROOT%"
+git pull
+echo.
+echo   Waiting 5 seconds...
+timeout /t 5 /nobreak >nul
+
 if not exist "%RB%\client\node_modules" (
     echo   Installing client dependencies...
     cd /d "%RB%"
@@ -112,6 +128,14 @@ if errorlevel 1 (
     pause
     goto END
 )
+
+rem Pull latest code
+echo   Pulling latest code...
+cd /d "%ROOT%"
+git pull
+echo.
+echo   Waiting 5 seconds...
+timeout /t 5 /nobreak >nul
 
 if not exist "%V2%\node_modules" (
     echo   Installing DMS V2 server dependencies...
