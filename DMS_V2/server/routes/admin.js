@@ -4,6 +4,7 @@ const svc       = require('../services/documentService');
 const userRepo  = require('../repositories/userRepository');
 const cfgRepo   = require('../repositories/configRepository');
 const wfSvc     = require('../services/workflowService');
+const db        = require('../db/database');
 const XLSX      = require('xlsx');
 const multer    = require('multer');
 const upload    = multer({ storage: multer.memoryStorage() });
@@ -12,6 +13,49 @@ const upload    = multer({ storage: multer.memoryStorage() });
 
 router.get('/stats', (req, res) => {
   res.json(svc.getStats());
+});
+
+// ── DB Status (table row counts) ──────────────────────────────────────────────
+
+router.get('/db-status', (req, res) => {
+  const tables = db.prepare(
+    "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
+  ).all().map(r => r.name);
+  const result = tables.map(name => {
+    const row = db.prepare(`SELECT COUNT(*) as n FROM "${name}"`).get();
+    return { table: name, rows: row.n };
+  });
+  res.json(result);
+});
+
+// ── Compat: workflow-approvers (legacy DMS_RB Admin format) ──────────────────
+
+router.get('/workflow-approvers', (req, res) => {
+  const rows = cfgRepo.getApproversByDiscipline();
+  const msvApprovers = {};
+  const emApprovers  = {};
+  for (const r of rows) {
+    const dept = r.department_id;
+    if (r.approval_type === 'msv') {
+      if (!msvApprovers[dept]) msvApprovers[dept] = [];
+      msvApprovers[dept].push(r.approver_username);
+    } else {
+      if (!emApprovers[dept]) emApprovers[dept] = [];
+      emApprovers[dept].push(r.approver_username);
+    }
+  }
+  res.json({ msvApprovers, emApprovers });
+});
+
+router.put('/workflow-approvers', (req, res) => {
+  const { msvApprovers = {}, emApprovers = {} } = req.body;
+  for (const [dept, users] of Object.entries(msvApprovers)) {
+    cfgRepo.replaceApproversDisciplineForDept(dept, 'msv', users);
+  }
+  for (const [dept, users] of Object.entries(emApprovers)) {
+    cfgRepo.replaceApproversDisciplineForDept(dept, 'em', users);
+  }
+  res.json({ ok: true });
 });
 
 // ── Users ─────────────────────────────────────────────────────────────────────

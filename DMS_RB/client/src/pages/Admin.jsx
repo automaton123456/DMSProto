@@ -28,6 +28,7 @@ export default function Admin() {
   const [users, setUsers] = useState([]);
   const [approvers, setApprovers] = useState(null);
   const [stats, setStats] = useState(null);
+  const [dbStatus, setDbStatus] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [activeTab, setActiveTab] = useState('overview');
@@ -37,10 +38,11 @@ export default function Admin() {
     Promise.all([
       fetch('/api/admin/users').then(r => r.json()),
       fetch('/api/admin/workflow-approvers').then(r => r.json()),
-      fetch('/api/admin/stats').then(r => r.json())
-    ]).then(([u, a, s]) => {
-      setUsers(u); setApprovers(a); setStats(s); setLoading(false);
-    });
+      fetch('/api/admin/stats').then(r => r.json()),
+      fetch('/api/admin/db-status').then(r => r.json())
+    ]).then(([u, a, s, db]) => {
+      setUsers(u); setApprovers(a); setStats(s); setDbStatus(db); setLoading(false);
+    }).catch(() => setLoading(false));
   }, [currentUser]);
 
   if (currentUser?.role !== 'admin') {
@@ -104,6 +106,9 @@ export default function Admin() {
         </Nav.Item>
         <Nav.Item>
           <Nav.Link eventKey="users">User Management</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="database">Database</Nav.Link>
         </Nav.Item>
       </Nav>
 
@@ -222,6 +227,39 @@ export default function Admin() {
               </tbody>
             </Table>
           </div>
+        </Card>
+      )}
+      {/* Database Status */}
+      {activeTab === 'database' && (
+        <Card className="shadow-sm">
+          <Card.Body>
+            <h5 className="fw-bold mb-1">Database Tables</h5>
+            <p className="text-muted small mb-4">
+              Live row counts from the SQLite database (<code>data/dms.db</code>).
+              For full table browsing, open the file with{' '}
+              <strong>DB Browser for SQLite</strong> (free Windows app).
+            </p>
+            <div style={{ overflowX: 'auto' }}>
+              <Table hover className="mb-0" style={{ fontSize: '0.875rem' }}>
+                <thead className="table-light">
+                  <tr>
+                    <th className="fw-semibold">Table</th>
+                    <th className="fw-semibold text-end">Row Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(dbStatus || []).map(({ table, rows }) => (
+                    <tr key={table}>
+                      <td><code>{table}</code></td>
+                      <td className="text-end">
+                        <Badge bg={rows > 0 ? 'success' : 'secondary'}>{rows}</Badge>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+          </Card.Body>
         </Card>
       )}
     </div>
