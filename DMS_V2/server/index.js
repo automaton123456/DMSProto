@@ -48,6 +48,7 @@ app.use('/api/notifications',require('./routes/notifications'));
 app.use('/api/admin',        require('./routes/admin'));
 app.use('/api/config',       require('./routes/config'));
 app.use('/api/tile-data',    require('./routes/tileData'));
+app.use('/api/dbviewer',     require('./routes/dbviewer'));
 
 // ── Serve React build in production ──────────────────────────────────────────
 const clientBuildPath = path.join(__dirname, '..', 'client', 'dist');
