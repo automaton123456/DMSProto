@@ -52,7 +52,7 @@ if (usersFile) {
 const docGen = readJson(path.join(DATA_DIR, 'config', 'doc-gen.json'));
 if (docGen) {
   const insertType = db.prepare(`
-    INSERT OR IGNORE INTO config_doc_types (code, description, active)
+    INSERT OR REPLACE INTO config_doc_types (code, description, active)
     VALUES (?, ?, 1)
   `);
   for (const t of docGen.docTypes) {
@@ -61,7 +61,7 @@ if (docGen) {
   console.log(`Seeded ${docGen.docTypes.length} doc types`);
 
   const insertGroup = db.prepare(`
-    INSERT OR IGNORE INTO config_doc_groups
+    INSERT OR REPLACE INTO config_doc_groups
       (doc_type, code, description, workflow_required, active)
     VALUES (?, ?, ?, ?, 1)
   `);
