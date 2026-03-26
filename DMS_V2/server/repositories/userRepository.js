@@ -39,10 +39,10 @@ function toApiShape(row) {
   if (!row) return null;
   return {
     username:    row.username,
-    displayName: row.display_name,
+    displayName: row.display_name || row.username,
     email:       row.email,
     department:  row.department,
-    role:        row.role,
+    role:        String(row.role || 'user').toLowerCase().trim(),
     active:      row.active === 1
   };
 }
