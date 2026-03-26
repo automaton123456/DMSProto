@@ -1,11 +1,10 @@
 const express = require('express');
-const router = express.Router();
-const ds = require('../services/dataStore');
+const router  = express.Router();
+const svc     = require('../services/documentService');
 
 router.get('/', (req, res) => {
   try {
-    const { search, rig } = req.query;
-    res.json(ds.getEquipment(search, rig));
+    res.json(svc.getEquipment(req.query.search, req.query.rig));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

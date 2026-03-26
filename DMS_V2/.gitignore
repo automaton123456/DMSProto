@@ -4,3 +4,9 @@ client/dist/
 storage/tmp/
 *.log
 .env
+
+# SQLite database files (auto-generated on first run)
+data/dms.db
+data/dms.db-shm
+data/dms.db-wal
+data/.seeded
