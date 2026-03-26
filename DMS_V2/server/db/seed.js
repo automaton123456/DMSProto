@@ -37,9 +37,13 @@ function buildSearchText(header, links) {
 const usersFile = readJson(path.join(DATA_DIR, 'users.json'));
 if (usersFile) {
   const insert = db.prepare(`
-    INSERT OR IGNORE INTO users
-      (username, display_name, email, department, role, active, created_date)
+    INSERT INTO users (username, display_name, email, department, role, active, created_date)
     VALUES (?, ?, ?, ?, ?, 1, ?)
+    ON CONFLICT(username) DO UPDATE SET
+      display_name = excluded.display_name,
+      email        = excluded.email,
+      department   = excluded.department,
+      role         = excluded.role
   `);
   const now = new Date().toISOString();
   for (const u of usersFile.users) {
