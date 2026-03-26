@@ -8,6 +8,11 @@ const PORT = process.env.PORT || 3000;
 
 // ── Initialise SQLite database (schema + seed from JSON if first run) ─────────
 const db = require('./db/database');   // creates DB + applies schema
+const dbPath = path.join(__dirname, '..', 'data', 'dms.db');
+console.log(`[DB] SQLite database: ${dbPath}`);
+const docCount = db.prepare('SELECT COUNT(*) as n FROM dms_header').get().n;
+const userCount = db.prepare('SELECT COUNT(*) as n FROM users').get().n;
+console.log(`[DB] Connected — ${userCount} users, ${docCount} documents\n`);
 
 const seedFlagPath = path.join(__dirname, '..', 'data', '.seeded');
 if (!fs.existsSync(seedFlagPath)) {
