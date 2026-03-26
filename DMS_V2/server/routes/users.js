@@ -1,15 +1,19 @@
-const express = require('express');
-const router = express.Router();
-const ds = require('../services/dataStore');
+const express  = require('express');
+const router   = express.Router();
+const userRepo = require('../repositories/userRepository');
 
 router.get('/', (req, res) => {
-  res.json(ds.getUsers().map(u => ({ username: u.username, displayName: u.displayName, role: u.role })));
+  res.json(userRepo.getAll().map(u => ({
+    username:    u.username,
+    displayName: u.display_name,
+    role:        u.role
+  })));
 });
 
 router.get('/:username', (req, res) => {
-  const user = ds.getUserByUsername(req.params.username);
+  const user = userRepo.getByUsername(req.params.username);
   if (!user) return res.status(404).json({ error: 'User not found' });
-  res.json(user);
+  res.json(userRepo.toApiShape(user));
 });
 
 module.exports = router;

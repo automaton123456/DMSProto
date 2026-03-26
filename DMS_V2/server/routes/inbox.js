@@ -1,16 +1,11 @@
 const express = require('express');
-const router = express.Router();
-const ds = require('../services/dataStore');
-const wf = require('../services/workflowService');
+const router  = express.Router();
+const svc     = require('../services/documentService');
 
 router.get('/', (req, res) => {
   const { currentUser } = req.query;
   if (!currentUser) return res.status(400).json({ error: 'currentUser required' });
-
-  const allDocs = ds.getAllDocuments().documents;
-  const inboxItems = allDocs.filter(doc => wf.isApproverForDocument(doc, currentUser));
-
-  res.json(inboxItems);
+  res.json(svc.getInboxForUser(currentUser));
 });
 
 module.exports = router;

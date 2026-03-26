@@ -1,25 +1,22 @@
-const express = require('express');
-const router = express.Router();
-const ds = require('../services/dataStore');
+const express   = require('express');
+const router    = express.Router();
+const notifRepo = require('../repositories/notificationRepository');
 
 router.get('/', (req, res) => {
   const { currentUser } = req.query;
   if (!currentUser) return res.status(400).json({ error: 'currentUser required' });
-  const notifs = ds.getNotificationsForUser(currentUser);
-  res.json(notifs.sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
+  res.json(notifRepo.getForUser(currentUser));
 });
 
 router.put('/:id/read', (req, res) => {
-  const notif = ds.markNotificationRead(req.params.id);
-  if (!notif) return res.status(404).json({ error: 'Notification not found' });
-  res.json(notif);
+  notifRepo.markRead(req.params.id);
+  res.json({ success: true });
 });
 
 router.put('/read-all', (req, res) => {
   const { currentUser } = req.body;
   if (!currentUser) return res.status(400).json({ error: 'currentUser required' });
-  const notifs = ds.getNotificationsForUser(currentUser);
-  notifs.forEach(n => ds.markNotificationRead(n.id));
+  notifRepo.markAllReadForUser(currentUser);
   res.json({ success: true });
 });
 

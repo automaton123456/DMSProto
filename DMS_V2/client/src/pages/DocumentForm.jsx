@@ -62,6 +62,10 @@ export default function DocumentForm({ mode: initialMode }) {
   const [eqResults, setEqResults] = useState([]);
   const [activeSearch, setActiveSearch] = useState(null); // 'wo-{idx}' or 'eq-{idx}'
 
+  // History
+  const [history, setHistory] = useState([]);
+  const [docTab, setDocTab] = useState('details'); // 'details' | 'history'
+
   // Dialogs & success
   const [showRejectDialog, setShowRejectDialog] = useState(false);
   const [rejectReason, setRejectReason] = useState('');
@@ -92,8 +96,15 @@ export default function DocumentForm({ mode: initialMode }) {
         setDocType(data.docType);
         setDocGroup(data.docGroup);
         setClassifications(data.classifications || {});
-        setObjectLinks(data.objectLinks || []);
+        // Normalise object links — API returns em_asset_number, form uses em_asset_number internally
+        setObjectLinks((data.objectLinks || []).map(l => ({
+          ...l,
+          em_asset_number: l.em_asset_number || l.equipment || ''
+        })));
         setAttachments(data.attachments || []);
+        // Load history
+        fetch(`/api/documents/${data.documentId}/history`)
+          .then(r => r.json()).then(h => setHistory(Array.isArray(h) ? h : []));
 
         // Determine actual mode
         const isApprover = currentUser && data.workflow && isApproverForDoc(data, currentUser.username);
@@ -221,7 +232,7 @@ export default function DocumentForm({ mode: initialMode }) {
   const selectEQ = (idx, eq) => {
     setObjectLinks(prev => prev.map((l, i) => i === idx ? {
       ...l,
-      equipment: eq.assetNumber,
+      em_asset_number: eq.assetNumber,
       equipmentText: eq.description
     } : l));
     setEqResults([]);
@@ -434,6 +445,11 @@ export default function DocumentForm({ mode: initialMode }) {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
         <Title level="H2">{pageTitle}</Title>
+        {doc?.version && (
+          <span style={{ background:'#f0f0f0', color:'#666', padding:'0.25rem 0.7rem', borderRadius:'1rem', fontSize:'0.78rem', fontWeight:600 }}>
+            v{doc.version}
+          </span>
+        )}
         {doc?.status && (
           <span style={{
             ...statusStyle,
@@ -444,6 +460,18 @@ export default function DocumentForm({ mode: initialMode }) {
           }}>
             {doc.status}
           </span>
+        )}
+        {id && (
+          <div style={{ marginLeft:'auto', display:'flex', gap:'0.5rem' }}>
+            <button
+              onClick={() => setDocTab('details')}
+              style={{ padding:'0.4rem 1rem', border:'none', borderRadius:'1rem', cursor:'pointer', fontWeight:600, fontSize:'0.82rem', background: docTab === 'details' ? '#0070f2' : '#f0f0f0', color: docTab === 'details' ? 'white' : '#666' }}
+            >Details</button>
+            <button
+              onClick={() => setDocTab('history')}
+              style={{ padding:'0.4rem 1rem', border:'none', borderRadius:'1rem', cursor:'pointer', fontWeight:600, fontSize:'0.82rem', background: docTab === 'history' ? '#0070f2' : '#f0f0f0', color: docTab === 'history' ? 'white' : '#666' }}
+            >History {history.length > 0 && `(${history.length})`}</button>
+          </div>
         )}
       </div>
 
@@ -464,6 +492,45 @@ export default function DocumentForm({ mode: initialMode }) {
           {error}
         </MessageStrip>
       )}
+
+      {/* ── History Tab ── */}
+      {docTab === 'history' && id && (
+        <Card style={{ marginBottom:'1.5rem' }}>
+          <div style={{ padding:'1.25rem 1.5rem' }}>
+            <Title level="H4" style={{ marginBottom:'1.25rem', paddingBottom:'0.5rem', borderBottom:'2px solid #0070f2' }}>
+              Change History
+            </Title>
+            {history.length === 0 ? (
+              <div style={{ color:'#6a6d70', textAlign:'center', padding:'2rem' }}>No history yet.</div>
+            ) : (
+              <div style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
+                {history.map((h, i) => (
+                  <div key={h.id || i} style={{ display:'flex', gap:'1rem', padding:'0.75rem 1rem', background: i === 0 ? '#f0f7ff' : '#fafafa', borderRadius:'0.5rem', border:'1px solid #e8e8e8' }}>
+                    <div style={{ width:'3rem', height:'3rem', borderRadius:'50%', background:'#0070f2', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                      <span style={{ color:'white', fontWeight:700, fontSize:'0.8rem' }}>v{h.version}</span>
+                    </div>
+                    <div style={{ flex:1 }}>
+                      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', flexWrap:'wrap', gap:'0.5rem' }}>
+                        <div>
+                          <span style={{ fontWeight:600 }}>{h.changedByName || h.changedBy}</span>
+                          <span style={{ marginLeft:'0.5rem', background:'#e8e8e8', padding:'0.15rem 0.5rem', borderRadius:'0.5rem', fontSize:'0.72rem', color:'#444' }}>{h.changeType}</span>
+                        </div>
+                        <span style={{ fontSize:'0.8rem', color:'#6a6d70', whiteSpace:'nowrap' }}>
+                          {new Date(h.changeDate).toLocaleString('en-GB')}
+                        </span>
+                      </div>
+                      <div style={{ marginTop:'0.3rem', fontSize:'0.875rem', color:'#32363a' }}>{h.changeSummary}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </Card>
+      )}
+
+      {/* ── Document Details (hide when history tab active) ── */}
+      {docTab === 'details' && <>
 
       {/* ── Section 1: Document Classification ── */}
       <Card style={{ marginBottom: '1.5rem' }}>
@@ -611,8 +678,8 @@ export default function DocumentForm({ mode: initialMode }) {
                     <tr>
                       {fieldConfig.workOrder && <th>Work Order</th>}
                       {fieldConfig.workOrder && <th>Description</th>}
-                      {fieldConfig.equipment && <th>Equipment</th>}
-                      {fieldConfig.equipment && <th>Equipment Text</th>}
+                      {fieldConfig.equipment && <th>E&amp;M Asset Number</th>}
+                      {fieldConfig.equipment && <th>Equipment Description</th>}
                       {!isReadOnly && <th style={{ width: '60px' }}></th>}
                     </tr>
                   </thead>
@@ -682,15 +749,15 @@ export default function DocumentForm({ mode: initialMode }) {
                         {fieldConfig.equipment && (
                           <td style={{ position: 'relative' }}>
                             {isReadOnly ? (
-                              <span style={{ fontWeight: 500 }}>{link.equipment || '—'}</span>
+                              <span style={{ fontWeight: 500 }}>{link.em_asset_number || '—'}</span>
                             ) : (
                               <div>
                                 <div style={{ display: 'flex', gap: '0.25rem' }}>
                                   <Input
-                                    value={link.equipment}
+                                    value={link.em_asset_number || ''}
                                     onInput={e => {
                                       const val = e.target.value;
-                                      setObjectLinks(prev => prev.map((l, i) => i === idx ? { ...l, equipment: val, equipmentText: '' } : l));
+                                      setObjectLinks(prev => prev.map((l, i) => i === idx ? { ...l, em_asset_number: val, equipmentText: '' } : l));
                                       setEqSearch(val);
                                       setActiveSearch(`eq-${idx}`);
                                       searchEQ(val);
@@ -860,6 +927,8 @@ export default function DocumentForm({ mode: initialMode }) {
         </Card>
       )}
 
+      </> /* end docTab === 'details' */}
+
       {/* ── Action Bar ── */}
       <div style={{
         position: 'sticky', bottom: 0,
@@ -911,10 +980,14 @@ export default function DocumentForm({ mode: initialMode }) {
         {/* Read-only mode */}
         {mode === 'readonly' && (
           <>
-            <Button design="Transparent" icon="nav-back" onClick={() => navigate(-1)}>
-              Back
-            </Button>
+            <Button design="Transparent" icon="nav-back" onClick={() => navigate(-1)}>Back</Button>
+            <Button design="Default" icon="print" onClick={() => window.print()}>Print</Button>
           </>
+        )}
+
+        {/* Print button always available when viewing */}
+        {mode === 'approve' && (
+          <Button design="Transparent" icon="print" onClick={() => window.print()} style={{ marginLeft:'auto' }}>Print</Button>
         )}
 
         {saving && <BusyIndicator active size="S" style={{ marginLeft: '1rem' }} />}
