@@ -115,17 +115,8 @@ export default function DocumentForm({ mode: initialMode }) {
       .then(r => r.json())
       .then(config => {
         setFieldConfig(config);
-        if (rig && !classifications.docLoc) {
-          setClassifications(prev => ({ ...prev, docLoc: rig }));
-        }
       });
   }, [docGroup]);
-
-  useEffect(() => {
-    if (rig && fieldConfig?.docLoc) {
-      setClassifications(prev => ({ ...prev, docLoc: rig }));
-    }
-  }, [rig]);
 
   function isApproverForDoc(doc, username) {
     if (!doc?.workflow?.required) return false;

@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = (username) => {
-    fetch(`/api/users/${username}`)
+    return fetch(`/api/users/${username}`)
       .then(r => r.json())
       .then(user => {
         setCurrentUser(user);
