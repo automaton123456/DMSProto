@@ -14,16 +14,13 @@ const docCount = db.prepare('SELECT COUNT(*) as n FROM dms_header').get().n;
 const userCount = db.prepare('SELECT COUNT(*) as n FROM users').get().n;
 console.log(`[DB] Connected — ${userCount} users, ${docCount} documents\n`);
 
-const seedFlagPath = path.join(__dirname, '..', 'data', '.seeded');
-if (!fs.existsSync(seedFlagPath)) {
-  console.log('Running database seed from JSON files...');
-  try {
-    require('./db/seed');
-    fs.writeFileSync(seedFlagPath, new Date().toISOString());
-    console.log('Seed complete.\n');
-  } catch (err) {
-    console.warn('Seed warning (non-fatal):', err.message);
-  }
+// Always run seed — it uses upsert (ON CONFLICT DO UPDATE) so it's safe to
+// run every startup and will fill in any missing fields on existing rows.
+try {
+  require('./db/seed');
+  console.log('Seed / sync complete.\n');
+} catch (err) {
+  console.warn('Seed warning (non-fatal):', err.message);
 }
 
 // ── Middleware ────────────────────────────────────────────────────────────────
