@@ -87,8 +87,21 @@ router.get('/users', (req, res) => {
 
 router.post('/users', (req, res) => {
   try {
+    const username = String(req.body?.username || '').trim();
+    if (!username) return res.status(400).json({ error: 'Username is required' });
     userRepo.upsert(req.body);
-    res.json(userRepo.toApiShape(userRepo.getByUsername(req.body.username)));
+    res.json(userRepo.toApiShape(userRepo.getByUsername(username)));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put('/users/:username', (req, res) => {
+  try {
+    const existing = userRepo.getByUsername(req.params.username);
+    if (!existing) return res.status(404).json({ error: 'User not found' });
+    userRepo.upsert({ ...req.body, username: req.params.username });
+    res.json(userRepo.toApiShape(userRepo.getByUsername(req.params.username)));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -372,17 +385,50 @@ router.get('/approvers/maintenance', (req, res) => {
 });
 
 router.post('/approvers/maintenance', (req, res) => {
-  cfgRepo.upsertApproverMaintenance(req.body);
+  const payload = {
+    maintenanceStrategy: req.body?.maintenanceStrategy || null,
+    maintenanceDays: req.body?.maintenanceDays ?? null,
+    approvalType: String(req.body?.approvalType || '').trim().toLowerCase(),
+    approverUsername: String(req.body?.approverUsername || '').trim()
+  };
+  if (!payload.approvalType || !APPROVAL_TYPES.has(payload.approvalType)) {
+    return res.status(400).json({ error: 'approvalType must be msv or em' });
+  }
+  if (!payload.approverUsername) {
+    return res.status(400).json({ error: 'approverUsername is required' });
+  }
+  if (payload.maintenanceDays !== null && (!Number.isInteger(payload.maintenanceDays) || payload.maintenanceDays < 0)) {
+    return res.status(400).json({ error: 'maintenanceDays must be a whole number >= 0' });
+  }
+  cfgRepo.upsertApproverMaintenance(payload);
+  wfSvc.reEvaluatePendingWorkflows();
   res.json({ success: true });
 });
 
 router.delete('/approvers/maintenance/:id', (req, res) => {
   cfgRepo.deleteApproverMaintenance(req.params.id);
+  wfSvc.reEvaluatePendingWorkflows();
   res.json({ success: true });
 });
 
 router.put('/approvers/maintenance/:id', (req, res) => {
-  cfgRepo.updateApproverMaintenance(req.params.id, req.body);
+  const payload = {
+    maintenanceStrategy: req.body?.maintenanceStrategy || null,
+    maintenanceDays: req.body?.maintenanceDays ?? null,
+    approvalType: String(req.body?.approvalType || '').trim().toLowerCase(),
+    approverUsername: String(req.body?.approverUsername || '').trim()
+  };
+  if (!payload.approvalType || !APPROVAL_TYPES.has(payload.approvalType)) {
+    return res.status(400).json({ error: 'approvalType must be msv or em' });
+  }
+  if (!payload.approverUsername) {
+    return res.status(400).json({ error: 'approverUsername is required' });
+  }
+  if (payload.maintenanceDays !== null && (!Number.isInteger(payload.maintenanceDays) || payload.maintenanceDays < 0)) {
+    return res.status(400).json({ error: 'maintenanceDays must be a whole number >= 0' });
+  }
+  cfgRepo.updateApproverMaintenance(req.params.id, payload);
+  wfSvc.reEvaluatePendingWorkflows();
   res.json({ success: true });
 });
 

@@ -13,6 +13,15 @@ function getByUsername(username) {
 
 function upsert(user) {
   const now = new Date().toISOString();
+  const toNull = (value) => (value === undefined || value === '' ? null : value);
+  const username = String(user.username || '').trim();
+  if (!username) {
+    throw new Error('username is required');
+  }
+  const displayName = toNull(user.displayName ?? user.display_name);
+  const email = toNull(user.email);
+  const department = toNull(user.department);
+  const role = String(user.role || 'user').trim().toLowerCase() || 'user';
   db.prepare(`
     INSERT INTO users (username, display_name, email, department, role, active, created_date)
     VALUES (?, ?, ?, ?, ?, 1, ?)
@@ -22,8 +31,7 @@ function upsert(user) {
       department=excluded.department,
       role=excluded.role,
       active=excluded.active
-  `).run(user.username, user.displayName || user.display_name, user.email,
-    user.department, user.role || 'user', now);
+  `).run(username, displayName, email, department, role, now);
 }
 
 function updateRole(username, role) {
