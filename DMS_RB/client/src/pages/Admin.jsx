@@ -232,6 +232,7 @@ function ApproversDisciplineTab() {
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState({ departmentId:'', approvalType:'msv', approverUsername:'' });
   const [msg, setMsg] = useState('');
+  const [msgType, setMsgType] = useState('Positive');
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef();
 
@@ -262,17 +263,29 @@ function ApproversDisciplineTab() {
     setUploading(true);
     const fd = new FormData();
     fd.append('file', file);
-    const res = await fetch('/api/admin/approvers/discipline/upload', { method:'POST', body: fd }).then(r => r.json());
-    setMsg(`Imported ${res.imported} rows. Pending workflows re-evaluated.`);
-    setTimeout(() => setMsg(''), 4000);
+    try {
+      const response = await fetch('/api/admin/approvers/discipline/upload', { method:'POST', body: fd });
+      const res = await response.json();
+      if (!response.ok) throw new Error(res.error || 'Failed to upload Excel');
+      setMsgType('Positive');
+      setMsg(`Imported ${res.imported} rows. Pending workflows re-evaluated.`);
+      setTimeout(() => setMsg(''), 4000);
+      load();
+    } catch (err) {
+      setMsgType('Negative');
+      setMsg(err.message);
+    }
     setUploading(false);
-    load();
     fileRef.current.value = '';
+  };
+
+  const downloadTemplate = () => {
+    window.location.href = '/api/admin/approvers/discipline/download';
   };
 
   return (
     <div>
-      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      {msg && <MessageStrip design={msgType} style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
 
       <Card style={{ marginBottom:'1.5rem' }}>
         <div style={{ padding:'1.25rem' }}>
@@ -296,6 +309,7 @@ function ApproversDisciplineTab() {
           </div>
           <div style={{ display:'flex', gap:'0.75rem', alignItems:'center' }}>
             <Button design="Emphasized" onClick={add}>Add Rule</Button>
+            <Button design="Default" onClick={downloadTemplate}>Download Excel</Button>
             <Button design="Default" onClick={() => fileRef.current?.click()} disabled={uploading}>
               {uploading ? 'Uploading…' : 'Upload Excel'}
             </Button>
@@ -325,6 +339,7 @@ function ApproversMaintenanceTab() {
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState({ maintenanceStrategy:'', maintenanceDays:'', approvalType:'msv', approverUsername:'' });
   const [msg, setMsg] = useState('');
+  const [msgType, setMsgType] = useState('Positive');
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef();
 
@@ -357,17 +372,29 @@ function ApproversMaintenanceTab() {
     setUploading(true);
     const fd = new FormData();
     fd.append('file', file);
-    const res = await fetch('/api/admin/approvers/maintenance/upload', { method:'POST', body: fd }).then(r => r.json());
-    setMsg(`Imported ${res.imported} rows.`);
-    setTimeout(() => setMsg(''), 4000);
+    try {
+      const response = await fetch('/api/admin/approvers/maintenance/upload', { method:'POST', body: fd });
+      const res = await response.json();
+      if (!response.ok) throw new Error(res.error || 'Failed to upload Excel');
+      setMsgType('Positive');
+      setMsg(`Imported ${res.imported} rows.`);
+      setTimeout(() => setMsg(''), 4000);
+      load();
+    } catch (err) {
+      setMsgType('Negative');
+      setMsg(err.message);
+    }
     setUploading(false);
-    load();
     fileRef.current.value = '';
+  };
+
+  const downloadTemplate = () => {
+    window.location.href = '/api/admin/approvers/maintenance/download';
   };
 
   return (
     <div>
-      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      {msg && <MessageStrip design={msgType} style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
       <Card style={{ marginBottom:'1.5rem' }}>
         <div style={{ padding:'1.25rem' }}>
           <Title level="H5" style={{ marginBottom:'1rem' }}>Add Maintenance Approver Rule</Title>
@@ -385,6 +412,7 @@ function ApproversMaintenanceTab() {
           </div>
           <div style={{ display:'flex', gap:'0.75rem', alignItems:'center' }}>
             <Button design="Emphasized" onClick={add}>Add Rule</Button>
+            <Button design="Default" onClick={downloadTemplate}>Download Excel</Button>
             <Button design="Default" onClick={() => fileRef.current?.click()} disabled={uploading}>
               {uploading ? 'Uploading…' : 'Upload Excel'}
             </Button>
@@ -412,8 +440,11 @@ function ApproversMaintenanceTab() {
 // ── Users ─────────────────────────────────────────────────────────────────────
 function UsersTab({ currentUser }) {
   const [users, setUsers] = useState([]);
-  const [form, setForm] = useState({ username:'', displayName:'', email:'', department:'', role:'user' });
+  const [form, setForm] = useState({ username:'', displayName:'', email:'', role:'user' });
   const [msg, setMsg] = useState('');
+  const [msgType, setMsgType] = useState('Positive');
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef();
 
   const load = () => fetch('/api/admin/users').then(r => r.json()).then(setUsers);
   useEffect(() => { load(); }, []);
@@ -421,7 +452,7 @@ function UsersTab({ currentUser }) {
   const saveUser = async () => {
     if (!form.username) return;
     await fetch('/api/admin/users', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form) });
-    setForm({ username:'', displayName:'', email:'', department:'', role:'user' });
+    setForm({ username:'', displayName:'', email:'', role:'user' });
     setMsg('User saved.'); setTimeout(() => setMsg(''), 3000);
     load();
   };
@@ -432,9 +463,35 @@ function UsersTab({ currentUser }) {
     load();
   };
 
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+    const fd = new FormData();
+    fd.append('file', file);
+    try {
+      const response = await fetch('/api/admin/users/upload', { method:'POST', body: fd });
+      const res = await response.json();
+      if (!response.ok) throw new Error(res.error || 'Failed to upload Excel');
+      setMsgType('Positive');
+      setMsg(`Imported ${res.imported} users.`);
+      setTimeout(() => setMsg(''), 4000);
+      load();
+    } catch (err) {
+      setMsgType('Negative');
+      setMsg(err.message);
+    }
+    setUploading(false);
+    fileRef.current.value = '';
+  };
+
+  const downloadUsers = () => {
+    window.location.href = '/api/admin/users/download';
+  };
+
   return (
     <div>
-      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      {msg && <MessageStrip design={msgType} style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
       <Card style={{ marginBottom:'1.5rem' }}>
         <div style={{ padding:'1.25rem' }}>
           <Title level="H5" style={{ marginBottom:'1rem' }}>Add / Edit User</Title>
@@ -442,7 +499,6 @@ function UsersTab({ currentUser }) {
             <div><Label>Username*</Label><Input value={form.username} onInput={e => setForm(p => ({ ...p, username: e.target.value }))} style={{ width:'100%' }} /></div>
             <div><Label>Display Name</Label><Input value={form.displayName} onInput={e => setForm(p => ({ ...p, displayName: e.target.value }))} style={{ width:'100%' }} /></div>
             <div><Label>Email</Label><Input value={form.email} onInput={e => setForm(p => ({ ...p, email: e.target.value }))} style={{ width:'100%' }} /></div>
-            <div><Label>Department</Label><Input value={form.department} onInput={e => setForm(p => ({ ...p, department: e.target.value }))} style={{ width:'100%' }} /></div>
             <div>
               <Label>Role</Label>
               <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, role: e.detail.selectedOption.dataset.value }))}>
@@ -451,7 +507,15 @@ function UsersTab({ currentUser }) {
               </Select>
             </div>
           </div>
-          <Button design="Emphasized" onClick={saveUser}>Save User</Button>
+          <div style={{ display:'flex', gap:'0.75rem', alignItems:'center', flexWrap:'wrap' }}>
+            <Button design="Emphasized" onClick={saveUser}>Save User</Button>
+            <Button design="Default" onClick={downloadUsers}>Download Excel</Button>
+            <Button design="Default" onClick={() => fileRef.current?.click()} disabled={uploading}>
+              {uploading ? 'Uploading…' : 'Upload Excel'}
+            </Button>
+            <span style={{ fontSize:'0.78rem', color:'#6a6d70' }}>Columns: Username | Display Name | Email | Role</span>
+            <input ref={fileRef} type="file" accept=".xlsx,.xls" style={{ display:'none' }} onChange={handleUpload} />
+          </div>
         </div>
       </Card>
       <Card>
@@ -459,7 +523,7 @@ function UsersTab({ currentUser }) {
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.85rem' }}>
             <thead>
               <tr style={{ background:'#f5f6f7', borderBottom:'2px solid #e8e8e8' }}>
-                {['Username','Display Name','Email','Department','Role','Actions'].map(h =>
+                {['Username','Display Name','Email','Role','Actions'].map(h =>
                   <th key={h} style={{ padding:'0.6rem 0.9rem', textAlign:'left', fontWeight:600 }}>{h}</th>
                 )}
               </tr>
@@ -470,7 +534,6 @@ function UsersTab({ currentUser }) {
                   <td style={{ padding:'0.6rem 0.9rem', fontWeight:600 }}>{u.username}</td>
                   <td style={{ padding:'0.6rem 0.9rem' }}>{u.displayName}</td>
                   <td style={{ padding:'0.6rem 0.9rem', color:'#6a6d70' }}>{u.email}</td>
-                  <td style={{ padding:'0.6rem 0.9rem' }}>{u.department}</td>
                   <td style={{ padding:'0.6rem 0.9rem' }}>
                     <span style={{ background: u.role === 'admin' ? '#e3f2fd' : '#f0f0f0', color: u.role === 'admin' ? '#0070f2' : '#666', padding:'0.2rem 0.6rem', borderRadius:'1rem', fontSize:'0.72rem', fontWeight:600 }}>
                       {u.role}
