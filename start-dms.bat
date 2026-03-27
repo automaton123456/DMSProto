@@ -3,7 +3,6 @@ setlocal enabledelayedexpansion
 title DMS Application Launcher
 
 set ROOT=C:\WebApps\DMSProto
-set V2=%ROOT%\DMS_V2
 set RB=%ROOT%\DMS_RB
 
 set BACKEND_PORT=3000
@@ -29,10 +28,10 @@ echo.
 echo   Waiting 5 seconds...
 timeout /t 5 /nobreak >nul
 
-rem Install backend dependencies if needed
-if not exist "%V2%\node_modules" (
+rem Install consolidated app dependencies if needed
+if not exist "%RB%\node_modules" (
     echo   Installing backend dependencies...
-    cd /d "%V2%"
+    cd /d "%RB%"
     call npm install
     echo.
 )
@@ -46,11 +45,11 @@ if not exist "%RB%\client\node_modules" (
 )
 
 echo   Starting backend server...
-start "DMS Backend" cmd /k "cd /d %V2% && npm run dev:server"
+start "DMS Backend" cmd /k "cd /d %RB% && npm run dev:server"
 timeout /t 3 /nobreak >nul
 
 echo   Starting DMS RB client...
-start "DMS RB" cmd /k "cd /d %RB% && npm run dev"
+start "DMS RB" cmd /k "cd /d %RB% && npm run dev:client"
 timeout /t 4 /nobreak >nul
 
 start "" "http://localhost:%RB_PORT%"

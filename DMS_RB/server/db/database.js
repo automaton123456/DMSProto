@@ -20,8 +20,20 @@ if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true });
 
 const db = new DatabaseSync(DB_PATH);
 
+// Improve concurrency tolerance for multiple short-lived reads/writes.
+db.exec('PRAGMA busy_timeout = 5000;');
+db.exec('PRAGMA journal_mode = WAL;');
+db.exec('PRAGMA foreign_keys = ON;');
+
 // Apply schema (idempotent — uses IF NOT EXISTS everywhere)
 const schemaSql = fs.readFileSync(SCHEMA, 'utf8');
-db.exec(schemaSql);
+try {
+  db.exec(schemaSql);
+} catch (err) {
+  if (err && err.errcode === 5) {
+    err.message = `SQLite database is locked while applying schema at startup (${DB_PATH}). ${err.message}`;
+  }
+  throw err;
+}
 
 module.exports = db;
