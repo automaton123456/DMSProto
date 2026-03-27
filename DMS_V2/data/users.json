@@ -3,42 +3,42 @@
     {
       "username": "SMITH_J",
       "displayName": "John Smith",
-      "email": "john.smith@company.com",
+      "email": "james.pirie@kcadeutag.com",
       "department": "MSV",
       "role": "user"
     },
     {
       "username": "DOE_J",
       "displayName": "Jane Doe",
-      "email": "jane.doe@company.com",
+      "email": "james.pirie@kcadeutag.com",
       "department": "MSV",
       "role": "user"
     },
     {
       "username": "ENGINEER1",
       "displayName": "Bob Engineer",
-      "email": "bob.engineer@company.com",
+      "email": "james.pirie@kcadeutag.com",
       "department": "EM",
       "role": "user"
     },
     {
       "username": "MANAGER1",
       "displayName": "Alice Manager",
-      "email": "alice.manager@company.com",
+      "email": "james.pirie@kcadeutag.com",
       "department": "MSV",
       "role": "user"
     },
     {
       "username": "MANAGER2",
       "displayName": "Charlie Manager",
-      "email": "charlie.manager@company.com",
+      "email": "james.pirie@kcadeutag.com",
       "department": "EM",
       "role": "user"
     },
     {
       "username": "ADMIN1",
       "displayName": "Admin User",
-      "email": "admin@company.com",
+      "email": "james.pirie@kcadeutag.com",
       "department": "IT",
       "role": "admin"
     }

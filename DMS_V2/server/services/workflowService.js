@@ -47,11 +47,22 @@ function initWorkflow(doc) {
   };
 }
 
-function notifyApprovers(approvers, documentId, message, link) {
+function notifyApprovers(approvers, doc, message, link, currentStep) {
   for (const username of approvers) {
-    notifRepo.add({ recipientUsername: username, type: 'approval_required', message, documentId, link });
+    notifRepo.add({ recipientUsername: username, type: 'approval_required', message, documentId: doc.documentId, link });
     const user = userRepo.getByUsername(username);
-    if (user) emailSvc.notifyApprovalRequired(user.email, user.display_name, documentId);
+    if (user) {
+      emailSvc.notifyApprovalRequired(user.email, user.display_name, {
+        documentId: doc.documentId,
+        rig: doc.rig,
+        docType: doc.docType,
+        docGroup: doc.docGroup,
+        status: doc.status,
+        originator: doc.originator,
+        currentStep,
+        link
+      });
+    }
   }
 }
 
@@ -79,9 +90,10 @@ async function approveStep(doc, username) {
 
     // Notify E&M approvers
     notifyApprovers(
-      step2.assignedApprovers, doc.documentId,
+      step2.assignedApprovers, doc,
       `Document ${doc.documentId} requires your E&M approval`,
-      `/documents/${doc.documentId}/approve`
+      `/documents/${doc.documentId}/approve`,
+      'E&M Approval'
     );
     // Notify originator
     notifRepo.add({
@@ -99,7 +111,17 @@ async function approveStep(doc, username) {
     });
 
     const originator = userRepo.toApiShape(userRepo.getByUsername(doc.originatorUsername));
-    if (originator) emailSvc.notifyStepApproved(originator.email, originator.displayName, doc.documentId, step1.name, userName);
+    if (originator) emailSvc.notifyStepApproved(originator.email, originator.displayName, {
+      documentId: doc.documentId,
+      rig: doc.rig,
+      docType: doc.docType,
+      docGroup: doc.docGroup,
+      status: 'Pending E&M Approval',
+      originator: doc.originator,
+      currentStep: step1.name,
+      actionBy: userName,
+      link: `/documents/${doc.documentId}`
+    });
 
   } else if (doc.workflow.currentStep === 'em') {
     const step2 = doc.workflow.steps.find(s => s.step === 2);
@@ -126,7 +148,17 @@ async function approveStep(doc, username) {
     });
 
     const originator = userRepo.toApiShape(userRepo.getByUsername(doc.originatorUsername));
-    if (originator) emailSvc.notifyFullyApproved(originator.email, originator.displayName, doc.documentId);
+    if (originator) emailSvc.notifyFullyApproved(originator.email, originator.displayName, {
+      documentId: doc.documentId,
+      rig: doc.rig,
+      docType: doc.docType,
+      docGroup: doc.docGroup,
+      status: 'Approved',
+      originator: doc.originator,
+      currentStep: step2.name,
+      actionBy: userName,
+      link: `/documents/${doc.documentId}`
+    });
   }
 }
 
@@ -163,7 +195,18 @@ async function rejectStep(doc, username, reason) {
   });
 
   const originator = userRepo.toApiShape(userRepo.getByUsername(doc.originatorUsername));
-  if (originator) emailSvc.notifyRejected(originator.email, originator.displayName, doc.documentId, step.name, reason);
+  if (originator) emailSvc.notifyRejected(originator.email, originator.displayName, {
+    documentId: doc.documentId,
+    rig: doc.rig,
+    docType: doc.docType,
+    docGroup: doc.docGroup,
+    status: 'Rejected',
+    originator: doc.originator,
+    currentStep: step.name,
+    actionBy: userName,
+    reason,
+    link: `/documents/${doc.documentId}`
+  });
 }
 
 async function resubmitWorkflow(doc, username) {
@@ -179,9 +222,10 @@ async function resubmitWorkflow(doc, username) {
 
   // Notify MSV approvers
   notifyApprovers(
-    msvApprovers, doc.documentId,
+    msvApprovers, doc,
     `Document ${doc.documentId} has been resubmitted for approval`,
-    `/documents/${doc.documentId}/approve`
+    `/documents/${doc.documentId}/approve`,
+    'Discipline Approval'
   );
 
   histRepo.add({

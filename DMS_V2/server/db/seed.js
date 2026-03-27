@@ -146,15 +146,16 @@ if (approvers) {
   console.log(`Seeded ${count} approver discipline rules`);
 }
 
-// ── Email Config (stub, disabled) ────────────────────────────────────────────
+// ── Email Config (enabled for internal SMTP relay) ───────────────────────────
 const emailConfig = [
-  ['enabled', 'false'],
-  ['smtp_host', ''],
-  ['smtp_port', '587'],
+  ['enabled', 'true'],
+  ['smtp_host', 'smtp.kcadeutag.corp'],
+  ['smtp_port', '25'],
   ['smtp_user', ''],
   ['smtp_pass', ''],
-  ['from_address', ''],
-  ['from_name', 'DMS System']
+  ['from_address', 'james.pirie@kcadeutag.com'],
+  ['from_name', 'DMS System'],
+  ['app_base_url', 'http://localhost:3000']
 ];
 const insertEmail = db.prepare(`
   INSERT OR IGNORE INTO config_email (setting_key, setting_value) VALUES (?, ?)
@@ -162,7 +163,7 @@ const insertEmail = db.prepare(`
 for (const [k, v] of emailConfig) {
   insertEmail.run(k, v);
 }
-console.log('Seeded email config (disabled)');
+console.log('Seeded email config (enabled)');
 
 // ── Documents ────────────────────────────────────────────────────────────────
 const docsFile = readJson(path.join(STORAGE_DIR, 'documents.json'));
