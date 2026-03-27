@@ -461,8 +461,11 @@ function ApproversMaintenanceTab() {
 
 // ── Users ─────────────────────────────────────────────────────────────────────
 function UsersTab({ currentUser }) {
+  const emptyUserForm = { username:'', displayName:'', email:'', role:'user' };
   const [users, setUsers] = useState([]);
-  const [form, setForm] = useState({ username:'', displayName:'', email:'', role:'user' });
+  const [form, setForm] = useState(emptyUserForm);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  const [userModalMode, setUserModalMode] = useState('add');
   const [msg, setMsg] = useState('');
   const [msgType, setMsgType] = useState('Positive');
   const [uploading, setUploading] = useState(false);
@@ -474,8 +477,10 @@ function UsersTab({ currentUser }) {
   const saveUser = async () => {
     if (!form.username) return;
     await fetch('/api/admin/users', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form) });
-    setForm({ username:'', displayName:'', email:'', role:'user' });
-    setMsg('User saved.'); setTimeout(() => setMsg(''), 3000);
+    setForm(emptyUserForm);
+    setIsUserModalOpen(false);
+    setMsg(userModalMode === 'edit' ? 'User updated.' : 'User added.');
+    setTimeout(() => setMsg(''), 3000);
     load();
   };
 
@@ -486,12 +491,25 @@ function UsersTab({ currentUser }) {
   };
 
   const editUser = (user) => {
+    setUserModalMode('edit');
     setForm({
       username: user.username || '',
       displayName: user.displayName || '',
       email: user.email || '',
       role: user.role || 'user'
     });
+    setIsUserModalOpen(true);
+  };
+
+  const openAddModal = () => {
+    setUserModalMode('add');
+    setForm(emptyUserForm);
+    setIsUserModalOpen(true);
+  };
+
+  const closeUserModal = () => {
+    setForm(emptyUserForm);
+    setIsUserModalOpen(false);
   };
 
   const handleUpload = async (e) => {
@@ -525,21 +543,9 @@ function UsersTab({ currentUser }) {
       {msg && <MessageStrip design={msgType} style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
       <Card style={{ marginBottom:'1.5rem' }}>
         <div style={{ padding:'1.25rem' }}>
-          <Title level="H5" style={{ marginBottom:'1rem' }}>Add / Edit User</Title>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
-            <div><Label>Username*</Label><Input value={form.username} onInput={e => setForm(p => ({ ...p, username: e.target.value }))} style={{ width:'100%' }} /></div>
-            <div><Label>Display Name</Label><Input value={form.displayName} onInput={e => setForm(p => ({ ...p, displayName: e.target.value }))} style={{ width:'100%' }} /></div>
-            <div><Label>Email</Label><Input value={form.email} onInput={e => setForm(p => ({ ...p, email: e.target.value }))} style={{ width:'100%' }} /></div>
-            <div>
-              <Label>Role</Label>
-              <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, role: e.detail.selectedOption.dataset.value }))}>
-                <Option data-value="user" selected={form.role === 'user'}>User</Option>
-                <Option data-value="admin" selected={form.role === 'admin'}>Admin</Option>
-              </Select>
-            </div>
-          </div>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>Users</Title>
           <div style={{ display:'flex', gap:'0.75rem', alignItems:'center', flexWrap:'wrap' }}>
-            <Button design="Emphasized" onClick={saveUser}>Save User</Button>
+            <Button design="Emphasized" onClick={openAddModal}>Add User</Button>
             <Button design="Default" onClick={downloadUsers}>Download Excel</Button>
             <Button design="Default" onClick={() => fileRef.current?.click()} disabled={uploading}>
               {uploading ? 'Uploading…' : 'Upload Excel'}
@@ -549,6 +555,31 @@ function UsersTab({ currentUser }) {
           </div>
         </div>
       </Card>
+      {isUserModalOpen && (
+        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:1050, padding:'1rem' }}>
+          <Card style={{ width:'100%', maxWidth:'680px' }}>
+            <div style={{ padding:'1.25rem' }}>
+              <Title level="H5" style={{ marginBottom:'1rem' }}>{userModalMode === 'edit' ? 'Edit User' : 'Add User'}</Title>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
+                <div><Label>Username*</Label><Input value={form.username} onInput={e => setForm(p => ({ ...p, username: e.target.value }))} style={{ width:'100%' }} disabled={userModalMode === 'edit'} /></div>
+                <div><Label>Display Name</Label><Input value={form.displayName} onInput={e => setForm(p => ({ ...p, displayName: e.target.value }))} style={{ width:'100%' }} /></div>
+                <div><Label>Email</Label><Input value={form.email} onInput={e => setForm(p => ({ ...p, email: e.target.value }))} style={{ width:'100%' }} /></div>
+                <div>
+                  <Label>Role</Label>
+                  <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, role: e.detail.selectedOption.dataset.value }))}>
+                    <Option data-value="user" selected={form.role === 'user'}>User</Option>
+                    <Option data-value="admin" selected={form.role === 'admin'}>Admin</Option>
+                  </Select>
+                </div>
+              </div>
+              <div style={{ display:'flex', gap:'0.75rem', justifyContent:'flex-end' }}>
+                <Button design="Default" onClick={closeUserModal}>Cancel</Button>
+                <Button design="Emphasized" onClick={saveUser}>{userModalMode === 'edit' ? 'Edit' : 'Add'}</Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
       <Card>
         <div style={{ overflowX:'auto' }}>
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.85rem' }}>
