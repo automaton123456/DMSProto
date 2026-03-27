@@ -235,6 +235,7 @@ function ApproversDisciplineTab() {
   const emptyForm = { departmentId:'', approvalType:'msv', approverUsername:'' };
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState(emptyForm);
+  const [editingId, setEditingId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
   const [msg, setMsg] = useState('');
@@ -247,15 +248,24 @@ function ApproversDisciplineTab() {
 
   const save = async () => {
     if (!form.departmentId || !form.approverUsername) return;
-    const isEditing = modalMode === 'edit' && editingId;
-    await fetch(isEditing ? `/api/admin/approvers/discipline/${editingId}` : '/api/admin/approvers/discipline', {
-      method: isEditing ? 'PUT' : 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form)
-    });
-    setForm(emptyForm);
-    setIsModalOpen(false);
-    setMsg(modalMode === 'edit' ? 'Approver updated. Pending workflows re-evaluated.' : 'Approver added. Pending workflows re-evaluated.');
-    setTimeout(() => setMsg(''), 3000);
-    load();
+    const isEditing = modalMode === 'edit' && editingId !== null;
+    try {
+      const response = await fetch(isEditing ? `/api/admin/approvers/discipline/${editingId}` : '/api/admin/approvers/discipline', {
+        method: isEditing ? 'PUT' : 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form)
+      });
+      const res = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(res.error || 'Failed to save approver rule');
+      setMsgType('Positive');
+      setForm(emptyForm);
+      setEditingId(null);
+      setIsModalOpen(false);
+      setMsg(modalMode === 'edit' ? 'Approver updated. Pending workflows re-evaluated.' : 'Approver added. Pending workflows re-evaluated.');
+      setTimeout(() => setMsg(''), 3000);
+      load();
+    } catch (err) {
+      setMsgType('Negative');
+      setMsg(err.message);
+    }
   };
 
   const remove = async (row) => {
@@ -267,6 +277,7 @@ function ApproversDisciplineTab() {
 
   const edit = (row) => {
     setModalMode('edit');
+    setEditingId(row.id);
     setForm({
       departmentId: row.department_id || '',
       approvalType: row.approval_type || 'msv',
@@ -277,12 +288,14 @@ function ApproversDisciplineTab() {
 
   const openAddModal = () => {
     setModalMode('add');
+    setEditingId(null);
     setForm(emptyForm);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setForm(emptyForm);
+    setEditingId(null);
     setIsModalOpen(false);
   };
 
@@ -382,6 +395,7 @@ function ApproversMaintenanceTab() {
   const emptyForm = { maintenanceStrategy:'', maintenanceDays:'', approvalType:'msv', approverUsername:'' };
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState(emptyForm);
+  const [editingId, setEditingId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
   const [msg, setMsg] = useState('');
@@ -393,19 +407,31 @@ function ApproversMaintenanceTab() {
   useEffect(() => { load(); }, []);
 
   const save = async () => {
-    await fetch('/api/admin/approvers/maintenance', {
-      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
-        maintenanceStrategy: form.maintenanceStrategy || null,
-        maintenanceDays: form.maintenanceDays ? parseInt(form.maintenanceDays) : null,
-        approvalType: form.approvalType,
-        approverUsername: form.approverUsername
-      })
-    });
-    setForm(emptyForm);
-    setIsModalOpen(false);
-    setMsg(modalMode === 'edit' ? 'Rule updated.' : 'Rule added.');
-    setTimeout(() => setMsg(''), 3000);
-    load();
+    const isEditing = modalMode === 'edit' && editingId !== null;
+    try {
+      const response = await fetch(isEditing ? `/api/admin/approvers/maintenance/${editingId}` : '/api/admin/approvers/maintenance', {
+        method: isEditing ? 'PUT' : 'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          maintenanceStrategy: form.maintenanceStrategy || null,
+          maintenanceDays: form.maintenanceDays ? parseInt(form.maintenanceDays, 10) : null,
+          approvalType: form.approvalType,
+          approverUsername: form.approverUsername
+        })
+      });
+      const res = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(res.error || 'Failed to save maintenance approver rule');
+      setMsgType('Positive');
+      setForm(emptyForm);
+      setEditingId(null);
+      setIsModalOpen(false);
+      setMsg(modalMode === 'edit' ? 'Rule updated.' : 'Rule added.');
+      setTimeout(() => setMsg(''), 3000);
+      load();
+    } catch (err) {
+      setMsgType('Negative');
+      setMsg(err.message);
+    }
   };
 
   const remove = async (row) => {
@@ -416,6 +442,7 @@ function ApproversMaintenanceTab() {
 
   const edit = (row) => {
     setModalMode('edit');
+    setEditingId(row.id);
     setForm({
       maintenanceStrategy: row.maintenance_strategy || '',
       maintenanceDays: row.maintenance_days || '',
@@ -427,12 +454,14 @@ function ApproversMaintenanceTab() {
 
   const openAddModal = () => {
     setModalMode('add');
+    setEditingId(null);
     setForm(emptyForm);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setForm(emptyForm);
+    setEditingId(null);
     setIsModalOpen(false);
   };
 
@@ -526,6 +555,7 @@ function UsersTab({ currentUser }) {
   const emptyUserForm = { username:'', displayName:'', email:'', role:'user' };
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState(emptyUserForm);
+  const [editingUsername, setEditingUsername] = useState(null);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [userModalMode, setUserModalMode] = useState('add');
   const [msg, setMsg] = useState('');
@@ -538,12 +568,26 @@ function UsersTab({ currentUser }) {
 
   const saveUser = async () => {
     if (!form.username) return;
-    await fetch('/api/admin/users', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form) });
-    setForm(emptyUserForm);
-    setIsUserModalOpen(false);
-    setMsg(userModalMode === 'edit' ? 'User updated.' : 'User added.');
-    setTimeout(() => setMsg(''), 3000);
-    load();
+    const isEditing = userModalMode === 'edit' && editingUsername;
+    try {
+      const response = await fetch(isEditing ? `/api/admin/users/${editingUsername}` : '/api/admin/users', {
+        method: isEditing ? 'PUT' : 'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(form)
+      });
+      const res = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(res.error || 'Failed to save user');
+      setMsgType('Positive');
+      setForm(emptyUserForm);
+      setEditingUsername(null);
+      setIsUserModalOpen(false);
+      setMsg(userModalMode === 'edit' ? 'User updated.' : 'User added.');
+      setTimeout(() => setMsg(''), 3000);
+      load();
+    } catch (err) {
+      setMsgType('Negative');
+      setMsg(err.message);
+    }
   };
 
   const updateRole = async (username, role) => {
@@ -554,6 +598,7 @@ function UsersTab({ currentUser }) {
 
   const editUser = (user) => {
     setUserModalMode('edit');
+    setEditingUsername(user.username || null);
     setForm({
       username: user.username || '',
       displayName: user.displayName || '',
@@ -565,12 +610,14 @@ function UsersTab({ currentUser }) {
 
   const openAddModal = () => {
     setUserModalMode('add');
+    setEditingUsername(null);
     setForm(emptyUserForm);
     setIsUserModalOpen(true);
   };
 
   const closeUserModal = () => {
     setForm(emptyUserForm);
+    setEditingUsername(null);
     setIsUserModalOpen(false);
   };
 
