@@ -8,6 +8,27 @@ const db        = require('../db/database');
 const XLSX      = require('xlsx');
 const multer    = require('multer');
 const upload    = multer({ storage: multer.memoryStorage() });
+const APPROVAL_TYPES = new Set(['msv', 'em']);
+
+function normalizeCell(value) {
+  return String(value ?? '').trim();
+}
+
+function readFirstSheetRows(fileBuffer) {
+  const wb = XLSX.read(fileBuffer, { type: 'buffer' });
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  return XLSX.utils.sheet_to_json(ws, { defval: '' });
+}
+
+function toExcel(res, rows, sheetName, fileName) {
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet(rows);
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  const buf = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+  res.send(buf);
+}
 
 // ── Stats ─────────────────────────────────────────────────────────────────────
 
@@ -70,6 +91,62 @@ router.post('/users', (req, res) => {
     res.json(userRepo.toApiShape(userRepo.getByUsername(req.body.username)));
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/users/download', (req, res) => {
+  const rows = userRepo.getAll().map(userRepo.toApiShape).map(u => ({
+    Username: u.username || '',
+    'Display Name': u.displayName || '',
+    Email: u.email || '',
+    Role: u.role || 'user'
+  }));
+  toExcel(res, rows, 'Users', 'users.xlsx');
+});
+
+router.post('/users/upload', upload.single('file'), (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'Excel file is required' });
+    const rows = readFirstSheetRows(req.file.buffer);
+    if (!rows.length) return res.status(400).json({ error: 'Excel file has no data rows' });
+
+    const parsed = rows.map((row, index) => {
+      const username = normalizeCell(row['Username'] || row['username']);
+      const displayName = normalizeCell(row['Display Name'] || row['display_name']);
+      const email = normalizeCell(row['Email'] || row['email']);
+      const role = normalizeCell(row['Role'] || row['role'] || 'user').toLowerCase();
+      if (!username) throw new Error(`Row ${index + 2}: Username is required`);
+      if (!['user', 'admin'].includes(role)) throw new Error(`Row ${index + 2}: Role must be user or admin`);
+      return { username, displayName, email, role };
+    });
+
+    const seen = new Set();
+    parsed.forEach((u, i) => {
+      const key = u.username.toLowerCase();
+      if (seen.has(key)) throw new Error(`Row ${i + 2}: Duplicate Username "${u.username}" in upload`);
+      seen.add(key);
+    });
+
+    const replaceUsers = db.transaction((items) => {
+      db.prepare('UPDATE users SET active = 0').run();
+      const stmt = db.prepare(`
+        INSERT INTO users (username, display_name, email, department, role, active, created_date)
+        VALUES (?, ?, ?, ?, ?, 1, ?)
+        ON CONFLICT(username) DO UPDATE SET
+          display_name=excluded.display_name,
+          email=excluded.email,
+          role=excluded.role,
+          active=1
+      `);
+      const now = new Date().toISOString();
+      for (const u of items) {
+        stmt.run(u.username, u.displayName || null, u.email || null, null, u.role, now);
+      }
+    });
+    replaceUsers(parsed);
+    res.json({ imported: parsed.length });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
   }
 });
 
@@ -231,24 +308,52 @@ router.put('/approvers/discipline/:departmentId/:approvalType', (req, res) => {
 // Excel upload for discipline approvers
 router.post('/approvers/discipline/upload', upload.single('file'), (req, res) => {
   try {
-    const wb = XLSX.read(req.file.buffer, { type: 'buffer' });
-    const ws = wb.Sheets[wb.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json(ws);
+    if (!req.file) return res.status(400).json({ error: 'Excel file is required' });
+    const rows = readFirstSheetRows(req.file.buffer);
+    if (!rows.length) return res.status(400).json({ error: 'Excel file has no data rows' });
 
-    let count = 0;
-    for (const row of rows) {
-      const deptId   = String(row['Department ID'] || row['department_id'] || '').trim();
-      const appType  = String(row['Approval Type'] || row['approval_type'] || '').trim().toLowerCase();
-      const username = String(row['Approver Username'] || row['approver_username'] || '').trim();
-      if (!deptId || !appType || !username) continue;
-      cfgRepo.upsertApproverDiscipline(deptId, appType, username);
-      count++;
-    }
+    const parsed = rows.map((row, index) => {
+      const deptId = normalizeCell(row['Department ID'] || row['department_id']);
+      const appType = normalizeCell(row['Approval Type'] || row['approval_type']).toLowerCase();
+      const username = normalizeCell(row['Approver Username'] || row['approver_username']);
+      if (!deptId) throw new Error(`Row ${index + 2}: Department ID is required`);
+      if (!APPROVAL_TYPES.has(appType)) throw new Error(`Row ${index + 2}: Approval Type must be msv or em`);
+      if (!username) throw new Error(`Row ${index + 2}: Approver Username is required`);
+      return { deptId, appType, username };
+    });
+
+    const dedupe = new Set();
+    parsed.forEach((r, i) => {
+      const key = `${r.deptId}|${r.appType}|${r.username}`.toLowerCase();
+      if (dedupe.has(key)) throw new Error(`Row ${i + 2}: Duplicate approver mapping in upload`);
+      dedupe.add(key);
+    });
+
+    const replaceDisciplineApprovers = db.transaction((items) => {
+      db.prepare('DELETE FROM workflow_approvers_discipline').run();
+      const stmt = db.prepare(`
+        INSERT INTO workflow_approvers_discipline (department_id, approval_type, approver_username, active)
+        VALUES (?, ?, ?, 1)
+      `);
+      for (const r of items) stmt.run(r.deptId, r.appType, r.username);
+    });
+    replaceDisciplineApprovers(parsed);
     wfSvc.reEvaluatePendingWorkflows();
-    res.json({ imported: count });
+    res.json({ imported: parsed.length });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
+});
+
+router.get('/approvers/discipline/download', (req, res) => {
+  const rows = cfgRepo.getApproversByDiscipline()
+    .filter(r => r.active)
+    .map(r => ({
+      'Department ID': r.department_id || '',
+      'Approval Type': r.approval_type || '',
+      'Approver Username': r.approver_username || ''
+    }));
+  toExcel(res, rows, 'DisciplineApprovers', 'approvers-discipline.xlsx');
 });
 
 // ── Approvers by Maintenance ──────────────────────────────────────────────────
@@ -270,24 +375,63 @@ router.delete('/approvers/maintenance/:id', (req, res) => {
 // Excel upload for maintenance approvers
 router.post('/approvers/maintenance/upload', upload.single('file'), (req, res) => {
   try {
-    const wb = XLSX.read(req.file.buffer, { type: 'buffer' });
-    const ws = wb.Sheets[wb.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json(ws);
+    if (!req.file) return res.status(400).json({ error: 'Excel file is required' });
+    const rows = readFirstSheetRows(req.file.buffer);
+    if (!rows.length) return res.status(400).json({ error: 'Excel file has no data rows' });
 
-    let count = 0;
-    for (const row of rows) {
-      cfgRepo.upsertApproverMaintenance({
-        maintenanceStrategy: row['Maintenance Strategy'] || row['maintenance_strategy'] || null,
-        maintenanceDays:     row['Maintenance Days']     || row['maintenance_days']     || null,
-        approvalType:        row['Approval Type']        || row['approval_type']        || '',
-        approverUsername:    row['Approver Username']    || row['approver_username']    || ''
-      });
-      count++;
-    }
-    res.json({ imported: count });
+    const parsed = rows.map((row, index) => {
+      const maintenanceStrategy = normalizeCell(row['Maintenance Strategy'] || row['maintenance_strategy']);
+      const rawDays = normalizeCell(row['Maintenance Days'] || row['maintenance_days']);
+      const maintenanceDays = rawDays === '' ? null : Number(rawDays);
+      const approvalType = normalizeCell(row['Approval Type'] || row['approval_type']).toLowerCase();
+      const approverUsername = normalizeCell(row['Approver Username'] || row['approver_username']);
+
+      if (!maintenanceStrategy && maintenanceDays === null) {
+        throw new Error(`Row ${index + 2}: Maintenance Strategy or Maintenance Days is required`);
+      }
+      if (maintenanceDays !== null && (!Number.isInteger(maintenanceDays) || maintenanceDays < 0)) {
+        throw new Error(`Row ${index + 2}: Maintenance Days must be a whole number >= 0`);
+      }
+      if (!APPROVAL_TYPES.has(approvalType)) throw new Error(`Row ${index + 2}: Approval Type must be msv or em`);
+      if (!approverUsername) throw new Error(`Row ${index + 2}: Approver Username is required`);
+      return { maintenanceStrategy: maintenanceStrategy || null, maintenanceDays, approvalType, approverUsername };
+    });
+
+    const dedupe = new Set();
+    parsed.forEach((r, i) => {
+      const key = `${r.maintenanceStrategy || ''}|${r.maintenanceDays ?? ''}|${r.approvalType}|${r.approverUsername}`.toLowerCase();
+      if (dedupe.has(key)) throw new Error(`Row ${i + 2}: Duplicate approver mapping in upload`);
+      dedupe.add(key);
+    });
+
+    const replaceMaintenanceApprovers = db.transaction((items) => {
+      db.prepare('DELETE FROM workflow_approvers_maintenance').run();
+      const stmt = db.prepare(`
+        INSERT INTO workflow_approvers_maintenance
+          (maintenance_strategy, maintenance_days, approval_type, approver_username, active)
+        VALUES (?, ?, ?, ?, 1)
+      `);
+      for (const r of items) {
+        stmt.run(r.maintenanceStrategy, r.maintenanceDays, r.approvalType, r.approverUsername);
+      }
+    });
+    replaceMaintenanceApprovers(parsed);
+    res.json({ imported: parsed.length });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
+});
+
+router.get('/approvers/maintenance/download', (req, res) => {
+  const rows = cfgRepo.getApproversByMaintenance()
+    .filter(r => r.active)
+    .map(r => ({
+      'Maintenance Strategy': r.maintenance_strategy || '',
+      'Maintenance Days': r.maintenance_days ?? '',
+      'Approval Type': r.approval_type || '',
+      'Approver Username': r.approver_username || ''
+    }));
+  toExcel(res, rows, 'MaintenanceApprovers', 'approvers-maintenance.xlsx');
 });
 
 // ── Workflow Maintenance ──────────────────────────────────────────────────────
