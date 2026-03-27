@@ -83,26 +83,29 @@ function TabBar({ tabs, active, onChange }) {
   );
 }
 
-function TableGrid({ cols, rows, onDelete, deleteLabel = 'Remove' }) {
+function TableGrid({ cols, rows, onEdit, onDelete, deleteLabel = 'Remove' }) {
   return (
     <div style={{ overflowX:'auto' }}>
       <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.85rem' }}>
         <thead>
           <tr style={{ background:'#f5f6f7', borderBottom:'2px solid #e8e8e8' }}>
             {cols.map(c => <th key={c.key} style={{ padding:'0.6rem 0.9rem', textAlign:'left', fontWeight:600 }}>{c.label}</th>)}
-            {onDelete && <th style={{ padding:'0.6rem 0.9rem' }}></th>}
+            {(onEdit || onDelete) && <th style={{ padding:'0.6rem 0.9rem' }}></th>}
           </tr>
         </thead>
         <tbody>
           {rows.length === 0 && (
-            <tr><td colSpan={cols.length + 1} style={{ padding:'1.5rem', textAlign:'center', color:'#999' }}>No entries</td></tr>
+            <tr><td colSpan={cols.length + ((onEdit || onDelete) ? 1 : 0)} style={{ padding:'1.5rem', textAlign:'center', color:'#999' }}>No entries</td></tr>
           )}
           {rows.map((row, i) => (
             <tr key={i} style={{ borderBottom:'1px solid #f0f0f0' }}>
               {cols.map(c => <td key={c.key} style={{ padding:'0.6rem 0.9rem' }}>{row[c.key] ?? '—'}</td>)}
-              {onDelete && (
+              {(onEdit || onDelete) && (
                 <td style={{ padding:'0.6rem 0.9rem' }}>
-                  <Button design="Negative" onClick={() => onDelete(row)}>{deleteLabel}</Button>
+                  <div style={{ display:'flex', gap:'0.5rem', justifyContent:'flex-end' }}>
+                    {onEdit && <Button design="Default" onClick={() => onEdit(row)}>Edit</Button>}
+                    {onDelete && <Button design="Negative" onClick={() => onDelete(row)}>{deleteLabel}</Button>}
+                  </div>
                 </td>
               )}
             </tr>
@@ -257,6 +260,14 @@ function ApproversDisciplineTab() {
     load();
   };
 
+  const edit = (row) => {
+    setForm({
+      departmentId: row.department_id || '',
+      approvalType: row.approval_type || 'msv',
+      approverUsername: row.approver_username || ''
+    });
+  };
+
   const handleUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -327,6 +338,7 @@ function ApproversDisciplineTab() {
             { key:'approver_username', label:'Approver Username' }
           ]}
           rows={rows.filter(r => r.active)}
+          onEdit={edit}
           onDelete={remove}
         />
       </Card>
@@ -364,6 +376,15 @@ function ApproversMaintenanceTab() {
     await fetch(`/api/admin/approvers/maintenance/${row.id}`, { method:'DELETE' });
     setMsg('Rule removed.'); setTimeout(() => setMsg(''), 3000);
     load();
+  };
+
+  const edit = (row) => {
+    setForm({
+      maintenanceStrategy: row.maintenance_strategy || '',
+      maintenanceDays: row.maintenance_days || '',
+      approvalType: row.approval_type || 'msv',
+      approverUsername: row.approver_username || ''
+    });
   };
 
   const handleUpload = async (e) => {
@@ -430,6 +451,7 @@ function ApproversMaintenanceTab() {
             { key:'approver_username',    label:'Approver Username' }
           ]}
           rows={rows.filter(r => r.active)}
+          onEdit={edit}
           onDelete={remove}
         />
       </Card>
@@ -461,6 +483,15 @@ function UsersTab({ currentUser }) {
     await fetch(`/api/admin/users/${username}/role`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ role }) });
     setMsg(`Role updated for ${username}`); setTimeout(() => setMsg(''), 3000);
     load();
+  };
+
+  const editUser = (user) => {
+    setForm({
+      username: user.username || '',
+      displayName: user.displayName || '',
+      email: user.email || '',
+      role: user.role || 'user'
+    });
   };
 
   const handleUpload = async (e) => {
@@ -540,11 +571,14 @@ function UsersTab({ currentUser }) {
                     </span>
                   </td>
                   <td style={{ padding:'0.6rem 0.9rem' }}>
-                    {u.username !== currentUser.username && (
-                      <Button design="Transparent" onClick={() => updateRole(u.username, u.role === 'admin' ? 'user' : 'admin')}>
-                        {u.role === 'admin' ? 'Revoke Admin' : 'Make Admin'}
-                      </Button>
-                    )}
+                    <div style={{ display:'flex', gap:'0.5rem', flexWrap:'wrap' }}>
+                      <Button design="Default" onClick={() => editUser(u)}>Edit</Button>
+                      {u.username !== currentUser.username && (
+                        <Button design="Transparent" onClick={() => updateRole(u.username, u.role === 'admin' ? 'user' : 'admin')}>
+                          {u.role === 'admin' ? 'Revoke Admin' : 'Make Admin'}
+                        </Button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -556,17 +590,14 @@ function UsersTab({ currentUser }) {
   );
 }
 
-// ── Doc General (Types & Groups) ──────────────────────────────────────────────
-function DocGeneralTab() {
+// ── Document Types ─────────────────────────────────────────────────────────────
+function DocumentTypesTab() {
   const [types,  setTypes]  = useState([]);
-  const [groups, setGroups] = useState([]);
   const [typeForm,  setTypeForm]  = useState({ code:'', description:'' });
-  const [groupForm, setGroupForm] = useState({ docType:'', code:'', description:'', workflowRequired: false });
   const [msg, setMsg] = useState('');
 
   const loadTypes  = () => fetch('/api/admin/config/doc-types').then(r => r.json()).then(setTypes);
-  const loadGroups = () => fetch('/api/admin/config/doc-groups').then(r => r.json()).then(setGroups);
-  useEffect(() => { loadTypes(); loadGroups(); }, []);
+  useEffect(() => { loadTypes(); }, []);
 
   const saveType = async () => {
     if (!typeForm.code) return;
@@ -581,6 +612,44 @@ function DocGeneralTab() {
     loadTypes();
   };
 
+  const editType = (row) => {
+    setTypeForm({ code: row.code || '', description: row.description || '' });
+  };
+
+  return (
+    <div>
+      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      <Card>
+        <div style={{ padding:'1.25rem' }}>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>Document Types</Title>
+          <div style={{ display:'flex', gap:'0.75rem', marginBottom:'1rem', flexWrap:'wrap' }}>
+            <Input placeholder="Code" value={typeForm.code} onInput={e => setTypeForm(p => ({ ...p, code: e.target.value }))} style={{ width:'90px' }} />
+            <Input placeholder="Description" value={typeForm.description} onInput={e => setTypeForm(p => ({ ...p, description: e.target.value }))} style={{ flex:1, minWidth:'140px' }} />
+            <Button design="Emphasized" onClick={saveType}>Save</Button>
+          </div>
+          <TableGrid
+            cols={[{ key:'code', label:'Code' }, { key:'description', label:'Description' }]}
+            rows={types}
+            onEdit={editType}
+            onDelete={r => delType(r.code)}
+          />
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+// ── Document Groups ───────────────────────────────────────────────────────────
+function DocumentGroupsTab() {
+  const [types,  setTypes]  = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [groupForm, setGroupForm] = useState({ docType:'', code:'', description:'', workflowRequired: false });
+  const [msg, setMsg] = useState('');
+
+  const loadTypes  = () => fetch('/api/admin/config/doc-types').then(r => r.json()).then(setTypes);
+  const loadGroups = () => fetch('/api/admin/config/doc-groups').then(r => r.json()).then(setGroups);
+  useEffect(() => { loadTypes(); loadGroups(); }, []);
+
   const saveGroup = async () => {
     if (!groupForm.code || !groupForm.docType) return;
     await fetch('/api/admin/config/doc-groups', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(groupForm) });
@@ -594,59 +663,48 @@ function DocGeneralTab() {
     loadGroups();
   };
 
+  const editGroup = (row) => {
+    setGroupForm({
+      docType: row.doc_type || '',
+      code: row.code || '',
+      description: row.description || '',
+      workflowRequired: row.workflow_required === 'Yes'
+    });
+  };
+
   return (
     <div>
       {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
-
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1.5rem' }}>
-        {/* Types */}
-        <Card>
-          <div style={{ padding:'1.25rem' }}>
-            <Title level="H5" style={{ marginBottom:'1rem' }}>Document Types</Title>
-            <div style={{ display:'flex', gap:'0.75rem', marginBottom:'1rem', flexWrap:'wrap' }}>
-              <Input placeholder="Code" value={typeForm.code} onInput={e => setTypeForm(p => ({ ...p, code: e.target.value }))} style={{ width:'90px' }} />
-              <Input placeholder="Description" value={typeForm.description} onInput={e => setTypeForm(p => ({ ...p, description: e.target.value }))} style={{ flex:1, minWidth:'140px' }} />
-              <Button design="Emphasized" onClick={saveType}>Save</Button>
+      <Card>
+        <div style={{ padding:'1.25rem' }}>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>Document Groups</Title>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem', marginBottom:'0.75rem' }}>
+            <div><Label>Doc Type</Label>
+              <Select style={{ width:'100%' }} onChange={e => setGroupForm(p => ({ ...p, docType: e.detail.selectedOption.dataset.value }))}>
+                <Option data-value="">— select —</Option>
+                {types.map(t => <Option key={t.code} data-value={t.code} selected={groupForm.docType === t.code}>{t.code}</Option>)}
+              </Select>
             </div>
-            <TableGrid
-              cols={[{ key:'code', label:'Code' }, { key:'description', label:'Description' }]}
-              rows={types}
-              onDelete={r => delType(r.code)}
-            />
-          </div>
-        </Card>
-
-        {/* Groups */}
-        <Card>
-          <div style={{ padding:'1.25rem' }}>
-            <Title level="H5" style={{ marginBottom:'1rem' }}>Document Groups</Title>
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem', marginBottom:'0.75rem' }}>
-              <div><Label>Doc Type</Label>
-                <Select style={{ width:'100%' }} onChange={e => setGroupForm(p => ({ ...p, docType: e.detail.selectedOption.dataset.value }))}>
-                  <Option data-value="">— select —</Option>
-                  {types.map(t => <Option key={t.code} data-value={t.code}>{t.code}</Option>)}
-                </Select>
-              </div>
-              <div><Label>Code</Label><Input value={groupForm.code} onInput={e => setGroupForm(p => ({ ...p, code: e.target.value }))} style={{ width:'100%' }} /></div>
-              <div style={{ gridColumn:'1/-1' }}><Label>Description</Label><Input value={groupForm.description} onInput={e => setGroupForm(p => ({ ...p, description: e.target.value }))} style={{ width:'100%' }} /></div>
-              <div style={{ display:'flex', alignItems:'center', gap:'0.5rem' }}>
-                <input type="checkbox" checked={groupForm.workflowRequired} onChange={e => setGroupForm(p => ({ ...p, workflowRequired: e.target.checked }))} />
-                <Label>Workflow Required</Label>
-              </div>
+            <div><Label>Code</Label><Input value={groupForm.code} onInput={e => setGroupForm(p => ({ ...p, code: e.target.value }))} style={{ width:'100%' }} /></div>
+            <div style={{ gridColumn:'1/-1' }}><Label>Description</Label><Input value={groupForm.description} onInput={e => setGroupForm(p => ({ ...p, description: e.target.value }))} style={{ width:'100%' }} /></div>
+            <div style={{ display:'flex', alignItems:'center', gap:'0.5rem' }}>
+              <input type="checkbox" checked={groupForm.workflowRequired} onChange={e => setGroupForm(p => ({ ...p, workflowRequired: e.target.checked }))} />
+              <Label>Workflow Required</Label>
             </div>
-            <Button design="Emphasized" onClick={saveGroup} style={{ marginBottom:'1rem' }}>Save Group</Button>
-            <TableGrid
-              cols={[
-                { key:'doc_type', label:'Type' }, { key:'code', label:'Code' },
-                { key:'description', label:'Description' },
-                { key:'workflow_required', label:'WF Req.' }
-              ]}
-              rows={groups.map(g => ({ ...g, workflow_required: g.workflow_required ? 'Yes' : 'No' }))}
-              onDelete={r => delGroup(r.code)}
-            />
           </div>
-        </Card>
-      </div>
+          <Button design="Emphasized" onClick={saveGroup} style={{ marginBottom:'1rem' }}>Save Group</Button>
+          <TableGrid
+            cols={[
+              { key:'doc_type', label:'Type' }, { key:'code', label:'Code' },
+              { key:'description', label:'Description' },
+              { key:'workflow_required', label:'WF Req.' }
+            ]}
+            rows={groups.map(g => ({ ...g, workflow_required: g.workflow_required ? 'Yes' : 'No' }))}
+            onEdit={editGroup}
+            onDelete={r => delGroup(r.code)}
+          />
+        </div>
+      </Card>
     </div>
   );
 }
@@ -816,6 +874,14 @@ function WorkCentersTab() {
     load();
   };
 
+  const edit = (row) => {
+    setForm({
+      departmentId: row.department_id || '',
+      departmentName: row.department_name || '',
+      description: row.description || ''
+    });
+  };
+
   return (
     <div>
       {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
@@ -838,6 +904,7 @@ function WorkCentersTab() {
             { key:'description',     label:'Description' }
           ]}
           rows={rows.filter(r => r.active)}
+          onEdit={edit}
           onDelete={remove}
         />
       </Card>
@@ -882,7 +949,8 @@ export default function Admin() {
     { id:'approvers-disc',    label:'Approvers — Discipline' },
     { id:'approvers-maint',   label:'Approvers — Maintenance' },
     { id:'users',             label:'Users' },
-    { id:'doc-general',       label:'Doc General' },
+    { id:'doc-types',         label:'Document Types' },
+    { id:'doc-groups',        label:'Document Groups' },
     { id:'field-visibility',  label:'Field Visibility' },
     { id:'attachment-naming', label:'Attachment Naming' },
     { id:'work-centers',      label:'Work Centers' }
@@ -898,7 +966,8 @@ export default function Admin() {
       {activeTab === 'approvers-disc'    && <ApproversDisciplineTab />}
       {activeTab === 'approvers-maint'   && <ApproversMaintenanceTab />}
       {activeTab === 'users'             && <UsersTab currentUser={currentUser} />}
-      {activeTab === 'doc-general'       && <DocGeneralTab />}
+      {activeTab === 'doc-types'         && <DocumentTypesTab />}
+      {activeTab === 'doc-groups'        && <DocumentGroupsTab />}
       {activeTab === 'field-visibility'  && <FieldVisibilityTab />}
       {activeTab === 'attachment-naming' && <AttachmentNamingTab />}
       {activeTab === 'work-centers'      && <WorkCentersTab />}
