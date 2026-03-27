@@ -193,6 +193,14 @@ function deleteApproverDiscipline(id) {
   db.prepare('UPDATE workflow_approvers_discipline SET active = 0 WHERE id = ?').run(id);
 }
 
+function updateApproverDiscipline(id, departmentId, approvalType, approverUsername) {
+  db.prepare(`
+    UPDATE workflow_approvers_discipline
+    SET department_id = ?, approval_type = ?, approver_username = ?, active = 1
+    WHERE id = ?
+  `).run(departmentId, approvalType, approverUsername, id);
+}
+
 function replaceApproversDisciplineForDept(departmentId, approvalType, approverUsernames) {
   db.prepare(
     'DELETE FROM workflow_approvers_discipline WHERE department_id = ? AND approval_type = ?'
@@ -224,6 +232,14 @@ function deleteApproverMaintenance(id) {
   db.prepare('UPDATE workflow_approvers_maintenance SET active = 0 WHERE id = ?').run(id);
 }
 
+function updateApproverMaintenance(id, data) {
+  db.prepare(`
+    UPDATE workflow_approvers_maintenance
+    SET maintenance_strategy = ?, maintenance_days = ?, approval_type = ?, approver_username = ?, active = 1
+    WHERE id = ?
+  `).run(data.maintenanceStrategy || null, data.maintenanceDays || null, data.approvalType, data.approverUsername, id);
+}
+
 module.exports = {
   getDocTypes,
   upsertDocType,
@@ -246,8 +262,10 @@ module.exports = {
   getApproversForDept,
   upsertApproverDiscipline,
   deleteApproverDiscipline,
+  updateApproverDiscipline,
   replaceApproversDisciplineForDept,
   getApproversByMaintenance,
   upsertApproverMaintenance,
-  deleteApproverMaintenance
+  deleteApproverMaintenance,
+  updateApproverMaintenance
 };

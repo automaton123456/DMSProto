@@ -297,6 +297,15 @@ router.delete('/approvers/discipline/:id', (req, res) => {
   res.json({ success: true });
 });
 
+router.put('/approvers/discipline/:id', (req, res) => {
+  const { departmentId, approvalType, approverUsername } = req.body;
+  if (!departmentId || !approvalType || !approverUsername)
+    return res.status(400).json({ error: 'departmentId, approvalType and approverUsername required' });
+  cfgRepo.updateApproverDiscipline(req.params.id, departmentId, approvalType, approverUsername);
+  wfSvc.reEvaluatePendingWorkflows();
+  res.json({ success: true });
+});
+
 // Bulk replace for a dept/type combo
 router.put('/approvers/discipline/:departmentId/:approvalType', (req, res) => {
   const approvers = Array.isArray(req.body) ? req.body : req.body.approvers || [];
@@ -369,6 +378,11 @@ router.post('/approvers/maintenance', (req, res) => {
 
 router.delete('/approvers/maintenance/:id', (req, res) => {
   cfgRepo.deleteApproverMaintenance(req.params.id);
+  res.json({ success: true });
+});
+
+router.put('/approvers/maintenance/:id', (req, res) => {
+  cfgRepo.updateApproverMaintenance(req.params.id, req.body);
   res.json({ success: true });
 });
 

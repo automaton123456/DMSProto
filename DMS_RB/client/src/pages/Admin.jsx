@@ -247,8 +247,9 @@ function ApproversDisciplineTab() {
 
   const save = async () => {
     if (!form.departmentId || !form.approverUsername) return;
-    await fetch('/api/admin/approvers/discipline', {
-      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form)
+    const isEditing = modalMode === 'edit' && editingId;
+    await fetch(isEditing ? `/api/admin/approvers/discipline/${editingId}` : '/api/admin/approvers/discipline', {
+      method: isEditing ? 'PUT' : 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form)
     });
     setForm(emptyForm);
     setIsModalOpen(false);
