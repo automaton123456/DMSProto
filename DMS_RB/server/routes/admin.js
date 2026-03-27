@@ -94,6 +94,17 @@ router.post('/users', (req, res) => {
   }
 });
 
+router.put('/users/:username', (req, res) => {
+  try {
+    const existing = userRepo.getByUsername(req.params.username);
+    if (!existing) return res.status(404).json({ error: 'User not found' });
+    userRepo.upsert({ ...req.body, username: req.params.username });
+    res.json(userRepo.toApiShape(userRepo.getByUsername(req.params.username)));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.get('/users/download', (req, res) => {
   const rows = userRepo.getAll().map(userRepo.toApiShape).map(u => ({
     Username: u.username || '',
