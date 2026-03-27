@@ -237,7 +237,6 @@ function ApproversDisciplineTab() {
   const [form, setForm] = useState(emptyForm);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
-  const [editingId, setEditingId] = useState(null);
   const [msg, setMsg] = useState('');
   const [msgType, setMsgType] = useState('Positive');
   const [uploading, setUploading] = useState(false);
@@ -254,7 +253,6 @@ function ApproversDisciplineTab() {
     });
     setForm(emptyForm);
     setIsModalOpen(false);
-    setEditingId(null);
     setMsg(modalMode === 'edit' ? 'Approver updated. Pending workflows re-evaluated.' : 'Approver added. Pending workflows re-evaluated.');
     setTimeout(() => setMsg(''), 3000);
     load();
@@ -269,7 +267,6 @@ function ApproversDisciplineTab() {
 
   const edit = (row) => {
     setModalMode('edit');
-    setEditingId(row.id);
     setForm({
       departmentId: row.department_id || '',
       approvalType: row.approval_type || 'msv',
@@ -280,13 +277,11 @@ function ApproversDisciplineTab() {
 
   const openAddModal = () => {
     setModalMode('add');
-    setEditingId(null);
     setForm(emptyForm);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setEditingId(null);
     setForm(emptyForm);
     setIsModalOpen(false);
   };
@@ -389,7 +384,6 @@ function ApproversMaintenanceTab() {
   const [form, setForm] = useState(emptyForm);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
-  const [editingId, setEditingId] = useState(null);
   const [msg, setMsg] = useState('');
   const [msgType, setMsgType] = useState('Positive');
   const [uploading, setUploading] = useState(false);
@@ -399,19 +393,16 @@ function ApproversMaintenanceTab() {
   useEffect(() => { load(); }, []);
 
   const save = async () => {
-    const payload = {
-      maintenanceStrategy: form.maintenanceStrategy || null,
-      maintenanceDays: form.maintenanceDays ? parseInt(form.maintenanceDays) : null,
-      approvalType: form.approvalType,
-      approverUsername: form.approverUsername
-    };
-    const isEditing = modalMode === 'edit' && editingId;
-    await fetch(isEditing ? `/api/admin/approvers/maintenance/${editingId}` : '/api/admin/approvers/maintenance', {
-      method: isEditing ? 'PUT' : 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
+    await fetch('/api/admin/approvers/maintenance', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+        maintenanceStrategy: form.maintenanceStrategy || null,
+        maintenanceDays: form.maintenanceDays ? parseInt(form.maintenanceDays) : null,
+        approvalType: form.approvalType,
+        approverUsername: form.approverUsername
+      })
     });
     setForm(emptyForm);
     setIsModalOpen(false);
-    setEditingId(null);
     setMsg(modalMode === 'edit' ? 'Rule updated.' : 'Rule added.');
     setTimeout(() => setMsg(''), 3000);
     load();
@@ -425,7 +416,6 @@ function ApproversMaintenanceTab() {
 
   const edit = (row) => {
     setModalMode('edit');
-    setEditingId(row.id);
     setForm({
       maintenanceStrategy: row.maintenance_strategy || '',
       maintenanceDays: row.maintenance_days || '',
@@ -437,13 +427,11 @@ function ApproversMaintenanceTab() {
 
   const openAddModal = () => {
     setModalMode('add');
-    setEditingId(null);
     setForm(emptyForm);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setEditingId(null);
     setForm(emptyForm);
     setIsModalOpen(false);
   };
@@ -753,7 +741,7 @@ function DocumentTypesTab() {
                 <div style={{ padding:'1.25rem' }}>
                   <Title level="H5" style={{ marginBottom:'1rem' }}>{modalMode === 'edit' ? 'Edit Document Type' : 'Add Document Type'}</Title>
                   <div style={{ display:'flex', gap:'0.75rem', marginBottom:'1rem', flexWrap:'wrap' }}>
-                    <Input placeholder="Code" value={typeForm.code} onInput={e => setTypeForm(p => ({ ...p, code: e.target.value }))} style={{ width:'90px' }} disabled={modalMode === 'edit'} />
+                    <Input placeholder="Code" value={typeForm.code} onInput={e => setTypeForm(p => ({ ...p, code: e.target.value }))} style={{ width:'90px' }} />
                     <Input placeholder="Description" value={typeForm.description} onInput={e => setTypeForm(p => ({ ...p, description: e.target.value }))} style={{ flex:1, minWidth:'140px' }} />
                   </div>
                   <div style={{ display:'flex', gap:'0.75rem', justifyContent:'flex-end' }}>
@@ -848,7 +836,7 @@ function DocumentGroupsTab() {
                         {types.map(t => <Option key={t.code} data-value={t.code} selected={groupForm.docType === t.code}>{t.code}</Option>)}
                       </Select>
                     </div>
-                    <div><Label>Code</Label><Input value={groupForm.code} onInput={e => setGroupForm(p => ({ ...p, code: e.target.value }))} style={{ width:'100%' }} disabled={modalMode === 'edit'} /></div>
+                    <div><Label>Code</Label><Input value={groupForm.code} onInput={e => setGroupForm(p => ({ ...p, code: e.target.value }))} style={{ width:'100%' }} /></div>
                     <div style={{ gridColumn:'1/-1' }}><Label>Description</Label><Input value={groupForm.description} onInput={e => setGroupForm(p => ({ ...p, description: e.target.value }))} style={{ width:'100%' }} /></div>
                     <div style={{ display:'flex', alignItems:'center', gap:'0.5rem' }}>
                       <input type="checkbox" checked={groupForm.workflowRequired} onChange={e => setGroupForm(p => ({ ...p, workflowRequired: e.target.checked }))} />
