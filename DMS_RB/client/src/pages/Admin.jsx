@@ -232,8 +232,12 @@ function WorkflowTab({ currentUser }) {
 
 // ── Approvers by Discipline ───────────────────────────────────────────────────
 function ApproversDisciplineTab() {
+  const emptyForm = { departmentId:'', approvalType:'msv', approverUsername:'' };
   const [rows, setRows] = useState([]);
-  const [form, setForm] = useState({ departmentId:'', approvalType:'msv', approverUsername:'' });
+  const [form, setForm] = useState(emptyForm);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState('add');
+  const [editingId, setEditingId] = useState(null);
   const [msg, setMsg] = useState('');
   const [msgType, setMsgType] = useState('Positive');
   const [uploading, setUploading] = useState(false);
@@ -242,13 +246,16 @@ function ApproversDisciplineTab() {
   const load = () => fetch('/api/admin/approvers/discipline').then(r => r.json()).then(setRows);
   useEffect(() => { load(); }, []);
 
-  const add = async () => {
+  const save = async () => {
     if (!form.departmentId || !form.approverUsername) return;
-    await fetch('/api/admin/approvers/discipline', {
-      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form)
+    const isEditing = modalMode === 'edit' && editingId;
+    await fetch(isEditing ? `/api/admin/approvers/discipline/${editingId}` : '/api/admin/approvers/discipline', {
+      method: isEditing ? 'PUT' : 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form)
     });
-    setForm({ departmentId:'', approvalType:'msv', approverUsername:'' });
-    setMsg('Approver added. Pending workflows re-evaluated.');
+    setForm(emptyForm);
+    setIsModalOpen(false);
+    setEditingId(null);
+    setMsg(modalMode === 'edit' ? 'Approver updated. Pending workflows re-evaluated.' : 'Approver added. Pending workflows re-evaluated.');
     setTimeout(() => setMsg(''), 3000);
     load();
   };
@@ -261,11 +268,27 @@ function ApproversDisciplineTab() {
   };
 
   const edit = (row) => {
+    setModalMode('edit');
+    setEditingId(row.id);
     setForm({
       departmentId: row.department_id || '',
       approvalType: row.approval_type || 'msv',
       approverUsername: row.approver_username || ''
     });
+    setIsModalOpen(true);
+  };
+
+  const openAddModal = () => {
+    setModalMode('add');
+    setEditingId(null);
+    setForm(emptyForm);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setEditingId(null);
+    setForm(emptyForm);
+    setIsModalOpen(false);
   };
 
   const handleUpload = async (e) => {
@@ -300,26 +323,9 @@ function ApproversDisciplineTab() {
 
       <Card style={{ marginBottom:'1.5rem' }}>
         <div style={{ padding:'1.25rem' }}>
-          <Title level="H5" style={{ marginBottom:'1rem' }}>Add Approver Rule</Title>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
-            <div>
-              <Label>Department ID</Label>
-              <Input value={form.departmentId} onInput={e => setForm(p => ({ ...p, departmentId: e.target.value }))} placeholder="e.g. 1813 or default" style={{ width:'100%' }} />
-            </div>
-            <div>
-              <Label>Approval Type</Label>
-              <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, approvalType: e.detail.selectedOption.dataset.value }))}>
-                <Option data-value="msv" selected={form.approvalType === 'msv'}>Discipline (MSV)</Option>
-                <Option data-value="em"  selected={form.approvalType === 'em'}>E&M</Option>
-              </Select>
-            </div>
-            <div>
-              <Label>Approver Username</Label>
-              <Input value={form.approverUsername} onInput={e => setForm(p => ({ ...p, approverUsername: e.target.value }))} placeholder="e.g. MANAGER1" style={{ width:'100%' }} />
-            </div>
-          </div>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>Approver Rules</Title>
           <div style={{ display:'flex', gap:'0.75rem', alignItems:'center' }}>
-            <Button design="Emphasized" onClick={add}>Add Rule</Button>
+            <Button design="Emphasized" onClick={openAddModal}>Add Rule</Button>
             <Button design="Default" onClick={downloadTemplate}>Download Excel</Button>
             <Button design="Default" onClick={() => fileRef.current?.click()} disabled={uploading}>
               {uploading ? 'Uploading…' : 'Upload Excel'}
@@ -329,6 +335,36 @@ function ApproversDisciplineTab() {
           </div>
         </div>
       </Card>
+      {isModalOpen && (
+        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:1050, padding:'1rem' }}>
+          <Card style={{ width:'100%', maxWidth:'680px' }}>
+            <div style={{ padding:'1.25rem' }}>
+              <Title level="H5" style={{ marginBottom:'1rem' }}>{modalMode === 'edit' ? 'Edit Approver Rule' : 'Add Approver Rule'}</Title>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
+                <div>
+                  <Label>Department ID</Label>
+                  <Input value={form.departmentId} onInput={e => setForm(p => ({ ...p, departmentId: e.target.value }))} placeholder="e.g. 1813 or default" style={{ width:'100%' }} />
+                </div>
+                <div>
+                  <Label>Approval Type</Label>
+                  <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, approvalType: e.detail.selectedOption.dataset.value }))}>
+                    <Option data-value="msv" selected={form.approvalType === 'msv'}>Discipline (MSV)</Option>
+                    <Option data-value="em"  selected={form.approvalType === 'em'}>E&M</Option>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Approver Username</Label>
+                  <Input value={form.approverUsername} onInput={e => setForm(p => ({ ...p, approverUsername: e.target.value }))} placeholder="e.g. MANAGER1" style={{ width:'100%' }} />
+                </div>
+              </div>
+              <div style={{ display:'flex', gap:'0.75rem', justifyContent:'flex-end' }}>
+                <Button design="Default" onClick={closeModal}>Cancel</Button>
+                <Button design="Emphasized" onClick={save}>{modalMode === 'edit' ? 'Edit' : 'Add'}</Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
 
       <Card>
         <TableGrid
@@ -348,8 +384,12 @@ function ApproversDisciplineTab() {
 
 // ── Approvers by Maintenance ──────────────────────────────────────────────────
 function ApproversMaintenanceTab() {
+  const emptyForm = { maintenanceStrategy:'', maintenanceDays:'', approvalType:'msv', approverUsername:'' };
   const [rows, setRows] = useState([]);
-  const [form, setForm] = useState({ maintenanceStrategy:'', maintenanceDays:'', approvalType:'msv', approverUsername:'' });
+  const [form, setForm] = useState(emptyForm);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState('add');
+  const [editingId, setEditingId] = useState(null);
   const [msg, setMsg] = useState('');
   const [msgType, setMsgType] = useState('Positive');
   const [uploading, setUploading] = useState(false);
@@ -358,17 +398,22 @@ function ApproversMaintenanceTab() {
   const load = () => fetch('/api/admin/approvers/maintenance').then(r => r.json()).then(setRows);
   useEffect(() => { load(); }, []);
 
-  const add = async () => {
-    await fetch('/api/admin/approvers/maintenance', {
-      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
-        maintenanceStrategy: form.maintenanceStrategy || null,
-        maintenanceDays: form.maintenanceDays ? parseInt(form.maintenanceDays) : null,
-        approvalType: form.approvalType,
-        approverUsername: form.approverUsername
-      })
+  const save = async () => {
+    const payload = {
+      maintenanceStrategy: form.maintenanceStrategy || null,
+      maintenanceDays: form.maintenanceDays ? parseInt(form.maintenanceDays) : null,
+      approvalType: form.approvalType,
+      approverUsername: form.approverUsername
+    };
+    const isEditing = modalMode === 'edit' && editingId;
+    await fetch(isEditing ? `/api/admin/approvers/maintenance/${editingId}` : '/api/admin/approvers/maintenance', {
+      method: isEditing ? 'PUT' : 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
     });
-    setForm({ maintenanceStrategy:'', maintenanceDays:'', approvalType:'msv', approverUsername:'' });
-    setMsg('Rule added.'); setTimeout(() => setMsg(''), 3000);
+    setForm(emptyForm);
+    setIsModalOpen(false);
+    setEditingId(null);
+    setMsg(modalMode === 'edit' ? 'Rule updated.' : 'Rule added.');
+    setTimeout(() => setMsg(''), 3000);
     load();
   };
 
@@ -379,12 +424,28 @@ function ApproversMaintenanceTab() {
   };
 
   const edit = (row) => {
+    setModalMode('edit');
+    setEditingId(row.id);
     setForm({
       maintenanceStrategy: row.maintenance_strategy || '',
       maintenanceDays: row.maintenance_days || '',
       approvalType: row.approval_type || 'msv',
       approverUsername: row.approver_username || ''
     });
+    setIsModalOpen(true);
+  };
+
+  const openAddModal = () => {
+    setModalMode('add');
+    setEditingId(null);
+    setForm(emptyForm);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setEditingId(null);
+    setForm(emptyForm);
+    setIsModalOpen(false);
   };
 
   const handleUpload = async (e) => {
@@ -418,21 +479,9 @@ function ApproversMaintenanceTab() {
       {msg && <MessageStrip design={msgType} style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
       <Card style={{ marginBottom:'1.5rem' }}>
         <div style={{ padding:'1.25rem' }}>
-          <Title level="H5" style={{ marginBottom:'1rem' }}>Add Maintenance Approver Rule</Title>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
-            <div><Label>Maintenance Strategy</Label><Input value={form.maintenanceStrategy} onInput={e => setForm(p => ({ ...p, maintenanceStrategy: e.target.value }))} style={{ width:'100%' }} /></div>
-            <div><Label>Maintenance Days</Label><Input type="number" value={form.maintenanceDays} onInput={e => setForm(p => ({ ...p, maintenanceDays: e.target.value }))} style={{ width:'100%' }} /></div>
-            <div>
-              <Label>Approval Type</Label>
-              <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, approvalType: e.detail.selectedOption.dataset.value }))}>
-                <Option data-value="msv">Discipline</Option>
-                <Option data-value="em">E&M</Option>
-              </Select>
-            </div>
-            <div><Label>Approver Username</Label><Input value={form.approverUsername} onInput={e => setForm(p => ({ ...p, approverUsername: e.target.value }))} style={{ width:'100%' }} /></div>
-          </div>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>Maintenance Approver Rules</Title>
           <div style={{ display:'flex', gap:'0.75rem', alignItems:'center' }}>
-            <Button design="Emphasized" onClick={add}>Add Rule</Button>
+            <Button design="Emphasized" onClick={openAddModal}>Add Rule</Button>
             <Button design="Default" onClick={downloadTemplate}>Download Excel</Button>
             <Button design="Default" onClick={() => fileRef.current?.click()} disabled={uploading}>
               {uploading ? 'Uploading…' : 'Upload Excel'}
@@ -442,6 +491,31 @@ function ApproversMaintenanceTab() {
           </div>
         </div>
       </Card>
+      {isModalOpen && (
+        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:1050, padding:'1rem' }}>
+          <Card style={{ width:'100%', maxWidth:'680px' }}>
+            <div style={{ padding:'1.25rem' }}>
+              <Title level="H5" style={{ marginBottom:'1rem' }}>{modalMode === 'edit' ? 'Edit Maintenance Approver Rule' : 'Add Maintenance Approver Rule'}</Title>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
+                <div><Label>Maintenance Strategy</Label><Input value={form.maintenanceStrategy} onInput={e => setForm(p => ({ ...p, maintenanceStrategy: e.target.value }))} style={{ width:'100%' }} /></div>
+                <div><Label>Maintenance Days</Label><Input type="number" value={form.maintenanceDays} onInput={e => setForm(p => ({ ...p, maintenanceDays: e.target.value }))} style={{ width:'100%' }} /></div>
+                <div>
+                  <Label>Approval Type</Label>
+                  <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, approvalType: e.detail.selectedOption.dataset.value }))}>
+                    <Option data-value="msv" selected={form.approvalType === 'msv'}>Discipline</Option>
+                    <Option data-value="em" selected={form.approvalType === 'em'}>E&M</Option>
+                  </Select>
+                </div>
+                <div><Label>Approver Username</Label><Input value={form.approverUsername} onInput={e => setForm(p => ({ ...p, approverUsername: e.target.value }))} style={{ width:'100%' }} /></div>
+              </div>
+              <div style={{ display:'flex', gap:'0.75rem', justifyContent:'flex-end' }}>
+                <Button design="Default" onClick={closeModal}>Cancel</Button>
+                <Button design="Emphasized" onClick={save}>{modalMode === 'edit' ? 'Edit' : 'Add'}</Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
       <Card>
         <TableGrid
           cols={[
@@ -461,8 +535,11 @@ function ApproversMaintenanceTab() {
 
 // ── Users ─────────────────────────────────────────────────────────────────────
 function UsersTab({ currentUser }) {
+  const emptyUserForm = { username:'', displayName:'', email:'', role:'user' };
   const [users, setUsers] = useState([]);
-  const [form, setForm] = useState({ username:'', displayName:'', email:'', role:'user' });
+  const [form, setForm] = useState(emptyUserForm);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  const [userModalMode, setUserModalMode] = useState('add');
   const [msg, setMsg] = useState('');
   const [msgType, setMsgType] = useState('Positive');
   const [uploading, setUploading] = useState(false);
@@ -474,8 +551,10 @@ function UsersTab({ currentUser }) {
   const saveUser = async () => {
     if (!form.username) return;
     await fetch('/api/admin/users', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form) });
-    setForm({ username:'', displayName:'', email:'', role:'user' });
-    setMsg('User saved.'); setTimeout(() => setMsg(''), 3000);
+    setForm(emptyUserForm);
+    setIsUserModalOpen(false);
+    setMsg(userModalMode === 'edit' ? 'User updated.' : 'User added.');
+    setTimeout(() => setMsg(''), 3000);
     load();
   };
 
@@ -486,12 +565,25 @@ function UsersTab({ currentUser }) {
   };
 
   const editUser = (user) => {
+    setUserModalMode('edit');
     setForm({
       username: user.username || '',
       displayName: user.displayName || '',
       email: user.email || '',
       role: user.role || 'user'
     });
+    setIsUserModalOpen(true);
+  };
+
+  const openAddModal = () => {
+    setUserModalMode('add');
+    setForm(emptyUserForm);
+    setIsUserModalOpen(true);
+  };
+
+  const closeUserModal = () => {
+    setForm(emptyUserForm);
+    setIsUserModalOpen(false);
   };
 
   const handleUpload = async (e) => {
@@ -525,21 +617,9 @@ function UsersTab({ currentUser }) {
       {msg && <MessageStrip design={msgType} style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
       <Card style={{ marginBottom:'1.5rem' }}>
         <div style={{ padding:'1.25rem' }}>
-          <Title level="H5" style={{ marginBottom:'1rem' }}>Add / Edit User</Title>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
-            <div><Label>Username*</Label><Input value={form.username} onInput={e => setForm(p => ({ ...p, username: e.target.value }))} style={{ width:'100%' }} /></div>
-            <div><Label>Display Name</Label><Input value={form.displayName} onInput={e => setForm(p => ({ ...p, displayName: e.target.value }))} style={{ width:'100%' }} /></div>
-            <div><Label>Email</Label><Input value={form.email} onInput={e => setForm(p => ({ ...p, email: e.target.value }))} style={{ width:'100%' }} /></div>
-            <div>
-              <Label>Role</Label>
-              <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, role: e.detail.selectedOption.dataset.value }))}>
-                <Option data-value="user" selected={form.role === 'user'}>User</Option>
-                <Option data-value="admin" selected={form.role === 'admin'}>Admin</Option>
-              </Select>
-            </div>
-          </div>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>Users</Title>
           <div style={{ display:'flex', gap:'0.75rem', alignItems:'center', flexWrap:'wrap' }}>
-            <Button design="Emphasized" onClick={saveUser}>Save User</Button>
+            <Button design="Emphasized" onClick={openAddModal}>Add User</Button>
             <Button design="Default" onClick={downloadUsers}>Download Excel</Button>
             <Button design="Default" onClick={() => fileRef.current?.click()} disabled={uploading}>
               {uploading ? 'Uploading…' : 'Upload Excel'}
@@ -549,6 +629,31 @@ function UsersTab({ currentUser }) {
           </div>
         </div>
       </Card>
+      {isUserModalOpen && (
+        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:1050, padding:'1rem' }}>
+          <Card style={{ width:'100%', maxWidth:'680px' }}>
+            <div style={{ padding:'1.25rem' }}>
+              <Title level="H5" style={{ marginBottom:'1rem' }}>{userModalMode === 'edit' ? 'Edit User' : 'Add User'}</Title>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
+                <div><Label>Username*</Label><Input value={form.username} onInput={e => setForm(p => ({ ...p, username: e.target.value }))} style={{ width:'100%' }} disabled={userModalMode === 'edit'} /></div>
+                <div><Label>Display Name</Label><Input value={form.displayName} onInput={e => setForm(p => ({ ...p, displayName: e.target.value }))} style={{ width:'100%' }} /></div>
+                <div><Label>Email</Label><Input value={form.email} onInput={e => setForm(p => ({ ...p, email: e.target.value }))} style={{ width:'100%' }} /></div>
+                <div>
+                  <Label>Role</Label>
+                  <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, role: e.detail.selectedOption.dataset.value }))}>
+                    <Option data-value="user" selected={form.role === 'user'}>User</Option>
+                    <Option data-value="admin" selected={form.role === 'admin'}>Admin</Option>
+                  </Select>
+                </div>
+              </div>
+              <div style={{ display:'flex', gap:'0.75rem', justifyContent:'flex-end' }}>
+                <Button design="Default" onClick={closeUserModal}>Cancel</Button>
+                <Button design="Emphasized" onClick={saveUser}>{userModalMode === 'edit' ? 'Edit' : 'Add'}</Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
       <Card>
         <div style={{ overflowX:'auto' }}>
           <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.85rem' }}>
@@ -594,6 +699,8 @@ function UsersTab({ currentUser }) {
 function DocumentTypesTab() {
   const [types,  setTypes]  = useState([]);
   const [typeForm,  setTypeForm]  = useState({ code:'', description:'' });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState('add');
   const [msg, setMsg] = useState('');
 
   const loadTypes  = () => fetch('/api/admin/config/doc-types').then(r => r.json()).then(setTypes);
@@ -603,6 +710,8 @@ function DocumentTypesTab() {
     if (!typeForm.code) return;
     await fetch('/api/admin/config/doc-types', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(typeForm) });
     setTypeForm({ code:'', description:'' });
+    setIsModalOpen(false);
+    setModalMode('add');
     setMsg('Document type saved.'); setTimeout(() => setMsg(''), 3000);
     loadTypes();
   };
@@ -613,7 +722,20 @@ function DocumentTypesTab() {
   };
 
   const editType = (row) => {
+    setModalMode('edit');
     setTypeForm({ code: row.code || '', description: row.description || '' });
+    setIsModalOpen(true);
+  };
+
+  const openAddModal = () => {
+    setModalMode('add');
+    setTypeForm({ code:'', description:'' });
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setTypeForm({ code:'', description:'' });
+    setIsModalOpen(false);
   };
 
   return (
@@ -622,11 +744,26 @@ function DocumentTypesTab() {
       <Card>
         <div style={{ padding:'1.25rem' }}>
           <Title level="H5" style={{ marginBottom:'1rem' }}>Document Types</Title>
-          <div style={{ display:'flex', gap:'0.75rem', marginBottom:'1rem', flexWrap:'wrap' }}>
-            <Input placeholder="Code" value={typeForm.code} onInput={e => setTypeForm(p => ({ ...p, code: e.target.value }))} style={{ width:'90px' }} />
-            <Input placeholder="Description" value={typeForm.description} onInput={e => setTypeForm(p => ({ ...p, description: e.target.value }))} style={{ flex:1, minWidth:'140px' }} />
-            <Button design="Emphasized" onClick={saveType}>Save</Button>
+          <div style={{ marginBottom:'1rem' }}>
+            <Button design="Emphasized" onClick={openAddModal}>Add Type</Button>
           </div>
+          {isModalOpen && (
+            <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:1050, padding:'1rem' }}>
+              <Card style={{ width:'100%', maxWidth:'580px' }}>
+                <div style={{ padding:'1.25rem' }}>
+                  <Title level="H5" style={{ marginBottom:'1rem' }}>{modalMode === 'edit' ? 'Edit Document Type' : 'Add Document Type'}</Title>
+                  <div style={{ display:'flex', gap:'0.75rem', marginBottom:'1rem', flexWrap:'wrap' }}>
+                    <Input placeholder="Code" value={typeForm.code} onInput={e => setTypeForm(p => ({ ...p, code: e.target.value }))} style={{ width:'90px' }} disabled={modalMode === 'edit'} />
+                    <Input placeholder="Description" value={typeForm.description} onInput={e => setTypeForm(p => ({ ...p, description: e.target.value }))} style={{ flex:1, minWidth:'140px' }} />
+                  </div>
+                  <div style={{ display:'flex', gap:'0.75rem', justifyContent:'flex-end' }}>
+                    <Button design="Default" onClick={closeModal}>Cancel</Button>
+                    <Button design="Emphasized" onClick={saveType}>{modalMode === 'edit' ? 'Edit' : 'Add'}</Button>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          )}
           <TableGrid
             cols={[{ key:'code', label:'Code' }, { key:'description', label:'Description' }]}
             rows={types}
@@ -641,9 +778,12 @@ function DocumentTypesTab() {
 
 // ── Document Groups ───────────────────────────────────────────────────────────
 function DocumentGroupsTab() {
+  const emptyGroupForm = { docType:'', code:'', description:'', workflowRequired: false };
   const [types,  setTypes]  = useState([]);
   const [groups, setGroups] = useState([]);
-  const [groupForm, setGroupForm] = useState({ docType:'', code:'', description:'', workflowRequired: false });
+  const [groupForm, setGroupForm] = useState(emptyGroupForm);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState('add');
   const [msg, setMsg] = useState('');
 
   const loadTypes  = () => fetch('/api/admin/config/doc-types').then(r => r.json()).then(setTypes);
@@ -653,7 +793,9 @@ function DocumentGroupsTab() {
   const saveGroup = async () => {
     if (!groupForm.code || !groupForm.docType) return;
     await fetch('/api/admin/config/doc-groups', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(groupForm) });
-    setGroupForm({ docType:'', code:'', description:'', workflowRequired: false });
+    setGroupForm(emptyGroupForm);
+    setIsModalOpen(false);
+    setModalMode('add');
     setMsg('Document group saved.'); setTimeout(() => setMsg(''), 3000);
     loadGroups();
   };
@@ -664,12 +806,25 @@ function DocumentGroupsTab() {
   };
 
   const editGroup = (row) => {
+    setModalMode('edit');
     setGroupForm({
       docType: row.doc_type || '',
       code: row.code || '',
       description: row.description || '',
       workflowRequired: row.workflow_required === 'Yes'
     });
+    setIsModalOpen(true);
+  };
+
+  const openAddModal = () => {
+    setModalMode('add');
+    setGroupForm(emptyGroupForm);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setGroupForm(emptyGroupForm);
+    setIsModalOpen(false);
   };
 
   return (
@@ -678,21 +833,36 @@ function DocumentGroupsTab() {
       <Card>
         <div style={{ padding:'1.25rem' }}>
           <Title level="H5" style={{ marginBottom:'1rem' }}>Document Groups</Title>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem', marginBottom:'0.75rem' }}>
-            <div><Label>Doc Type</Label>
-              <Select style={{ width:'100%' }} onChange={e => setGroupForm(p => ({ ...p, docType: e.detail.selectedOption.dataset.value }))}>
-                <Option data-value="">— select —</Option>
-                {types.map(t => <Option key={t.code} data-value={t.code} selected={groupForm.docType === t.code}>{t.code}</Option>)}
-              </Select>
-            </div>
-            <div><Label>Code</Label><Input value={groupForm.code} onInput={e => setGroupForm(p => ({ ...p, code: e.target.value }))} style={{ width:'100%' }} /></div>
-            <div style={{ gridColumn:'1/-1' }}><Label>Description</Label><Input value={groupForm.description} onInput={e => setGroupForm(p => ({ ...p, description: e.target.value }))} style={{ width:'100%' }} /></div>
-            <div style={{ display:'flex', alignItems:'center', gap:'0.5rem' }}>
-              <input type="checkbox" checked={groupForm.workflowRequired} onChange={e => setGroupForm(p => ({ ...p, workflowRequired: e.target.checked }))} />
-              <Label>Workflow Required</Label>
-            </div>
+          <div style={{ marginBottom:'1rem' }}>
+            <Button design="Emphasized" onClick={openAddModal}>Add Group</Button>
           </div>
-          <Button design="Emphasized" onClick={saveGroup} style={{ marginBottom:'1rem' }}>Save Group</Button>
+          {isModalOpen && (
+            <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.35)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:1050, padding:'1rem' }}>
+              <Card style={{ width:'100%', maxWidth:'680px' }}>
+                <div style={{ padding:'1.25rem' }}>
+                  <Title level="H5" style={{ marginBottom:'1rem' }}>{modalMode === 'edit' ? 'Edit Document Group' : 'Add Document Group'}</Title>
+                  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem', marginBottom:'0.75rem' }}>
+                    <div><Label>Doc Type</Label>
+                      <Select style={{ width:'100%' }} onChange={e => setGroupForm(p => ({ ...p, docType: e.detail.selectedOption.dataset.value }))}>
+                        <Option data-value="">— select —</Option>
+                        {types.map(t => <Option key={t.code} data-value={t.code} selected={groupForm.docType === t.code}>{t.code}</Option>)}
+                      </Select>
+                    </div>
+                    <div><Label>Code</Label><Input value={groupForm.code} onInput={e => setGroupForm(p => ({ ...p, code: e.target.value }))} style={{ width:'100%' }} disabled={modalMode === 'edit'} /></div>
+                    <div style={{ gridColumn:'1/-1' }}><Label>Description</Label><Input value={groupForm.description} onInput={e => setGroupForm(p => ({ ...p, description: e.target.value }))} style={{ width:'100%' }} /></div>
+                    <div style={{ display:'flex', alignItems:'center', gap:'0.5rem' }}>
+                      <input type="checkbox" checked={groupForm.workflowRequired} onChange={e => setGroupForm(p => ({ ...p, workflowRequired: e.target.checked }))} />
+                      <Label>Workflow Required</Label>
+                    </div>
+                  </div>
+                  <div style={{ display:'flex', gap:'0.75rem', justifyContent:'flex-end' }}>
+                    <Button design="Default" onClick={closeModal}>Cancel</Button>
+                    <Button design="Emphasized" onClick={saveGroup}>{modalMode === 'edit' ? 'Edit' : 'Add'}</Button>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          )}
           <TableGrid
             cols={[
               { key:'doc_type', label:'Type' }, { key:'code', label:'Code' },
