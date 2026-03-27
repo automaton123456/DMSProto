@@ -54,14 +54,14 @@ if (fs.existsSync(clientBuildPath)) {
   app.get('*', (req, res) => res.sendFile(path.join(clientBuildPath, 'index.html')));
 } else {
   app.get('/', (req, res) => res.json({
-    message: 'DMS V2 API Server Running',
+    message: 'DMS RB API Server Running',
     note: 'Run "npm run build" to build the client, or "npm run dev" for development mode',
     api: '/api'
   }));
 }
 
 app.listen(PORT, () => {
-  console.log(`\nDMS V2 Server running on http://localhost:${PORT}`);
+  console.log(`\nDMS RB Server running on http://localhost:${PORT}`);
   if (!fs.existsSync(clientBuildPath)) {
     console.log('  Client not built. Run "npm run build" or "npm run dev" for hot-reload dev mode.\n');
   }
