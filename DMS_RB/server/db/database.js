@@ -20,8 +20,29 @@ if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true });
 
 const db = new DatabaseSync(DB_PATH);
 
+// Improve concurrent access behavior during fast restarts (e.g. nodemon).
+// - WAL allows readers/writers to coexist better.
+// - busy_timeout tells SQLite to wait briefly for lock release.
+db.exec('PRAGMA journal_mode = WAL;');
+db.exec('PRAGMA busy_timeout = 5000;');
+
 // Apply schema (idempotent — uses IF NOT EXISTS everywhere)
 const schemaSql = fs.readFileSync(SCHEMA, 'utf8');
-db.exec(schemaSql);
+const MAX_SCHEMA_RETRIES = 5;
+for (let attempt = 1; attempt <= MAX_SCHEMA_RETRIES; attempt += 1) {
+  try {
+    db.exec(schemaSql);
+    break;
+  } catch (error) {
+    const isLocked = error && (error.code === 'ERR_SQLITE_ERROR') && Number(error.errcode) === 5;
+    const isLastAttempt = attempt === MAX_SCHEMA_RETRIES;
+
+    if (!isLocked || isLastAttempt) throw error;
+
+    // Sleep briefly before retrying on transient lock contention.
+    const sleepMs = attempt * 100;
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, sleepMs);
+  }
+}
 
 module.exports = db;
