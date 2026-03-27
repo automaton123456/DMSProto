@@ -1,267 +1,844 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
-import Alert from 'react-bootstrap/Alert';
+import React, { useState, useEffect, useRef } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
-import Badge from 'react-bootstrap/Badge';
-import Nav from 'react-bootstrap/Nav';
-import Icon from '@mdi/react';
-import { mdiContentSave, mdiCogOutline } from '@mdi/js';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
-const STATUS_COLORS = {
-  'Draft': 'secondary',
-  'Approved': 'success',
-  'Rejected': 'danger',
-  'Pending MSV Approval': 'warning',
-  'Pending E&M Approval': 'primary'
-};
+function Title({ level = 'H2', children, style }) {
+  const tag = `h${String(level).replace(/[^0-9]/g, '') || '2'}`;
+  return React.createElement(tag, { style, className: 'fw-bold' }, children);
+}
 
-export default function Admin() {
-  const { currentUser } = useAuth();
-  const navigate = useNavigate();
-  const [users, setUsers] = useState([]);
-  const [approvers, setApprovers] = useState(null);
-  const [stats, setStats] = useState(null);
-  const [dbStatus, setDbStatus] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState('');
-  const [activeTab, setActiveTab] = useState('overview');
+function Card({ children, style }) {
+  return <div style={{ background: '#fff', border: '1px solid #e8e8e8', borderRadius: '0.5rem', ...style }}>{children}</div>;
+}
 
-  useEffect(() => {
-    if (currentUser?.role !== 'admin') return;
-    Promise.all([
-      fetch('/api/admin/users').then(r => r.json()),
-      fetch('/api/admin/workflow-approvers').then(r => r.json()),
-      fetch('/api/admin/stats').then(r => r.json()),
-      fetch('/api/admin/db-status').then(r => r.json())
-    ]).then(([u, a, s, db]) => {
-      setUsers(u); setApprovers(a); setStats(s); setDbStatus(db); setLoading(false);
-    }).catch(() => setLoading(false));
-  }, [currentUser]);
+function Button({ design = 'Default', onClick, children, style, disabled, type = 'button' }) {
+  const cls = design === 'Emphasized' ? 'btn btn-primary btn-sm' : design === 'Negative' ? 'btn btn-danger btn-sm' : 'btn btn-outline-secondary btn-sm';
+  return <button type={type} className={cls} onClick={onClick} style={style} disabled={disabled}>{children}</button>;
+}
 
-  if (currentUser?.role !== 'admin') {
-    return (
-      <div className="page-container">
-        <Alert variant="danger">Access denied. Admin role required.</Alert>
-        <Button variant="link" onClick={() => navigate('/')}>← Go Home</Button>
+function Input(props) {
+  const { onInput, value, style, ...rest } = props;
+  return <input className="form-control form-control-sm" value={value ?? ''} onChange={onInput} style={style} {...rest} />;
+}
+
+function Select({ onChange, children, style }) {
+  return (
+    <select
+      className="form-select form-select-sm"
+      style={style}
+      onChange={(e) => onChange?.({ detail: { selectedOption: e.target.selectedOptions[0] } })}
+    >
+      {children}
+    </select>
+  );
+}
+
+function Option({ children, ...props }) {
+  return <option {...props}>{children}</option>;
+}
+
+function Label({ children }) {
+  return <label className="form-label mb-1">{children}</label>;
+}
+
+function MessageStrip({ design = 'Information', children, style, onClose }) {
+  const cls = design === 'Negative' ? 'alert alert-danger' : design === 'Warning' ? 'alert alert-warning' : 'alert alert-success';
+  return (
+    <div className={`${cls} py-2 px-3`} style={style} role="alert">
+      <div className="d-flex justify-content-between align-items-start gap-2">
+        <div>{children}</div>
+        {onClose && <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>}
       </div>
-    );
-  }
-
-  if (loading) return (
-    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
-      <Spinner animation="border" variant="primary" />
     </div>
   );
+}
 
-  const saveApprovers = async () => {
-    await fetch('/api/admin/workflow-approvers', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(approvers)
-    });
-    setMessage('Approver configuration saved successfully');
-    setTimeout(() => setMessage(''), 3000);
+function BusyIndicator() {
+  return <Spinner animation="border" size="sm" />;
+}
+
+const STATUS_COLORS = {
+  Draft: '#666', Approved: '#107e3e', Rejected: '#b00',
+  'Pending Discipline Approval': '#b26000',
+  'Pending MSV Approval': '#b26000',
+  'Pending E&M Approval': '#0070f2'
+};
+
+const FIELD_NAMES = ['docDate','manuName','manuSerial','alertNum','certAuth','certNum','addDesc','docLoc','workOrder','equipment'];
+
+function TabBar({ tabs, active, onChange }) {
+  return (
+    <div style={{ display:'flex', gap:0, borderBottom:'2px solid #e8e8e8', marginBottom:'1.5rem', flexWrap:'wrap' }}>
+      {tabs.map(t => (
+        <button key={t.id} onClick={() => onChange(t.id)} style={{
+          padding:'0.65rem 1.1rem', border:'none', background:'none', cursor:'pointer',
+          fontWeight:600, fontSize:'0.85rem',
+          color: active === t.id ? '#0070f2' : '#6a6d70',
+          borderBottom: active === t.id ? '2px solid #0070f2' : '2px solid transparent',
+          marginBottom:'-2px', transition:'color 0.15s'
+        }}>{t.label}</button>
+      ))}
+    </div>
+  );
+}
+
+function TableGrid({ cols, rows, onDelete, deleteLabel = 'Remove' }) {
+  return (
+    <div style={{ overflowX:'auto' }}>
+      <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.85rem' }}>
+        <thead>
+          <tr style={{ background:'#f5f6f7', borderBottom:'2px solid #e8e8e8' }}>
+            {cols.map(c => <th key={c.key} style={{ padding:'0.6rem 0.9rem', textAlign:'left', fontWeight:600 }}>{c.label}</th>)}
+            {onDelete && <th style={{ padding:'0.6rem 0.9rem' }}></th>}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.length === 0 && (
+            <tr><td colSpan={cols.length + 1} style={{ padding:'1.5rem', textAlign:'center', color:'#999' }}>No entries</td></tr>
+          )}
+          {rows.map((row, i) => (
+            <tr key={i} style={{ borderBottom:'1px solid #f0f0f0' }}>
+              {cols.map(c => <td key={c.key} style={{ padding:'0.6rem 0.9rem' }}>{row[c.key] ?? '—'}</td>)}
+              {onDelete && (
+                <td style={{ padding:'0.6rem 0.9rem' }}>
+                  <Button design="Negative" onClick={() => onDelete(row)}>{deleteLabel}</Button>
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// ── Overview ─────────────────────────────────────────────────────────────────
+function OverviewTab({ stats }) {
+  if (!stats) return null;
+  return (
+    <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(175px, 1fr))', gap:'1rem' }}>
+      <Card style={{ padding:'1.25rem', textAlign:'center' }}>
+        <div style={{ fontSize:'2.5rem', fontWeight:700, color:'#0070f2' }}>{stats.total}</div>
+        <div style={{ fontSize:'0.8rem', color:'#6a6d70', marginTop:'0.25rem' }}>Total Documents</div>
+      </Card>
+      {Object.entries(stats.byStatus).map(([status, count]) => (
+        <Card key={status} style={{ padding:'1.25rem', textAlign:'center' }}>
+          <div style={{ fontSize:'2rem', fontWeight:700, color: STATUS_COLORS[status] || '#32363a' }}>{count}</div>
+          <div style={{ fontSize:'0.75rem', color:'#6a6d70', marginTop:'0.25rem' }}>{status}</div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+// ── Workflow Maintenance ──────────────────────────────────────────────────────
+function WorkflowTab({ currentUser }) {
+  const [workflows, setWorkflows] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [statusFilter, setStatusFilter] = useState('');
+  const [msg, setMsg] = useState('');
+
+  const load = async () => {
+    setLoading(true);
+    const qs = statusFilter ? `?status=${encodeURIComponent(statusFilter)}` : '';
+    const data = await fetch(`/api/admin/workflows${qs}`).then(r => r.json());
+    setWorkflows(Array.isArray(data) ? data : []);
+    setLoading(false);
   };
 
-  const updateRole = async (username, role) => {
-    await fetch(`/api/admin/users/${username}/role`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ role })
+  useEffect(() => { load(); }, [statusFilter]);
+
+  const restart = async (docId) => {
+    await fetch(`/api/admin/workflows/${docId}/restart`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ currentUser })
     });
-    setUsers(prev => prev.map(u => u.username === username ? { ...u, role } : u));
-    setMessage(`Updated role for ${username}`);
-    setTimeout(() => setMessage(''), 3000);
+    setMsg(`Workflow restarted for ${docId}`);
+    setTimeout(() => setMsg(''), 3000);
+    load();
   };
+
+  const errorDocs = workflows.filter(w => w.hasNoApprovers);
 
   return (
-    <div className="page-container">
-      <h3 className="fw-bold mb-4">Administration</h3>
+    <div>
+      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
 
-      {message && (
-        <Alert variant="success" dismissible onClose={() => setMessage('')} className="mb-4">
-          {message}
-        </Alert>
+      {errorDocs.length > 0 && (
+        <MessageStrip design="Warning" style={{ marginBottom:'1rem' }}>
+          {errorDocs.length} document(s) have pending steps with no approvers assigned. Fix the approver rules below, then restart these workflows.
+        </MessageStrip>
       )}
 
-      {/* Tabs */}
-      <Nav
-        variant="tabs"
-        className="mb-4"
-        activeKey={activeTab}
-        onSelect={setActiveTab}
-      >
-        <Nav.Item>
-          <Nav.Link eventKey="overview">Overview</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="approvers">Workflow Approvers</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="users">User Management</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="database">Database</Nav.Link>
-        </Nav.Item>
-      </Nav>
+      <div style={{ display:'flex', gap:'1rem', marginBottom:'1rem', alignItems:'flex-end' }}>
+        <div>
+          <Label>Filter by Status</Label>
+          <Select style={{ width:'220px' }} onChange={e => setStatusFilter(e.detail.selectedOption.dataset.value)}>
+            <Option data-value="">All Statuses</Option>
+            {['Draft','Pending Discipline Approval','Pending E&M Approval','Approved','Rejected'].map(s =>
+              <Option key={s} data-value={s}>{s}</Option>
+            )}
+          </Select>
+        </div>
+        <Button design="Default" onClick={load}>Refresh</Button>
+      </div>
 
-      {/* Overview */}
-      {activeTab === 'overview' && stats && (
-        <Row className="g-3">
-          <Col xs={6} md={3}>
-            <Card className="text-center shadow-sm">
-              <Card.Body>
-                <div className="text-primary" style={{ fontSize: '2.5rem', fontWeight: 700 }}>{stats.total}</div>
-                <div className="text-muted small mt-1">Total Documents</div>
-              </Card.Body>
-            </Card>
-          </Col>
-          {Object.entries(stats.byStatus).map(([status, count]) => (
-            <Col key={status} xs={6} md={3}>
-              <Card className="text-center shadow-sm">
-                <Card.Body>
-                  <div style={{ fontSize: '2rem', fontWeight: 700 }}>
-                    <Badge bg={STATUS_COLORS[status] || 'secondary'} style={{ fontSize: '1.5rem', padding: '0.3rem 0.6rem' }}>
-                      {count}
-                    </Badge>
-                  </div>
-                  <div className="text-muted small mt-2" style={{ fontSize: '0.78rem' }}>{status}</div>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      )}
-
-      {/* Approvers */}
-      {activeTab === 'approvers' && approvers && (
-        <Card className="shadow-sm">
-          <Card.Body>
-            <h5 className="fw-bold mb-1">Workflow Approver Configuration</h5>
-            <p className="text-muted small mb-4">
-              Configure which users can approve MSV and E&M workflow steps. Comma-separate multiple usernames.
-            </p>
-            <Row className="g-4">
-              <Col md={6}>
-                <h6 className="fw-bold mb-3 text-primary">MSV Approvers</h6>
-                <Form.Group>
-                  <Form.Label className="fw-semibold">Default MSV Approvers</Form.Label>
-                  <Form.Control
-                    value={approvers.msvApprovers.default?.join(', ') || ''}
-                    onChange={e => setApprovers(prev => ({
-                      ...prev,
-                      msvApprovers: { ...prev.msvApprovers, default: e.target.value.split(',').map(s => s.trim()).filter(Boolean) }
-                    }))}
-                    placeholder="e.g. MANAGER1, MANAGER2"
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <h6 className="fw-bold mb-3 text-info">E&M Approvers</h6>
-                <Form.Group>
-                  <Form.Label className="fw-semibold">Default E&M Approvers</Form.Label>
-                  <Form.Control
-                    value={approvers.emApprovers.default?.join(', ') || ''}
-                    onChange={e => setApprovers(prev => ({
-                      ...prev,
-                      emApprovers: { ...prev.emApprovers, default: e.target.value.split(',').map(s => s.trim()).filter(Boolean) }
-                    }))}
-                    placeholder="e.g. ENGINEER1, MANAGER2"
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <div className="mt-4">
-              <Button variant="primary" onClick={saveApprovers}>
-                <Icon path={mdiContentSave} size={0.7} className="me-1" />Save Approver Config
-              </Button>
-            </div>
-          </Card.Body>
-        </Card>
-      )}
-
-      {/* Users */}
-      {activeTab === 'users' && (
-        <Card className="shadow-sm">
-          <div style={{ overflowX: 'auto' }}>
-            <Table hover className="mb-0" style={{ fontSize: '0.875rem' }}>
-              <thead className="table-light">
-                <tr>
-                  {['Username', 'Display Name', 'Email', 'Department', 'Role', 'Actions'].map(h => (
-                    <th key={h} className="fw-semibold">{h}</th>
-                  ))}
+      {loading ? <BusyIndicator active /> : (
+        <Card>
+          <div style={{ overflowX:'auto' }}>
+            <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.85rem' }}>
+              <thead>
+                <tr style={{ background:'#f5f6f7', borderBottom:'2px solid #e8e8e8' }}>
+                  {['Doc ID','Rig','Type/Group','Originator','Status','Version','WF Step','Actions'].map(h =>
+                    <th key={h} style={{ padding:'0.6rem 0.9rem', textAlign:'left', fontWeight:600, whiteSpace:'nowrap' }}>{h}</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
-                {users.map(user => (
-                  <tr key={user.username}>
-                    <td className="fw-semibold">{user.username}</td>
-                    <td>{user.displayName}</td>
-                    <td className="text-muted">{user.email}</td>
-                    <td>{user.department}</td>
-                    <td>
-                      <Badge bg={user.role === 'admin' ? 'primary' : 'secondary'} style={{ fontSize: '0.72rem' }}>
-                        {user.role}
-                      </Badge>
+                {workflows.length === 0 && (
+                  <tr><td colSpan={8} style={{ padding:'2rem', textAlign:'center', color:'#999' }}>No documents found</td></tr>
+                )}
+                {workflows.map(w => (
+                  <tr key={w.documentId} style={{ borderBottom:'1px solid #f0f0f0', background: w.hasNoApprovers ? '#fff8e1' : 'white' }}>
+                    <td style={{ padding:'0.6rem 0.9rem', fontWeight:600, color:'#0070f2' }}>{w.documentId}</td>
+                    <td style={{ padding:'0.6rem 0.9rem' }}>{w.rig}</td>
+                    <td style={{ padding:'0.6rem 0.9rem' }}>{w.docType}/{w.docGroup}</td>
+                    <td style={{ padding:'0.6rem 0.9rem' }}>{w.originator}</td>
+                    <td style={{ padding:'0.6rem 0.9rem' }}>
+                      <span style={{ background: STATUS_COLORS[w.status] ? STATUS_COLORS[w.status]+'22' : '#f0f0f0', color: STATUS_COLORS[w.status] || '#666', padding:'0.2rem 0.55rem', borderRadius:'1rem', fontSize:'0.72rem', fontWeight:600 }}>{w.status}</span>
+                      {w.hasNoApprovers && <span style={{ marginLeft:'0.4rem', color:'#b26000', fontSize:'0.72rem' }}>⚠ No approvers</span>}
                     </td>
-                    <td>
-                      {user.username !== currentUser.username && (
-                        <Button
-                          size="sm"
-                          variant={user.role === 'admin' ? 'outline-danger' : 'outline-primary'}
-                          onClick={() => updateRole(user.username, user.role === 'admin' ? 'user' : 'admin')}
-                        >
-                          {user.role === 'admin' ? 'Revoke Admin' : 'Make Admin'}
-                        </Button>
+                    <td style={{ padding:'0.6rem 0.9rem', color:'#6a6d70' }}>v{w.version || '1.0'}</td>
+                    <td style={{ padding:'0.6rem 0.9rem', color:'#6a6d70' }}>{w.currentStep || '—'}</td>
+                    <td style={{ padding:'0.6rem 0.9rem' }}>
+                      {w.workflowRequired && (
+                        <Button design="Transparent" onClick={() => restart(w.documentId)}>Restart</Button>
                       )}
                     </td>
                   </tr>
                 ))}
               </tbody>
-            </Table>
+            </table>
           </div>
         </Card>
       )}
-      {/* Database Status */}
-      {activeTab === 'database' && (
-        <Card className="shadow-sm">
-          <Card.Body>
-            <h5 className="fw-bold mb-1">Database Tables</h5>
-            <p className="text-muted small mb-4">
-              Live row counts from the SQLite database (<code>data/dms.db</code>).
-              For full table browsing, open the file with{' '}
-              <strong>DB Browser for SQLite</strong> (free Windows app).
-            </p>
-            <div style={{ overflowX: 'auto' }}>
-              <Table hover className="mb-0" style={{ fontSize: '0.875rem' }}>
-                <thead className="table-light">
-                  <tr>
-                    <th className="fw-semibold">Table</th>
-                    <th className="fw-semibold text-end">Row Count</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(dbStatus || []).map(({ table, rows }) => (
-                    <tr key={table}>
-                      <td><code>{table}</code></td>
-                      <td className="text-end">
-                        <Badge bg={rows > 0 ? 'success' : 'secondary'}>{rows}</Badge>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
+    </div>
+  );
+}
+
+// ── Approvers by Discipline ───────────────────────────────────────────────────
+function ApproversDisciplineTab() {
+  const [rows, setRows] = useState([]);
+  const [form, setForm] = useState({ departmentId:'', approvalType:'msv', approverUsername:'' });
+  const [msg, setMsg] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef();
+
+  const load = () => fetch('/api/admin/approvers/discipline').then(r => r.json()).then(setRows);
+  useEffect(() => { load(); }, []);
+
+  const add = async () => {
+    if (!form.departmentId || !form.approverUsername) return;
+    await fetch('/api/admin/approvers/discipline', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form)
+    });
+    setForm({ departmentId:'', approvalType:'msv', approverUsername:'' });
+    setMsg('Approver added. Pending workflows re-evaluated.');
+    setTimeout(() => setMsg(''), 3000);
+    load();
+  };
+
+  const remove = async (row) => {
+    await fetch(`/api/admin/approvers/discipline/${row.id}`, { method:'DELETE' });
+    setMsg('Approver removed. Pending workflows re-evaluated.');
+    setTimeout(() => setMsg(''), 3000);
+    load();
+  };
+
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+    const fd = new FormData();
+    fd.append('file', file);
+    const res = await fetch('/api/admin/approvers/discipline/upload', { method:'POST', body: fd }).then(r => r.json());
+    setMsg(`Imported ${res.imported} rows. Pending workflows re-evaluated.`);
+    setTimeout(() => setMsg(''), 4000);
+    setUploading(false);
+    load();
+    fileRef.current.value = '';
+  };
+
+  return (
+    <div>
+      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+
+      <Card style={{ marginBottom:'1.5rem' }}>
+        <div style={{ padding:'1.25rem' }}>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>Add Approver Rule</Title>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
+            <div>
+              <Label>Department ID</Label>
+              <Input value={form.departmentId} onInput={e => setForm(p => ({ ...p, departmentId: e.target.value }))} placeholder="e.g. 1813 or default" style={{ width:'100%' }} />
             </div>
-          </Card.Body>
+            <div>
+              <Label>Approval Type</Label>
+              <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, approvalType: e.detail.selectedOption.dataset.value }))}>
+                <Option data-value="msv" selected={form.approvalType === 'msv'}>Discipline (MSV)</Option>
+                <Option data-value="em"  selected={form.approvalType === 'em'}>E&M</Option>
+              </Select>
+            </div>
+            <div>
+              <Label>Approver Username</Label>
+              <Input value={form.approverUsername} onInput={e => setForm(p => ({ ...p, approverUsername: e.target.value }))} placeholder="e.g. MANAGER1" style={{ width:'100%' }} />
+            </div>
+          </div>
+          <div style={{ display:'flex', gap:'0.75rem', alignItems:'center' }}>
+            <Button design="Emphasized" onClick={add}>Add Rule</Button>
+            <Button design="Default" onClick={() => fileRef.current?.click()} disabled={uploading}>
+              {uploading ? 'Uploading…' : 'Upload Excel'}
+            </Button>
+            <span style={{ fontSize:'0.78rem', color:'#6a6d70' }}>Columns: Department ID | Approval Type | Approver Username</span>
+            <input ref={fileRef} type="file" accept=".xlsx,.xls" style={{ display:'none' }} onChange={handleUpload} />
+          </div>
+        </div>
+      </Card>
+
+      <Card>
+        <TableGrid
+          cols={[
+            { key:'department_id',   label:'Department ID' },
+            { key:'approval_type',   label:'Approval Type' },
+            { key:'approver_username', label:'Approver Username' }
+          ]}
+          rows={rows.filter(r => r.active)}
+          onDelete={remove}
+        />
+      </Card>
+    </div>
+  );
+}
+
+// ── Approvers by Maintenance ──────────────────────────────────────────────────
+function ApproversMaintenanceTab() {
+  const [rows, setRows] = useState([]);
+  const [form, setForm] = useState({ maintenanceStrategy:'', maintenanceDays:'', approvalType:'msv', approverUsername:'' });
+  const [msg, setMsg] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef();
+
+  const load = () => fetch('/api/admin/approvers/maintenance').then(r => r.json()).then(setRows);
+  useEffect(() => { load(); }, []);
+
+  const add = async () => {
+    await fetch('/api/admin/approvers/maintenance', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+        maintenanceStrategy: form.maintenanceStrategy || null,
+        maintenanceDays: form.maintenanceDays ? parseInt(form.maintenanceDays) : null,
+        approvalType: form.approvalType,
+        approverUsername: form.approverUsername
+      })
+    });
+    setForm({ maintenanceStrategy:'', maintenanceDays:'', approvalType:'msv', approverUsername:'' });
+    setMsg('Rule added.'); setTimeout(() => setMsg(''), 3000);
+    load();
+  };
+
+  const remove = async (row) => {
+    await fetch(`/api/admin/approvers/maintenance/${row.id}`, { method:'DELETE' });
+    setMsg('Rule removed.'); setTimeout(() => setMsg(''), 3000);
+    load();
+  };
+
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+    const fd = new FormData();
+    fd.append('file', file);
+    const res = await fetch('/api/admin/approvers/maintenance/upload', { method:'POST', body: fd }).then(r => r.json());
+    setMsg(`Imported ${res.imported} rows.`);
+    setTimeout(() => setMsg(''), 4000);
+    setUploading(false);
+    load();
+    fileRef.current.value = '';
+  };
+
+  return (
+    <div>
+      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      <Card style={{ marginBottom:'1.5rem' }}>
+        <div style={{ padding:'1.25rem' }}>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>Add Maintenance Approver Rule</Title>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
+            <div><Label>Maintenance Strategy</Label><Input value={form.maintenanceStrategy} onInput={e => setForm(p => ({ ...p, maintenanceStrategy: e.target.value }))} style={{ width:'100%' }} /></div>
+            <div><Label>Maintenance Days</Label><Input type="number" value={form.maintenanceDays} onInput={e => setForm(p => ({ ...p, maintenanceDays: e.target.value }))} style={{ width:'100%' }} /></div>
+            <div>
+              <Label>Approval Type</Label>
+              <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, approvalType: e.detail.selectedOption.dataset.value }))}>
+                <Option data-value="msv">Discipline</Option>
+                <Option data-value="em">E&M</Option>
+              </Select>
+            </div>
+            <div><Label>Approver Username</Label><Input value={form.approverUsername} onInput={e => setForm(p => ({ ...p, approverUsername: e.target.value }))} style={{ width:'100%' }} /></div>
+          </div>
+          <div style={{ display:'flex', gap:'0.75rem', alignItems:'center' }}>
+            <Button design="Emphasized" onClick={add}>Add Rule</Button>
+            <Button design="Default" onClick={() => fileRef.current?.click()} disabled={uploading}>
+              {uploading ? 'Uploading…' : 'Upload Excel'}
+            </Button>
+            <span style={{ fontSize:'0.78rem', color:'#6a6d70' }}>Columns: Maintenance Strategy | Maintenance Days | Approval Type | Approver Username</span>
+            <input ref={fileRef} type="file" accept=".xlsx,.xls" style={{ display:'none' }} onChange={handleUpload} />
+          </div>
+        </div>
+      </Card>
+      <Card>
+        <TableGrid
+          cols={[
+            { key:'maintenance_strategy', label:'Strategy' },
+            { key:'maintenance_days',     label:'Days' },
+            { key:'approval_type',        label:'Approval Type' },
+            { key:'approver_username',    label:'Approver Username' }
+          ]}
+          rows={rows.filter(r => r.active)}
+          onDelete={remove}
+        />
+      </Card>
+    </div>
+  );
+}
+
+// ── Users ─────────────────────────────────────────────────────────────────────
+function UsersTab({ currentUser }) {
+  const [users, setUsers] = useState([]);
+  const [form, setForm] = useState({ username:'', displayName:'', email:'', department:'', role:'user' });
+  const [msg, setMsg] = useState('');
+
+  const load = () => fetch('/api/admin/users').then(r => r.json()).then(setUsers);
+  useEffect(() => { load(); }, []);
+
+  const saveUser = async () => {
+    if (!form.username) return;
+    await fetch('/api/admin/users', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form) });
+    setForm({ username:'', displayName:'', email:'', department:'', role:'user' });
+    setMsg('User saved.'); setTimeout(() => setMsg(''), 3000);
+    load();
+  };
+
+  const updateRole = async (username, role) => {
+    await fetch(`/api/admin/users/${username}/role`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ role }) });
+    setMsg(`Role updated for ${username}`); setTimeout(() => setMsg(''), 3000);
+    load();
+  };
+
+  return (
+    <div>
+      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      <Card style={{ marginBottom:'1.5rem' }}>
+        <div style={{ padding:'1.25rem' }}>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>Add / Edit User</Title>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
+            <div><Label>Username*</Label><Input value={form.username} onInput={e => setForm(p => ({ ...p, username: e.target.value }))} style={{ width:'100%' }} /></div>
+            <div><Label>Display Name</Label><Input value={form.displayName} onInput={e => setForm(p => ({ ...p, displayName: e.target.value }))} style={{ width:'100%' }} /></div>
+            <div><Label>Email</Label><Input value={form.email} onInput={e => setForm(p => ({ ...p, email: e.target.value }))} style={{ width:'100%' }} /></div>
+            <div><Label>Department</Label><Input value={form.department} onInput={e => setForm(p => ({ ...p, department: e.target.value }))} style={{ width:'100%' }} /></div>
+            <div>
+              <Label>Role</Label>
+              <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, role: e.detail.selectedOption.dataset.value }))}>
+                <Option data-value="user" selected={form.role === 'user'}>User</Option>
+                <Option data-value="admin" selected={form.role === 'admin'}>Admin</Option>
+              </Select>
+            </div>
+          </div>
+          <Button design="Emphasized" onClick={saveUser}>Save User</Button>
+        </div>
+      </Card>
+      <Card>
+        <div style={{ overflowX:'auto' }}>
+          <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.85rem' }}>
+            <thead>
+              <tr style={{ background:'#f5f6f7', borderBottom:'2px solid #e8e8e8' }}>
+                {['Username','Display Name','Email','Department','Role','Actions'].map(h =>
+                  <th key={h} style={{ padding:'0.6rem 0.9rem', textAlign:'left', fontWeight:600 }}>{h}</th>
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              {users.map(u => (
+                <tr key={u.username} style={{ borderBottom:'1px solid #f0f0f0' }}>
+                  <td style={{ padding:'0.6rem 0.9rem', fontWeight:600 }}>{u.username}</td>
+                  <td style={{ padding:'0.6rem 0.9rem' }}>{u.displayName}</td>
+                  <td style={{ padding:'0.6rem 0.9rem', color:'#6a6d70' }}>{u.email}</td>
+                  <td style={{ padding:'0.6rem 0.9rem' }}>{u.department}</td>
+                  <td style={{ padding:'0.6rem 0.9rem' }}>
+                    <span style={{ background: u.role === 'admin' ? '#e3f2fd' : '#f0f0f0', color: u.role === 'admin' ? '#0070f2' : '#666', padding:'0.2rem 0.6rem', borderRadius:'1rem', fontSize:'0.72rem', fontWeight:600 }}>
+                      {u.role}
+                    </span>
+                  </td>
+                  <td style={{ padding:'0.6rem 0.9rem' }}>
+                    {u.username !== currentUser.username && (
+                      <Button design="Transparent" onClick={() => updateRole(u.username, u.role === 'admin' ? 'user' : 'admin')}>
+                        {u.role === 'admin' ? 'Revoke Admin' : 'Make Admin'}
+                      </Button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+// ── Doc General (Types & Groups) ──────────────────────────────────────────────
+function DocGeneralTab() {
+  const [types,  setTypes]  = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [typeForm,  setTypeForm]  = useState({ code:'', description:'' });
+  const [groupForm, setGroupForm] = useState({ docType:'', code:'', description:'', workflowRequired: false });
+  const [msg, setMsg] = useState('');
+
+  const loadTypes  = () => fetch('/api/admin/config/doc-types').then(r => r.json()).then(setTypes);
+  const loadGroups = () => fetch('/api/admin/config/doc-groups').then(r => r.json()).then(setGroups);
+  useEffect(() => { loadTypes(); loadGroups(); }, []);
+
+  const saveType = async () => {
+    if (!typeForm.code) return;
+    await fetch('/api/admin/config/doc-types', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(typeForm) });
+    setTypeForm({ code:'', description:'' });
+    setMsg('Document type saved.'); setTimeout(() => setMsg(''), 3000);
+    loadTypes();
+  };
+
+  const delType = async (code) => {
+    await fetch(`/api/admin/config/doc-types/${code}`, { method:'DELETE' });
+    loadTypes();
+  };
+
+  const saveGroup = async () => {
+    if (!groupForm.code || !groupForm.docType) return;
+    await fetch('/api/admin/config/doc-groups', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(groupForm) });
+    setGroupForm({ docType:'', code:'', description:'', workflowRequired: false });
+    setMsg('Document group saved.'); setTimeout(() => setMsg(''), 3000);
+    loadGroups();
+  };
+
+  const delGroup = async (code) => {
+    await fetch(`/api/admin/config/doc-groups/${code}`, { method:'DELETE' });
+    loadGroups();
+  };
+
+  return (
+    <div>
+      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1.5rem' }}>
+        {/* Types */}
+        <Card>
+          <div style={{ padding:'1.25rem' }}>
+            <Title level="H5" style={{ marginBottom:'1rem' }}>Document Types</Title>
+            <div style={{ display:'flex', gap:'0.75rem', marginBottom:'1rem', flexWrap:'wrap' }}>
+              <Input placeholder="Code" value={typeForm.code} onInput={e => setTypeForm(p => ({ ...p, code: e.target.value }))} style={{ width:'90px' }} />
+              <Input placeholder="Description" value={typeForm.description} onInput={e => setTypeForm(p => ({ ...p, description: e.target.value }))} style={{ flex:1, minWidth:'140px' }} />
+              <Button design="Emphasized" onClick={saveType}>Save</Button>
+            </div>
+            <TableGrid
+              cols={[{ key:'code', label:'Code' }, { key:'description', label:'Description' }]}
+              rows={types}
+              onDelete={r => delType(r.code)}
+            />
+          </div>
         </Card>
-      )}
+
+        {/* Groups */}
+        <Card>
+          <div style={{ padding:'1.25rem' }}>
+            <Title level="H5" style={{ marginBottom:'1rem' }}>Document Groups</Title>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.75rem', marginBottom:'0.75rem' }}>
+              <div><Label>Doc Type</Label>
+                <Select style={{ width:'100%' }} onChange={e => setGroupForm(p => ({ ...p, docType: e.detail.selectedOption.dataset.value }))}>
+                  <Option data-value="">— select —</Option>
+                  {types.map(t => <Option key={t.code} data-value={t.code}>{t.code}</Option>)}
+                </Select>
+              </div>
+              <div><Label>Code</Label><Input value={groupForm.code} onInput={e => setGroupForm(p => ({ ...p, code: e.target.value }))} style={{ width:'100%' }} /></div>
+              <div style={{ gridColumn:'1/-1' }}><Label>Description</Label><Input value={groupForm.description} onInput={e => setGroupForm(p => ({ ...p, description: e.target.value }))} style={{ width:'100%' }} /></div>
+              <div style={{ display:'flex', alignItems:'center', gap:'0.5rem' }}>
+                <input type="checkbox" checked={groupForm.workflowRequired} onChange={e => setGroupForm(p => ({ ...p, workflowRequired: e.target.checked }))} />
+                <Label>Workflow Required</Label>
+              </div>
+            </div>
+            <Button design="Emphasized" onClick={saveGroup} style={{ marginBottom:'1rem' }}>Save Group</Button>
+            <TableGrid
+              cols={[
+                { key:'doc_type', label:'Type' }, { key:'code', label:'Code' },
+                { key:'description', label:'Description' },
+                { key:'workflow_required', label:'WF Req.' }
+              ]}
+              rows={groups.map(g => ({ ...g, workflow_required: g.workflow_required ? 'Yes' : 'No' }))}
+              onDelete={r => delGroup(r.code)}
+            />
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+// ── Field Visibility ──────────────────────────────────────────────────────────
+function FieldVisibilityTab() {
+  const [allGroups, setAllGroups] = useState([]);
+  const [config, setConfig] = useState({});
+  const [msg, setMsg] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState('');
+
+  useEffect(() => {
+    fetch('/api/admin/config/doc-groups').then(r => r.json()).then(setAllGroups);
+    fetch('/api/admin/config/field-visibility').then(r => r.json()).then(setConfig);
+  }, []);
+
+  const visOptions = [null, 'M', 'O', 'MO', 'M*', 'AMO', 'D'];
+
+  const update = (group, field, val) => {
+    setConfig(prev => ({
+      ...prev,
+      [group]: { ...(prev[group] || {}), [field]: val === '' ? null : val }
+    }));
+  };
+
+  const save = async (group) => {
+    await fetch(`/api/admin/config/field-visibility/${group}`, {
+      method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(config[group] || {})
+    });
+    setMsg(`Saved field visibility for ${group}`); setTimeout(() => setMsg(''), 3000);
+  };
+
+  const displayGroups = selectedGroup ? allGroups.filter(g => g.code === selectedGroup) : allGroups;
+
+  return (
+    <div>
+      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      <div style={{ marginBottom:'1rem', display:'flex', alignItems:'flex-end', gap:'1rem' }}>
+        <div>
+          <Label>Filter Group</Label>
+          <Select style={{ width:'160px' }} onChange={e => setSelectedGroup(e.detail.selectedOption.dataset.value)}>
+            <Option data-value="">All Groups</Option>
+            {allGroups.map(g => <Option key={g.code} data-value={g.code}>{g.code}</Option>)}
+          </Select>
+        </div>
+        <span style={{ fontSize:'0.78rem', color:'#6a6d70' }}>M=Mandatory, O=Optional, MO=Mand/Optional, D=Display, null=Hidden</span>
+      </div>
+      <div style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
+        {displayGroups.map(g => (
+          <Card key={g.code}>
+            <div style={{ padding:'1rem' }}>
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'0.75rem' }}>
+                <Title level="H5">{g.code} — {g.description}</Title>
+                <Button design="Emphasized" onClick={() => save(g.code)}>Save</Button>
+              </div>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(160px, 1fr))', gap:'0.75rem' }}>
+                {FIELD_NAMES.map(field => (
+                  <div key={field}>
+                    <Label>{field}</Label>
+                    <Select style={{ width:'100%' }} onChange={e => update(g.code, field, e.detail.selectedOption.dataset.value)}>
+                      {visOptions.map(v => (
+                        <Option key={String(v)} data-value={v ?? ''} selected={(config[g.code]?.[field] ?? null) === v}>
+                          {v === null ? '(hidden)' : v}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Attachment Naming ─────────────────────────────────────────────────────────
+function AttachmentNamingTab() {
+  const [allGroups, setAllGroups] = useState([]);
+  const [naming, setNaming] = useState({});
+  const [msg, setMsg] = useState('');
+
+  useEffect(() => {
+    fetch('/api/admin/config/doc-groups').then(r => r.json()).then(setAllGroups);
+    fetch('/api/admin/config/attachment-naming').then(r => r.json()).then(setNaming);
+  }, []);
+
+  const save = async (group) => {
+    await fetch(`/api/admin/config/attachment-naming/${group}`, {
+      method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(naming[group] || [])
+    });
+    setMsg(`Saved naming for ${group}`); setTimeout(() => setMsg(''), 3000);
+  };
+
+  const updateField = (group, idx, val) => {
+    setNaming(prev => {
+      const arr = [...(prev[group] || [])];
+      arr[idx] = val;
+      return { ...prev, [group]: arr };
+    });
+  };
+
+  const addField = (group) => {
+    setNaming(prev => ({ ...prev, [group]: [...(prev[group] || []), ''] }));
+  };
+
+  const removeField = (group, idx) => {
+    setNaming(prev => {
+      const arr = (prev[group] || []).filter((_, i) => i !== idx);
+      return { ...prev, [group]: arr };
+    });
+  };
+
+  return (
+    <div>
+      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      <p style={{ color:'#6a6d70', fontSize:'0.85rem', marginBottom:'1rem' }}>
+        Configure the fields used to auto-generate attachment filenames for each document group.
+      </p>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))', gap:'1rem' }}>
+        {allGroups.map(g => (
+          <Card key={g.code}>
+            <div style={{ padding:'1rem' }}>
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'0.75rem' }}>
+                <Title level="H5">{g.code}</Title>
+                <Button design="Emphasized" onClick={() => save(g.code)}>Save</Button>
+              </div>
+              <div style={{ display:'flex', flexDirection:'column', gap:'0.4rem', marginBottom:'0.5rem' }}>
+                {(naming[g.code] || []).map((f, i) => (
+                  <div key={i} style={{ display:'flex', gap:'0.4rem', alignItems:'center' }}>
+                    <Select style={{ flex:1 }} onChange={e => updateField(g.code, i, e.detail.selectedOption.dataset.value)}>
+                      {FIELD_NAMES.map(fn => <Option key={fn} data-value={fn} selected={f === fn}>{fn}</Option>)}
+                    </Select>
+                    <Button design="Negative" onClick={() => removeField(g.code, i)}>✕</Button>
+                  </div>
+                ))}
+              </div>
+              <Button design="Transparent" onClick={() => addField(g.code)}>Add Field</Button>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Work Centers ──────────────────────────────────────────────────────────────
+function WorkCentersTab() {
+  const [rows, setRows] = useState([]);
+  const [form, setForm] = useState({ departmentId:'', departmentName:'', description:'' });
+  const [msg, setMsg] = useState('');
+
+  const load = () => fetch('/api/admin/config/work-centers').then(r => r.json()).then(setRows);
+  useEffect(() => { load(); }, []);
+
+  const save = async () => {
+    if (!form.departmentId) return;
+    await fetch('/api/admin/config/work-centers', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form) });
+    setForm({ departmentId:'', departmentName:'', description:'' });
+    setMsg('Work center saved.'); setTimeout(() => setMsg(''), 3000);
+    load();
+  };
+
+  const remove = async (row) => {
+    await fetch(`/api/admin/config/work-centers/${row.department_id}`, { method:'DELETE' });
+    load();
+  };
+
+  return (
+    <div>
+      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      <Card style={{ marginBottom:'1.5rem' }}>
+        <div style={{ padding:'1.25rem' }}>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>Add / Edit Department (Work Center)</Title>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
+            <div><Label>Department ID*</Label><Input value={form.departmentId} onInput={e => setForm(p => ({ ...p, departmentId: e.target.value }))} placeholder="e.g. 1813" style={{ width:'100%' }} /></div>
+            <div><Label>Name</Label><Input value={form.departmentName} onInput={e => setForm(p => ({ ...p, departmentName: e.target.value }))} style={{ width:'100%' }} /></div>
+            <div><Label>Description</Label><Input value={form.description} onInput={e => setForm(p => ({ ...p, description: e.target.value }))} style={{ width:'100%' }} /></div>
+          </div>
+          <Button design="Emphasized" onClick={save}>Save</Button>
+        </div>
+      </Card>
+      <Card>
+        <TableGrid
+          cols={[
+            { key:'department_id',   label:'Department ID' },
+            { key:'department_name', label:'Name' },
+            { key:'description',     label:'Description' }
+          ]}
+          rows={rows.filter(r => r.active)}
+          onDelete={remove}
+        />
+      </Card>
+    </div>
+  );
+}
+
+// ── Main Admin Component ──────────────────────────────────────────────────────
+export default function Admin() {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('overview');
+
+  useEffect(() => {
+    if (currentUser?.role !== 'admin') return;
+    fetch('/api/admin/stats').then(r => r.json()).then(s => {
+      setStats(s);
+      setLoading(false);
+    });
+  }, [currentUser]);
+
+  if (currentUser?.role !== 'admin') {
+    return (
+      <div className="page-container">
+        <MessageStrip design="Negative">Access denied. Admin role required.</MessageStrip>
+        <Button design="Transparent" onClick={() => navigate('/')} style={{ marginTop:'1rem' }}>Go Home</Button>
+      </div>
+    );
+  }
+
+  if (loading) return (
+    <div style={{ display:'flex', justifyContent:'center', padding:'4rem' }}>
+      <BusyIndicator active size="L" />
+    </div>
+  );
+
+  const tabs = [
+    { id:'overview',          label:'Overview' },
+    { id:'workflows',         label:'Workflow Monitor' },
+    { id:'approvers-disc',    label:'Approvers — Discipline' },
+    { id:'approvers-maint',   label:'Approvers — Maintenance' },
+    { id:'users',             label:'Users' },
+    { id:'doc-general',       label:'Doc General' },
+    { id:'field-visibility',  label:'Field Visibility' },
+    { id:'attachment-naming', label:'Attachment Naming' },
+    { id:'work-centers',      label:'Work Centers' }
+  ];
+
+  return (
+    <div className="page-container">
+      <Title level="H2" style={{ marginBottom:'1.5rem' }}>Administration</Title>
+      <TabBar tabs={tabs} active={activeTab} onChange={setActiveTab} />
+
+      {activeTab === 'overview'          && <OverviewTab stats={stats} />}
+      {activeTab === 'workflows'         && <WorkflowTab currentUser={currentUser} />}
+      {activeTab === 'approvers-disc'    && <ApproversDisciplineTab />}
+      {activeTab === 'approvers-maint'   && <ApproversMaintenanceTab />}
+      {activeTab === 'users'             && <UsersTab currentUser={currentUser} />}
+      {activeTab === 'doc-general'       && <DocGeneralTab />}
+      {activeTab === 'field-visibility'  && <FieldVisibilityTab />}
+      {activeTab === 'attachment-naming' && <AttachmentNamingTab />}
+      {activeTab === 'work-centers'      && <WorkCentersTab />}
     </div>
   );
 }
