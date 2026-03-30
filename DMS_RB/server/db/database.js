@@ -3,11 +3,10 @@
  * All DB access goes through this module — swap to a different driver here
  * to migrate to another database engine without touching any other file.
  *
- * Uses Node.js built-in node:sqlite (available from Node 22+).
- * No npm package or native compilation required.
- * API is synchronous and compatible with better-sqlite3 conventions.
+ * Uses better-sqlite3 so the rest of the codebase can keep using the
+ * synchronous prepare/get/all/run/transaction API.
  */
-const { DatabaseSync } = require('node:sqlite');
+const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 
@@ -18,13 +17,13 @@ const SCHEMA  = path.join(__dirname, 'schema.sql');
 // Ensure data directory exists
 if (!fs.existsSync(DB_DIR)) fs.mkdirSync(DB_DIR, { recursive: true });
 
-const db = new DatabaseSync(DB_PATH);
+const db = new Database(DB_PATH);
 
 // Improve concurrent access behavior during fast restarts (e.g. nodemon).
 // - WAL allows readers/writers to coexist better.
 // - busy_timeout tells SQLite to wait briefly for lock release.
-db.exec('PRAGMA journal_mode = WAL;');
-db.exec('PRAGMA busy_timeout = 5000;');
+db.pragma('journal_mode = WAL');
+db.pragma('busy_timeout = 5000');
 
 // Apply schema (idempotent — uses IF NOT EXISTS everywhere)
 const schemaSql = fs.readFileSync(SCHEMA, 'utf8');
@@ -34,7 +33,12 @@ for (let attempt = 1; attempt <= MAX_SCHEMA_RETRIES; attempt += 1) {
     db.exec(schemaSql);
     break;
   } catch (error) {
-    const isLocked = error && (error.code === 'ERR_SQLITE_ERROR') && Number(error.errcode) === 5;
+    const isLocked =
+      error &&
+      (error.code === 'SQLITE_BUSY' ||
+       error.code === 'SQLITE_LOCKED' ||
+       error.code === 'ERR_SQLITE_ERROR' ||
+       Number(error.errcode || error.errno) === 5);
     const isLastAttempt = attempt === MAX_SCHEMA_RETRIES;
 
     if (!isLocked || isLastAttempt) throw error;

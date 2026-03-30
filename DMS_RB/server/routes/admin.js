@@ -14,6 +14,67 @@ function normalizeCell(value) {
   return String(value ?? '').trim();
 }
 
+function normalizeCode(value) {
+  return normalizeCell(value).toUpperCase();
+}
+
+function sameText(a, b) {
+  return normalizeCell(a).toLowerCase() === normalizeCell(b).toLowerCase();
+}
+
+function parseApproverUsernames(value) {
+  const items = Array.isArray(value) ? value : String(value ?? '').split(/[\r\n,;]+/);
+  const seen = new Set();
+  const usernames = [];
+
+  for (const item of items) {
+    const username = normalizeCell(item);
+    const key = username.toLowerCase();
+    if (!username || seen.has(key)) continue;
+    seen.add(key);
+    usernames.push(username);
+  }
+
+  return usernames;
+}
+
+function findActiveUser(username) {
+  return userRepo.getAll().find((user) => sameText(user.username, username));
+}
+
+function getInvalidApproverUsernames(usernames) {
+  return usernames.filter((username) => !findActiveUser(username));
+}
+
+function normalizeMaintenancePayload(body) {
+  const rawDays = body?.maintenanceDays;
+  const maintenanceDays =
+    rawDays === '' || rawDays === null || rawDays === undefined ? null : Number(rawDays);
+
+  return {
+    maintenanceStrategy: normalizeCell(body?.maintenanceStrategy) || null,
+    maintenanceDays,
+    approvalType: normalizeCell(body?.approvalType).toLowerCase(),
+    approverUsername: normalizeCell(body?.approverUsername),
+    approverUsernames: parseApproverUsernames(body?.approverUsernames ?? body?.approverUsername)
+  };
+}
+
+function maintenanceGroupKey(row) {
+  return [
+    normalizeCell(row.maintenance_strategy ?? row.maintenanceStrategy).toLowerCase(),
+    row.maintenance_days ?? row.maintenanceDays ?? '',
+    normalizeCell(row.approval_type ?? row.approvalType).toLowerCase()
+  ].join('|');
+}
+
+function disciplineGroupKey(row) {
+  return [
+    normalizeCell(row.department_id ?? row.departmentId).toLowerCase(),
+    normalizeCell(row.approval_type ?? row.approvalType).toLowerCase()
+  ].join('|');
+}
+
 function readFirstSheetRows(fileBuffer) {
   const wb = XLSX.read(fileBuffer, { type: 'buffer' });
   const ws = wb.Sheets[wb.SheetNames[0]];
@@ -70,6 +131,13 @@ router.get('/workflow-approvers', (req, res) => {
 
 router.put('/workflow-approvers', (req, res) => {
   const { msvApprovers = {}, emApprovers = {} } = req.body;
+  const invalid = [
+    ...getInvalidApproverUsernames(Object.values(msvApprovers).flat()),
+    ...getInvalidApproverUsernames(Object.values(emApprovers).flat())
+  ];
+  if (invalid.length) {
+    return res.status(400).json({ error: `Unknown approver username(s): ${invalid.join(', ')}` });
+  }
   for (const [dept, users] of Object.entries(msvApprovers)) {
     cfgRepo.replaceApproversDisciplineForDept(dept, 'msv', users);
   }
@@ -87,21 +155,14 @@ router.get('/users', (req, res) => {
 
 router.post('/users', (req, res) => {
   try {
-    const username = String(req.body?.username || '').trim();
+    const username = normalizeCell(req.body?.username);
+    const email = normalizeCell(req.body?.email);
     if (!username) return res.status(400).json({ error: 'Username is required' });
+    if (!email) return res.status(400).json({ error: 'Email is required when adding a user' });
+    const existing = userRepo.getAll().find(u => sameText(u.username, username)) || userRepo.getByUsername(username);
+    if (existing) return res.status(409).json({ error: `User "${username}" already exists` });
     userRepo.upsert(req.body);
     res.json(userRepo.toApiShape(userRepo.getByUsername(username)));
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.put('/users/:username', (req, res) => {
-  try {
-    const existing = userRepo.getByUsername(req.params.username);
-    if (!existing) return res.status(404).json({ error: 'User not found' });
-    userRepo.upsert({ ...req.body, username: req.params.username });
-    res.json(userRepo.toApiShape(userRepo.getByUsername(req.params.username)));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -194,9 +255,26 @@ router.get('/config/doc-types', (req, res) => {
 });
 
 router.post('/config/doc-types', (req, res) => {
-  const { code, description } = req.body;
+  const code = normalizeCode(req.body?.code);
+  const description = normalizeCell(req.body?.description);
   if (!code) return res.status(400).json({ error: 'code required' });
-  cfgRepo.upsertDocType(code, description);
+  const duplicate = cfgRepo.getDocTypes().find(t => sameText(t.code, code)) || cfgRepo.getDocTypeByCode(code);
+  if (duplicate) return res.status(409).json({ error: `Document type "${code}" already exists` });
+  cfgRepo.createDocType(code, description || null);
+  res.json({ success: true });
+});
+
+router.put('/config/doc-types/:code', (req, res) => {
+  const currentCode = normalizeCode(req.params.code);
+  const nextCode = normalizeCode(req.body?.code || req.params.code);
+  const description = normalizeCell(req.body?.description);
+  const existing = cfgRepo.getDocTypeByCode(currentCode);
+  if (!existing) return res.status(404).json({ error: 'Document type not found' });
+
+  const duplicate = cfgRepo.getDocTypes().find(t => !sameText(t.code, currentCode) && sameText(t.code, nextCode));
+  if (duplicate) return res.status(409).json({ error: `Document type "${nextCode}" already exists` });
+
+  cfgRepo.updateDocType(currentCode, nextCode, description || null);
   res.json({ success: true });
 });
 
@@ -212,9 +290,32 @@ router.get('/config/doc-groups', (req, res) => {
 });
 
 router.post('/config/doc-groups', (req, res) => {
-  const { docType, code, description, workflowRequired } = req.body;
+  const docType = normalizeCode(req.body?.docType);
+  const code = normalizeCode(req.body?.code);
+  const description = normalizeCell(req.body?.description);
+  const workflowRequired = Boolean(req.body?.workflowRequired);
   if (!code || !docType) return res.status(400).json({ error: 'docType and code required' });
-  cfgRepo.upsertDocGroup(docType, code, description, workflowRequired);
+  const duplicate = cfgRepo.getDocGroups().find(g => sameText(g.code, code)) || cfgRepo.getDocGroupByCode(code);
+  if (duplicate) return res.status(409).json({ error: `Document group "${code}" already exists` });
+  cfgRepo.createDocGroup(docType, code, description || null, workflowRequired);
+  res.json({ success: true });
+});
+
+router.put('/config/doc-groups/:code', (req, res) => {
+  const currentCode = normalizeCode(req.params.code);
+  const docType = normalizeCode(req.body?.docType);
+  const nextCode = normalizeCode(req.body?.code || req.params.code);
+  const description = normalizeCell(req.body?.description);
+  const workflowRequired = Boolean(req.body?.workflowRequired);
+  if (!nextCode || !docType) return res.status(400).json({ error: 'docType and code required' });
+
+  const existing = cfgRepo.getDocGroupByCode(currentCode);
+  if (!existing) return res.status(404).json({ error: 'Document group not found' });
+
+  const duplicate = cfgRepo.getDocGroups().find(g => !sameText(g.code, currentCode) && sameText(g.code, nextCode));
+  if (duplicate) return res.status(409).json({ error: `Document group "${nextCode}" already exists` });
+
+  cfgRepo.updateDocGroup(currentCode, docType, nextCode, description || null, workflowRequired);
   res.json({ success: true });
 });
 
@@ -253,9 +354,32 @@ router.get('/config/work-centers', (req, res) => {
 });
 
 router.post('/config/work-centers', (req, res) => {
-  const { departmentId, departmentName, description } = req.body;
+  const departmentId = normalizeCell(req.body?.departmentId);
+  const departmentName = normalizeCell(req.body?.departmentName);
+  const description = normalizeCell(req.body?.description);
   if (!departmentId) return res.status(400).json({ error: 'departmentId required' });
-  cfgRepo.upsertWorkCenter(departmentId, departmentName, description);
+  const duplicate = cfgRepo.getWorkCenters().find(w => w.active === 1 && sameText(w.department_id, departmentId)) || cfgRepo.getWorkCenterById(departmentId);
+  if (duplicate) return res.status(409).json({ error: `Work center "${departmentId}" already exists` });
+  cfgRepo.createWorkCenter(departmentId, departmentName || null, description || null);
+  res.json({ success: true });
+});
+
+router.put('/config/work-centers/:id', (req, res) => {
+  const currentDepartmentId = normalizeCell(req.params.id);
+  const departmentId = normalizeCell(req.body?.departmentId || req.params.id);
+  const departmentName = normalizeCell(req.body?.departmentName);
+  const description = normalizeCell(req.body?.description);
+  if (!departmentId) return res.status(400).json({ error: 'departmentId required' });
+
+  const existing = cfgRepo.getWorkCenterById(currentDepartmentId);
+  if (!existing) return res.status(404).json({ error: 'Work center not found' });
+
+  const duplicate = cfgRepo.getWorkCenters().find(
+    w => w.active === 1 && !sameText(w.department_id, currentDepartmentId) && sameText(w.department_id, departmentId)
+  );
+  if (duplicate) return res.status(409).json({ error: `Work center "${departmentId}" already exists` });
+
+  cfgRepo.updateWorkCenter(currentDepartmentId, departmentId, departmentName || null, description || null);
   res.json({ success: true });
 });
 
@@ -306,10 +430,94 @@ router.get('/approvers/discipline', (req, res) => {
   res.json(cfgRepo.getApproversByDiscipline());
 });
 
+router.post('/approvers/discipline-group', (req, res) => {
+  const departmentId = normalizeCell(req.body?.departmentId);
+  const approvalType = normalizeCell(req.body?.approvalType).toLowerCase();
+  const approverUsernames = parseApproverUsernames(req.body?.approverUsernames ?? req.body?.approverUsername);
+
+  if (!departmentId || !APPROVAL_TYPES.has(approvalType) || approverUsernames.length === 0) {
+    return res.status(400).json({ error: 'departmentId, approvalType and at least one approver are required' });
+  }
+  const invalid = getInvalidApproverUsernames(approverUsernames);
+  if (invalid.length) {
+    return res.status(400).json({ error: `Unknown approver username(s): ${invalid.join(', ')}` });
+  }
+
+  const duplicate = cfgRepo.getApproversByDiscipline()
+    .filter(r => r.active)
+    .find(r => disciplineGroupKey(r) === disciplineGroupKey({ departmentId, approvalType }));
+  if (duplicate) {
+    return res.status(409).json({ error: `A rule already exists for ${departmentId} / ${approvalType.toUpperCase()}` });
+  }
+
+  cfgRepo.replaceApproversDisciplineForDept(departmentId, approvalType, approverUsernames);
+  wfSvc.reEvaluatePendingWorkflows();
+  res.json({ success: true });
+});
+
+router.put('/approvers/discipline-group', (req, res) => {
+  const originalDepartmentId = normalizeCell(req.body?.originalDepartmentId);
+  const originalApprovalType = normalizeCell(req.body?.originalApprovalType).toLowerCase();
+  const departmentId = normalizeCell(req.body?.departmentId);
+  const approvalType = normalizeCell(req.body?.approvalType).toLowerCase();
+  const approverUsernames = parseApproverUsernames(req.body?.approverUsernames ?? req.body?.approverUsername);
+
+  if (!originalDepartmentId || !APPROVAL_TYPES.has(originalApprovalType)) {
+    return res.status(400).json({ error: 'originalDepartmentId and originalApprovalType are required' });
+  }
+  if (!departmentId || !APPROVAL_TYPES.has(approvalType) || approverUsernames.length === 0) {
+    return res.status(400).json({ error: 'departmentId, approvalType and at least one approver are required' });
+  }
+  const invalid = getInvalidApproverUsernames(approverUsernames);
+  if (invalid.length) {
+    return res.status(400).json({ error: `Unknown approver username(s): ${invalid.join(', ')}` });
+  }
+
+  const activeRows = cfgRepo.getApproversByDiscipline().filter(r => r.active);
+  const originalExists = activeRows.some(
+    r => disciplineGroupKey(r) === disciplineGroupKey({ departmentId: originalDepartmentId, approvalType: originalApprovalType })
+  );
+  if (!originalExists) return res.status(404).json({ error: 'Approver rule not found' });
+
+  const duplicate = activeRows.find(r => {
+    const currentKey = disciplineGroupKey(r);
+    return currentKey !== disciplineGroupKey({ departmentId: originalDepartmentId, approvalType: originalApprovalType }) &&
+      currentKey === disciplineGroupKey({ departmentId, approvalType });
+  });
+  if (duplicate) {
+    return res.status(409).json({ error: `A rule already exists for ${departmentId} / ${approvalType.toUpperCase()}` });
+  }
+
+  cfgRepo.replaceApproverDisciplineGroup(
+    originalDepartmentId,
+    originalApprovalType,
+    departmentId,
+    approvalType,
+    approverUsernames
+  );
+  wfSvc.reEvaluatePendingWorkflows();
+  res.json({ success: true });
+});
+
+router.delete('/approvers/discipline-group', (req, res) => {
+  const departmentId = normalizeCell(req.body?.departmentId);
+  const approvalType = normalizeCell(req.body?.approvalType).toLowerCase();
+  if (!departmentId || !APPROVAL_TYPES.has(approvalType)) {
+    return res.status(400).json({ error: 'departmentId and approvalType are required' });
+  }
+
+  cfgRepo.deleteApproverDisciplineGroup(departmentId, approvalType);
+  wfSvc.reEvaluatePendingWorkflows();
+  res.json({ success: true });
+});
+
 router.post('/approvers/discipline', (req, res) => {
   const { departmentId, approvalType, approverUsername } = req.body;
   if (!departmentId || !approvalType || !approverUsername)
     return res.status(400).json({ error: 'departmentId, approvalType and approverUsername required' });
+  if (!findActiveUser(approverUsername)) {
+    return res.status(400).json({ error: `Unknown approver username: ${approverUsername}` });
+  }
   cfgRepo.upsertApproverDiscipline(departmentId, approvalType, approverUsername);
   wfSvc.reEvaluatePendingWorkflows();
   res.json({ success: true });
@@ -325,6 +533,9 @@ router.put('/approvers/discipline/:id', (req, res) => {
   const { departmentId, approvalType, approverUsername } = req.body;
   if (!departmentId || !approvalType || !approverUsername)
     return res.status(400).json({ error: 'departmentId, approvalType and approverUsername required' });
+  if (!findActiveUser(approverUsername)) {
+    return res.status(400).json({ error: `Unknown approver username: ${approverUsername}` });
+  }
   cfgRepo.updateApproverDiscipline(req.params.id, departmentId, approvalType, approverUsername);
   wfSvc.reEvaluatePendingWorkflows();
   res.json({ success: true });
@@ -333,6 +544,10 @@ router.put('/approvers/discipline/:id', (req, res) => {
 // Bulk replace for a dept/type combo
 router.put('/approvers/discipline/:departmentId/:approvalType', (req, res) => {
   const approvers = Array.isArray(req.body) ? req.body : req.body.approvers || [];
+  const invalid = getInvalidApproverUsernames(approvers);
+  if (invalid.length) {
+    return res.status(400).json({ error: `Unknown approver username(s): ${invalid.join(', ')}` });
+  }
   cfgRepo.replaceApproversDisciplineForDept(req.params.departmentId, req.params.approvalType, approvers);
   wfSvc.reEvaluatePendingWorkflows();
   res.json({ success: true });
@@ -360,6 +575,7 @@ router.post('/approvers/discipline/upload', upload.single('file'), (req, res) =>
       const key = `${r.deptId}|${r.appType}|${r.username}`.toLowerCase();
       if (dedupe.has(key)) throw new Error(`Row ${i + 2}: Duplicate approver mapping in upload`);
       dedupe.add(key);
+      if (!findActiveUser(r.username)) throw new Error(`Row ${i + 2}: Unknown approver username "${r.username}"`);
     });
 
     const replaceDisciplineApprovers = db.transaction((items) => {
@@ -395,6 +611,101 @@ router.get('/approvers/maintenance', (req, res) => {
   res.json(cfgRepo.getApproversByMaintenance());
 });
 
+router.post('/approvers/maintenance-group', (req, res) => {
+  const payload = normalizeMaintenancePayload(req.body);
+  if (!payload.approvalType || !APPROVAL_TYPES.has(payload.approvalType)) {
+    return res.status(400).json({ error: 'approvalType must be msv or em' });
+  }
+  if (!payload.maintenanceStrategy && payload.maintenanceDays === null) {
+    return res.status(400).json({ error: 'maintenanceStrategy or maintenanceDays is required' });
+  }
+  if (payload.maintenanceDays !== null && (!Number.isInteger(payload.maintenanceDays) || payload.maintenanceDays < 0)) {
+    return res.status(400).json({ error: 'maintenanceDays must be a whole number >= 0' });
+  }
+  if (payload.approverUsernames.length === 0) {
+    return res.status(400).json({ error: 'At least one approver is required' });
+  }
+  const invalid = getInvalidApproverUsernames(payload.approverUsernames);
+  if (invalid.length) {
+    return res.status(400).json({ error: `Unknown approver username(s): ${invalid.join(', ')}` });
+  }
+
+  const duplicate = cfgRepo.getApproversByMaintenance()
+    .filter(r => r.active)
+    .find(r => maintenanceGroupKey(r) === maintenanceGroupKey(payload));
+  if (duplicate) {
+    return res.status(409).json({ error: 'A maintenance approver rule already exists for that strategy/days/type combination' });
+  }
+
+  cfgRepo.replaceApproverMaintenanceGroup(
+    {
+      maintenanceStrategy: payload.maintenanceStrategy,
+      maintenanceDays: payload.maintenanceDays,
+      approvalType: payload.approvalType,
+      approverUsernames: []
+    },
+    payload
+  );
+  wfSvc.reEvaluatePendingWorkflows();
+  res.json({ success: true });
+});
+
+router.put('/approvers/maintenance-group', (req, res) => {
+  const originalPayload = normalizeMaintenancePayload(req.body?.original || {});
+  const payload = normalizeMaintenancePayload(req.body);
+
+  if (!originalPayload.approvalType || !APPROVAL_TYPES.has(originalPayload.approvalType)) {
+    return res.status(400).json({ error: 'original approvalType must be msv or em' });
+  }
+  if (!originalPayload.maintenanceStrategy && originalPayload.maintenanceDays === null) {
+    return res.status(400).json({ error: 'original maintenanceStrategy or maintenanceDays is required' });
+  }
+  if (!payload.approvalType || !APPROVAL_TYPES.has(payload.approvalType)) {
+    return res.status(400).json({ error: 'approvalType must be msv or em' });
+  }
+  if (!payload.maintenanceStrategy && payload.maintenanceDays === null) {
+    return res.status(400).json({ error: 'maintenanceStrategy or maintenanceDays is required' });
+  }
+  if (payload.maintenanceDays !== null && (!Number.isInteger(payload.maintenanceDays) || payload.maintenanceDays < 0)) {
+    return res.status(400).json({ error: 'maintenanceDays must be a whole number >= 0' });
+  }
+  if (payload.approverUsernames.length === 0) {
+    return res.status(400).json({ error: 'At least one approver is required' });
+  }
+  const invalid = getInvalidApproverUsernames(payload.approverUsernames);
+  if (invalid.length) {
+    return res.status(400).json({ error: `Unknown approver username(s): ${invalid.join(', ')}` });
+  }
+
+  const activeRows = cfgRepo.getApproversByMaintenance().filter(r => r.active);
+  const originalKey = maintenanceGroupKey(originalPayload);
+  const originalExists = activeRows.some(r => maintenanceGroupKey(r) === originalKey);
+  if (!originalExists) return res.status(404).json({ error: 'Maintenance approver rule not found' });
+
+  const duplicate = activeRows.find(r => maintenanceGroupKey(r) !== originalKey && maintenanceGroupKey(r) === maintenanceGroupKey(payload));
+  if (duplicate) {
+    return res.status(409).json({ error: 'A maintenance approver rule already exists for that strategy/days/type combination' });
+  }
+
+  cfgRepo.replaceApproverMaintenanceGroup(originalPayload, payload);
+  wfSvc.reEvaluatePendingWorkflows();
+  res.json({ success: true });
+});
+
+router.delete('/approvers/maintenance-group', (req, res) => {
+  const payload = normalizeMaintenancePayload(req.body);
+  if (!payload.approvalType || !APPROVAL_TYPES.has(payload.approvalType)) {
+    return res.status(400).json({ error: 'approvalType must be msv or em' });
+  }
+  if (!payload.maintenanceStrategy && payload.maintenanceDays === null) {
+    return res.status(400).json({ error: 'maintenanceStrategy or maintenanceDays is required' });
+  }
+
+  cfgRepo.deleteApproverMaintenanceGroup(payload);
+  wfSvc.reEvaluatePendingWorkflows();
+  res.json({ success: true });
+});
+
 router.post('/approvers/maintenance', (req, res) => {
   const payload = {
     maintenanceStrategy: req.body?.maintenanceStrategy || null,
@@ -407,6 +718,9 @@ router.post('/approvers/maintenance', (req, res) => {
   }
   if (!payload.approverUsername) {
     return res.status(400).json({ error: 'approverUsername is required' });
+  }
+  if (!findActiveUser(payload.approverUsername)) {
+    return res.status(400).json({ error: `Unknown approver username: ${payload.approverUsername}` });
   }
   if (payload.maintenanceDays !== null && (!Number.isInteger(payload.maintenanceDays) || payload.maintenanceDays < 0)) {
     return res.status(400).json({ error: 'maintenanceDays must be a whole number >= 0' });
@@ -434,6 +748,9 @@ router.put('/approvers/maintenance/:id', (req, res) => {
   }
   if (!payload.approverUsername) {
     return res.status(400).json({ error: 'approverUsername is required' });
+  }
+  if (!findActiveUser(payload.approverUsername)) {
+    return res.status(400).json({ error: `Unknown approver username: ${payload.approverUsername}` });
   }
   if (payload.maintenanceDays !== null && (!Number.isInteger(payload.maintenanceDays) || payload.maintenanceDays < 0)) {
     return res.status(400).json({ error: 'maintenanceDays must be a whole number >= 0' });
@@ -473,6 +790,7 @@ router.post('/approvers/maintenance/upload', upload.single('file'), (req, res) =
       const key = `${r.maintenanceStrategy || ''}|${r.maintenanceDays ?? ''}|${r.approvalType}|${r.approverUsername}`.toLowerCase();
       if (dedupe.has(key)) throw new Error(`Row ${i + 2}: Duplicate approver mapping in upload`);
       dedupe.add(key);
+      if (!findActiveUser(r.approverUsername)) throw new Error(`Row ${i + 2}: Unknown approver username "${r.approverUsername}"`);
     });
 
     const replaceMaintenanceApprovers = db.transaction((items) => {

@@ -31,6 +31,13 @@ const FIELD_LABELS = {
   docLoc: 'Document Location'
 };
 
+const EMPTY_OBJECT_LINK = {
+  workOrder: '',
+  workOrderText: '',
+  equipment: '',
+  equipmentText: ''
+};
+
 export default function DocumentForm({ mode: initialMode }) {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
@@ -117,6 +124,20 @@ export default function DocumentForm({ mode: initialMode }) {
         setFieldConfig(config);
       });
   }, [docGroup]);
+
+  useEffect(() => {
+    if (!fieldConfig || objectLinks.length > 0) return;
+
+    const needsDefaultObjectLink =
+      fieldConfig.workOrder === 'MO' ||
+      fieldConfig.workOrder === 'AMO' ||
+      fieldConfig.equipment === 'MO' ||
+      fieldConfig.equipment === 'AMO';
+
+    if (needsDefaultObjectLink) {
+      setObjectLinks([EMPTY_OBJECT_LINK]);
+    }
+  }, [fieldConfig, objectLinks.length]);
 
   function isApproverForDoc(doc, username) {
     if (!doc?.workflow?.required) return false;
@@ -455,7 +476,7 @@ export default function DocumentForm({ mode: initialMode }) {
                 <Button
                   variant="outline-primary"
                   size="sm"
-                  onClick={() => setObjectLinks(prev => [...prev, { workOrder: '', workOrderText: '', equipment: '', equipmentText: '' }])}
+                  onClick={() => setObjectLinks(prev => [...prev, { ...EMPTY_OBJECT_LINK }])}
                 >
                   + Add Row
                 </Button>

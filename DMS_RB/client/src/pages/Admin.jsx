@@ -67,6 +67,114 @@ const STATUS_COLORS = {
 
 const FIELD_NAMES = ['docDate','manuName','manuSerial','alertNum','certAuth','certNum','addDesc','docLoc','workOrder','equipment'];
 
+function normalizeText(value) {
+  return String(value ?? '').trim();
+}
+
+function normalizeCode(value) {
+  return normalizeText(value).toUpperCase();
+}
+
+function sameText(a, b) {
+  return normalizeText(a).toLowerCase() === normalizeText(b).toLowerCase();
+}
+
+function parseApproverList(value) {
+  const items = Array.isArray(value) ? value : String(value ?? '').split(/[\r\n,;]+/);
+  const seen = new Set();
+  const usernames = [];
+
+  items.forEach((item) => {
+    const username = normalizeText(item);
+    const key = username.toLowerCase();
+    if (!username || seen.has(key)) return;
+    seen.add(key);
+    usernames.push(username);
+  });
+
+  return usernames;
+}
+
+function findUserByUsername(users, username) {
+  return (users || []).find((user) => sameText(user.username, username));
+}
+
+function appendUsernameToList(existingValue, username) {
+  const usernames = parseApproverList(existingValue);
+  if (usernames.some((item) => sameText(item, username))) {
+    return usernames.join('\n');
+  }
+  return [...usernames, username].join('\n');
+}
+
+function formatApprovalType(value) {
+  return value === 'em' ? 'E&M' : 'Discipline (MSV)';
+}
+
+function groupDisciplineRules(rows) {
+  const map = new Map();
+
+  rows.forEach((row) => {
+    const key = `${normalizeText(row.department_id).toLowerCase()}|${normalizeText(row.approval_type).toLowerCase()}`;
+    if (!map.has(key)) {
+      map.set(key, {
+        key,
+        department_id: row.department_id || '',
+        approval_type: formatApprovalType(row.approval_type),
+        approval_type_code: row.approval_type || 'msv',
+        approver_usernames: [],
+        approver_summary: ''
+      });
+    }
+
+    const group = map.get(key);
+    if (row.approver_username) {
+      group.approver_usernames.push(row.approver_username);
+      group.approver_summary = group.approver_usernames.join(', ');
+    }
+  });
+
+  return Array.from(map.values()).sort((a, b) =>
+    a.department_id.localeCompare(b.department_id) || a.approval_type_code.localeCompare(b.approval_type_code)
+  );
+}
+
+function groupMaintenanceRules(rows) {
+  const map = new Map();
+
+  rows.forEach((row) => {
+    const key = [
+      normalizeText(row.maintenance_strategy).toLowerCase(),
+      row.maintenance_days ?? '',
+      normalizeText(row.approval_type).toLowerCase()
+    ].join('|');
+
+    if (!map.has(key)) {
+      map.set(key, {
+        key,
+        maintenance_strategy: row.maintenance_strategy || '',
+        maintenance_days: row.maintenance_days ?? '',
+        approval_type: formatApprovalType(row.approval_type),
+        approval_type_code: row.approval_type || 'msv',
+        approver_usernames: [],
+        approver_summary: ''
+      });
+    }
+
+    const group = map.get(key);
+    if (row.approver_username) {
+      group.approver_usernames.push(row.approver_username);
+      group.approver_summary = group.approver_usernames.join(', ');
+    }
+  });
+
+  return Array.from(map.values()).sort((a, b) =>
+    normalizeText(a.maintenance_strategy).localeCompare(normalizeText(b.maintenance_strategy)) ||
+    Number(a.maintenance_days || 0) - Number(b.maintenance_days || 0) ||
+    a.approval_type_code.localeCompare(b.approval_type_code)
+  );
+}
+
 function TabBar({ tabs, active, onChange }) {
   return (
     <div style={{ display:'flex', gap:0, borderBottom:'2px solid #e8e8e8', marginBottom:'1.5rem', flexWrap:'wrap' }}>
@@ -231,11 +339,12 @@ function WorkflowTab({ currentUser }) {
 }
 
 // ── Approvers by Discipline ───────────────────────────────────────────────────
-function ApproversDisciplineTab() {
-  const emptyForm = { departmentId:'', approvalType:'msv', approverUsername:'' };
+function ApproversDisciplineTab({ users }) {
+  const emptyForm = { departmentId:'', approvalType:'msv', approverUsernames:'' };
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState(emptyForm);
-  const [editingId, setEditingId] = useState(null);
+  const [editingRule, setEditingRule] = useState(null);
+  const [approverCandidate, setApproverCandidate] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
   const [msg, setMsg] = useState('');
@@ -245,19 +354,55 @@ function ApproversDisciplineTab() {
 
   const load = () => fetch('/api/admin/approvers/discipline').then(r => r.json()).then(setRows);
   useEffect(() => { load(); }, []);
+  const groupedRows = groupDisciplineRules(rows.filter(r => r.active));
+  const typedApprovers = parseApproverList(form.approverUsernames);
+  const invalidApprovers = typedApprovers.filter((username) => !findUserByUsername(users, username));
 
   const save = async () => {
-    if (!form.departmentId || !form.approverUsername) return;
-    const isEditing = modalMode === 'edit' && editingId !== null;
+    const departmentId = normalizeText(form.departmentId);
+    const approvalType = normalizeText(form.approvalType).toLowerCase();
+    const approverUsernames = typedApprovers;
+
+    if (!departmentId || approverUsernames.length === 0) {
+      setMsgType('Negative');
+      setMsg('Department ID and at least one approver are required.');
+      return;
+    }
+    if (invalidApprovers.length > 0) {
+      setMsgType('Negative');
+      setMsg(`Unknown approver username(s): ${invalidApprovers.join(', ')}`);
+      return;
+    }
+
+    const nextKey = `${departmentId.toLowerCase()}|${approvalType}`;
+    const currentKey = editingRule ? `${normalizeText(editingRule.departmentId).toLowerCase()}|${normalizeText(editingRule.approvalType).toLowerCase()}` : null;
+    const duplicate = groupedRows.find(r => r.key === nextKey && r.key !== currentKey);
+    if (duplicate) {
+      setMsgType('Negative');
+      setMsg(`A rule already exists for ${departmentId} / ${approvalType.toUpperCase()}. Edit the existing rule instead.`);
+      return;
+    }
+
+    const isEditing = modalMode === 'edit' && editingRule !== null;
     try {
-      const response = await fetch(isEditing ? `/api/admin/approvers/discipline/${editingId}` : '/api/admin/approvers/discipline', {
-        method: isEditing ? 'PUT' : 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form)
+      const response = await fetch('/api/admin/approvers/discipline-group', {
+        method: isEditing ? 'PUT' : 'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          departmentId,
+          approvalType,
+          approverUsernames,
+          ...(isEditing ? {
+            originalDepartmentId: editingRule.departmentId,
+            originalApprovalType: editingRule.approvalType
+          } : {})
+        })
       });
       const res = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(res.error || 'Failed to save approver rule');
       setMsgType('Positive');
       setForm(emptyForm);
-      setEditingId(null);
+      setEditingRule(null);
       setIsModalOpen(false);
       setMsg(modalMode === 'edit' ? 'Approver updated. Pending workflows re-evaluated.' : 'Approver added. Pending workflows re-evaluated.');
       setTimeout(() => setMsg(''), 3000);
@@ -269,34 +414,71 @@ function ApproversDisciplineTab() {
   };
 
   const remove = async (row) => {
-    await fetch(`/api/admin/approvers/discipline/${row.id}`, { method:'DELETE' });
-    setMsg('Approver removed. Pending workflows re-evaluated.');
-    setTimeout(() => setMsg(''), 3000);
-    load();
+    try {
+      const response = await fetch('/api/admin/approvers/discipline-group', {
+        method:'DELETE',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          departmentId: row.department_id,
+          approvalType: row.approval_type_code
+        })
+      });
+      const res = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(res.error || 'Failed to remove approver rule');
+      setMsgType('Positive');
+      setMsg('Approver rule removed. Pending workflows re-evaluated.');
+      setTimeout(() => setMsg(''), 3000);
+      load();
+    } catch (err) {
+      setMsgType('Negative');
+      setMsg(err.message);
+    }
   };
 
   const edit = (row) => {
     setModalMode('edit');
-    setEditingId(row.id);
+    setEditingRule({
+      departmentId: row.department_id || '',
+      approvalType: row.approval_type_code || 'msv'
+    });
     setForm({
       departmentId: row.department_id || '',
-      approvalType: row.approval_type || 'msv',
-      approverUsername: row.approver_username || ''
+      approvalType: row.approval_type_code || 'msv',
+      approverUsernames: (row.approver_usernames || []).join('\n')
     });
+    setApproverCandidate('');
     setIsModalOpen(true);
   };
 
   const openAddModal = () => {
     setModalMode('add');
-    setEditingId(null);
+    setEditingRule(null);
     setForm(emptyForm);
+    setApproverCandidate('');
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setForm(emptyForm);
-    setEditingId(null);
+    setEditingRule(null);
+    setApproverCandidate('');
     setIsModalOpen(false);
+  };
+
+  const addApproverCandidate = () => {
+    const candidate = normalizeText(approverCandidate);
+    if (!candidate) return;
+    const user = findUserByUsername(users, candidate);
+    if (!user) {
+      setMsgType('Negative');
+      setMsg(`Username "${candidate}" is not in the active users list.`);
+      return;
+    }
+    setForm((prev) => ({
+      ...prev,
+      approverUsernames: appendUsernameToList(prev.approverUsernames, user.username)
+    }));
+    setApproverCandidate('');
   };
 
   const handleUpload = async (e) => {
@@ -360,9 +542,48 @@ function ApproversDisciplineTab() {
                     <Option data-value="em"  selected={form.approvalType === 'em'}>E&M</Option>
                   </Select>
                 </div>
-                <div>
-                  <Label>Approver Username</Label>
-                  <Input value={form.approverUsername} onInput={e => setForm(p => ({ ...p, approverUsername: e.target.value }))} placeholder="e.g. MANAGER1" style={{ width:'100%' }} />
+                <div style={{ gridColumn:'1 / -1' }}>
+                  <Label>Add From Users</Label>
+                  <div style={{ display:'flex', gap:'0.5rem', marginBottom:'0.75rem', alignItems:'center' }}>
+                    <input
+                      className="form-control form-control-sm"
+                      list="discipline-approver-users"
+                      value={approverCandidate}
+                      onChange={(e) => setApproverCandidate(e.target.value)}
+                      placeholder="Start typing a username"
+                    />
+                    <Button design="Default" onClick={addApproverCandidate}>Add</Button>
+                    <datalist id="discipline-approver-users">
+                      {(users || []).map((user) => (
+                        <option key={user.username} value={user.username}>{user.displayName || user.username}</option>
+                      ))}
+                    </datalist>
+                  </div>
+                  <Label>Approver Usernames</Label>
+                  <textarea
+                    className="form-control form-control-sm"
+                    value={form.approverUsernames}
+                    onChange={e => setForm(p => ({ ...p, approverUsernames: e.target.value }))}
+                    placeholder={'One username per line, or separate with commas'}
+                    rows={5}
+                    style={{ width:'100%' }}
+                  />
+                  <div style={{ fontSize:'0.78rem', color:'#6a6d70', marginTop:'0.35rem' }}>
+                    Multiple approvers are allowed for the same department and approval type.
+                  </div>
+                  {typedApprovers.length > 0 && (
+                    <div style={{ fontSize:'0.78rem', color:'#6a6d70', marginTop:'0.5rem' }}>
+                      Selected: {typedApprovers.map((username) => {
+                        const user = findUserByUsername(users, username);
+                        return user ? `${user.username} (${user.displayName || user.username})` : username;
+                      }).join(', ')}
+                    </div>
+                  )}
+                  {invalidApprovers.length > 0 && (
+                    <div style={{ fontSize:'0.78rem', color:'#b00', marginTop:'0.35rem' }}>
+                      Invalid usernames: {invalidApprovers.join(', ')}
+                    </div>
+                  )}
                 </div>
               </div>
               <div style={{ display:'flex', gap:'0.75rem', justifyContent:'flex-end' }}>
@@ -379,9 +600,9 @@ function ApproversDisciplineTab() {
           cols={[
             { key:'department_id',   label:'Department ID' },
             { key:'approval_type',   label:'Approval Type' },
-            { key:'approver_username', label:'Approver Username' }
+            { key:'approver_summary', label:'Approvers' }
           ]}
-          rows={rows.filter(r => r.active)}
+          rows={groupedRows}
           onEdit={edit}
           onDelete={remove}
         />
@@ -391,11 +612,12 @@ function ApproversDisciplineTab() {
 }
 
 // ── Approvers by Maintenance ──────────────────────────────────────────────────
-function ApproversMaintenanceTab() {
-  const emptyForm = { maintenanceStrategy:'', maintenanceDays:'', approvalType:'msv', approverUsername:'' };
+function ApproversMaintenanceTab({ users }) {
+  const emptyForm = { maintenanceStrategy:'', maintenanceDays:'', approvalType:'msv', approverUsernames:'' };
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState(emptyForm);
-  const [editingId, setEditingId] = useState(null);
+  const [editingRule, setEditingRule] = useState(null);
+  const [approverCandidate, setApproverCandidate] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
   const [msg, setMsg] = useState('');
@@ -405,25 +627,72 @@ function ApproversMaintenanceTab() {
 
   const load = () => fetch('/api/admin/approvers/maintenance').then(r => r.json()).then(setRows);
   useEffect(() => { load(); }, []);
+  const groupedRows = groupMaintenanceRules(rows.filter(r => r.active));
+  const typedApprovers = parseApproverList(form.approverUsernames);
+  const invalidApprovers = typedApprovers.filter((username) => !findUserByUsername(users, username));
 
   const save = async () => {
-    const isEditing = modalMode === 'edit' && editingId !== null;
+    const maintenanceStrategy = normalizeText(form.maintenanceStrategy);
+    const maintenanceDays = normalizeText(form.maintenanceDays) === '' ? null : parseInt(form.maintenanceDays, 10);
+    const approvalType = normalizeText(form.approvalType).toLowerCase();
+    const approverUsernames = typedApprovers;
+
+    if (!maintenanceStrategy && maintenanceDays === null) {
+      setMsgType('Negative');
+      setMsg('Maintenance Strategy or Maintenance Days is required.');
+      return;
+    }
+    if (maintenanceDays !== null && (!Number.isInteger(maintenanceDays) || maintenanceDays < 0)) {
+      setMsgType('Negative');
+      setMsg('Maintenance Days must be a whole number >= 0.');
+      return;
+    }
+    if (approverUsernames.length === 0) {
+      setMsgType('Negative');
+      setMsg('At least one approver is required.');
+      return;
+    }
+    if (invalidApprovers.length > 0) {
+      setMsgType('Negative');
+      setMsg(`Unknown approver username(s): ${invalidApprovers.join(', ')}`);
+      return;
+    }
+
+    const nextKey = [maintenanceStrategy.toLowerCase(), maintenanceDays ?? '', approvalType].join('|');
+    const currentKey = editingRule
+      ? [normalizeText(editingRule.maintenanceStrategy).toLowerCase(), editingRule.maintenanceDays ?? '', normalizeText(editingRule.approvalType).toLowerCase()].join('|')
+      : null;
+    const duplicate = groupedRows.find(r => r.key === nextKey && r.key !== currentKey);
+    if (duplicate) {
+      setMsgType('Negative');
+      setMsg('A maintenance approver rule already exists for that strategy/days/type combination.');
+      return;
+    }
+
+    const isEditing = modalMode === 'edit' && editingRule !== null;
     try {
-      const response = await fetch(isEditing ? `/api/admin/approvers/maintenance/${editingId}` : '/api/admin/approvers/maintenance', {
+      const response = await fetch('/api/admin/approvers/maintenance-group', {
         method: isEditing ? 'PUT' : 'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
-          maintenanceStrategy: form.maintenanceStrategy || null,
-          maintenanceDays: form.maintenanceDays ? parseInt(form.maintenanceDays, 10) : null,
-          approvalType: form.approvalType,
-          approverUsername: form.approverUsername
+          maintenanceStrategy: maintenanceStrategy || null,
+          maintenanceDays,
+          approvalType,
+          approverUsernames,
+          ...(isEditing ? {
+            original: {
+              maintenanceStrategy: editingRule.maintenanceStrategy || null,
+              maintenanceDays: editingRule.maintenanceDays ?? null,
+              approvalType: editingRule.approvalType
+            }
+          } : {})
         })
       });
       const res = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(res.error || 'Failed to save maintenance approver rule');
       setMsgType('Positive');
       setForm(emptyForm);
-      setEditingId(null);
+      setEditingRule(null);
       setIsModalOpen(false);
       setMsg(modalMode === 'edit' ? 'Rule updated.' : 'Rule added.');
       setTimeout(() => setMsg(''), 3000);
@@ -435,34 +704,74 @@ function ApproversMaintenanceTab() {
   };
 
   const remove = async (row) => {
-    await fetch(`/api/admin/approvers/maintenance/${row.id}`, { method:'DELETE' });
-    setMsg('Rule removed.'); setTimeout(() => setMsg(''), 3000);
-    load();
+    try {
+      const response = await fetch('/api/admin/approvers/maintenance-group', {
+        method:'DELETE',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          maintenanceStrategy: row.maintenance_strategy || null,
+          maintenanceDays: row.maintenance_days === '' ? null : row.maintenance_days,
+          approvalType: row.approval_type_code
+        })
+      });
+      const res = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(res.error || 'Failed to remove maintenance approver rule');
+      setMsgType('Positive');
+      setMsg('Rule removed.');
+      setTimeout(() => setMsg(''), 3000);
+      load();
+    } catch (err) {
+      setMsgType('Negative');
+      setMsg(err.message);
+    }
   };
 
   const edit = (row) => {
     setModalMode('edit');
-    setEditingId(row.id);
+    setEditingRule({
+      maintenanceStrategy: row.maintenance_strategy || '',
+      maintenanceDays: row.maintenance_days === '' ? null : row.maintenance_days,
+      approvalType: row.approval_type_code || 'msv'
+    });
     setForm({
       maintenanceStrategy: row.maintenance_strategy || '',
-      maintenanceDays: row.maintenance_days || '',
-      approvalType: row.approval_type || 'msv',
-      approverUsername: row.approver_username || ''
+      maintenanceDays: row.maintenance_days === '' ? '' : row.maintenance_days,
+      approvalType: row.approval_type_code || 'msv',
+      approverUsernames: (row.approver_usernames || []).join('\n')
     });
+    setApproverCandidate('');
     setIsModalOpen(true);
   };
 
   const openAddModal = () => {
     setModalMode('add');
-    setEditingId(null);
+    setEditingRule(null);
     setForm(emptyForm);
+    setApproverCandidate('');
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setForm(emptyForm);
-    setEditingId(null);
+    setEditingRule(null);
+    setApproverCandidate('');
     setIsModalOpen(false);
+  };
+
+  const addApproverCandidate = () => {
+    const candidate = normalizeText(approverCandidate);
+    if (!candidate) return;
+    const user = findUserByUsername(users, candidate);
+    if (!user) {
+      setMsgType('Negative');
+      setMsg(`Username "${candidate}" is not in the active users list.`);
+      return;
+    }
+    setForm((prev) => ({
+      ...prev,
+      approverUsernames: appendUsernameToList(prev.approverUsernames, user.username)
+    }));
+    setApproverCandidate('');
   };
 
   const handleUpload = async (e) => {
@@ -523,7 +832,46 @@ function ApproversMaintenanceTab() {
                     <Option data-value="em" selected={form.approvalType === 'em'}>E&M</Option>
                   </Select>
                 </div>
-                <div><Label>Approver Username</Label><Input value={form.approverUsername} onInput={e => setForm(p => ({ ...p, approverUsername: e.target.value }))} style={{ width:'100%' }} /></div>
+                <div style={{ gridColumn:'1 / -1' }}>
+                  <Label>Add From Users</Label>
+                  <div style={{ display:'flex', gap:'0.5rem', marginBottom:'0.75rem', alignItems:'center' }}>
+                    <input
+                      className="form-control form-control-sm"
+                      list="maintenance-approver-users"
+                      value={approverCandidate}
+                      onChange={(e) => setApproverCandidate(e.target.value)}
+                      placeholder="Start typing a username"
+                    />
+                    <Button design="Default" onClick={addApproverCandidate}>Add</Button>
+                    <datalist id="maintenance-approver-users">
+                      {(users || []).map((user) => (
+                        <option key={user.username} value={user.username}>{user.displayName || user.username}</option>
+                      ))}
+                    </datalist>
+                  </div>
+                  <Label>Approver Usernames</Label>
+                  <textarea
+                    className="form-control form-control-sm"
+                    value={form.approverUsernames}
+                    onChange={e => setForm(p => ({ ...p, approverUsernames: e.target.value }))}
+                    rows={5}
+                    placeholder={'One username per line, or separate with commas'}
+                    style={{ width:'100%' }}
+                  />
+                  {typedApprovers.length > 0 && (
+                    <div style={{ fontSize:'0.78rem', color:'#6a6d70', marginTop:'0.5rem' }}>
+                      Selected: {typedApprovers.map((username) => {
+                        const user = findUserByUsername(users, username);
+                        return user ? `${user.username} (${user.displayName || user.username})` : username;
+                      }).join(', ')}
+                    </div>
+                  )}
+                  {invalidApprovers.length > 0 && (
+                    <div style={{ fontSize:'0.78rem', color:'#b00', marginTop:'0.35rem' }}>
+                      Invalid usernames: {invalidApprovers.join(', ')}
+                    </div>
+                  )}
+                </div>
               </div>
               <div style={{ display:'flex', gap:'0.75rem', justifyContent:'flex-end' }}>
                 <Button design="Default" onClick={closeModal}>Cancel</Button>
@@ -539,9 +887,9 @@ function ApproversMaintenanceTab() {
             { key:'maintenance_strategy', label:'Strategy' },
             { key:'maintenance_days',     label:'Days' },
             { key:'approval_type',        label:'Approval Type' },
-            { key:'approver_username',    label:'Approver Username' }
+            { key:'approver_summary',     label:'Approvers' }
           ]}
-          rows={rows.filter(r => r.active)}
+          rows={groupedRows}
           onEdit={edit}
           onDelete={remove}
         />
@@ -567,13 +915,33 @@ function UsersTab({ currentUser }) {
   useEffect(() => { load(); }, []);
 
   const saveUser = async () => {
-    if (!form.username) return;
+    const username = normalizeText(form.username);
+    if (!username) {
+      setMsgType('Negative');
+      setMsg('Username is required.');
+      return;
+    }
+
     const isEditing = userModalMode === 'edit' && editingUsername;
+    const email = normalizeText(form.email);
+    if (!isEditing && !email) {
+      setMsgType('Negative');
+      setMsg('Email is required when adding a user.');
+      return;
+    }
+
+    const duplicate = users.find(u => sameText(u.username, username) && (!isEditing || !sameText(u.username, editingUsername)));
+    if (duplicate) {
+      setMsgType('Negative');
+      setMsg(`User "${username}" already exists.`);
+      return;
+    }
+
     try {
       const response = await fetch(isEditing ? `/api/admin/users/${editingUsername}` : '/api/admin/users', {
         method: isEditing ? 'PUT' : 'POST',
         headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(form)
+        body: JSON.stringify({ ...form, username, email })
       });
       const res = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(res.error || 'Failed to save user');
@@ -672,7 +1040,7 @@ function UsersTab({ currentUser }) {
               <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
                 <div><Label>Username*</Label><Input value={form.username} onInput={e => setForm(p => ({ ...p, username: e.target.value }))} style={{ width:'100%' }} disabled={userModalMode === 'edit'} /></div>
                 <div><Label>Display Name</Label><Input value={form.displayName} onInput={e => setForm(p => ({ ...p, displayName: e.target.value }))} style={{ width:'100%' }} /></div>
-                <div><Label>Email</Label><Input value={form.email} onInput={e => setForm(p => ({ ...p, email: e.target.value }))} style={{ width:'100%' }} /></div>
+                <div><Label>{userModalMode === 'add' ? 'Email*' : 'Email'}</Label><Input value={form.email} onInput={e => setForm(p => ({ ...p, email: e.target.value }))} style={{ width:'100%' }} required={userModalMode === 'add'} /></div>
                 <div>
                   <Label>Role</Label>
                   <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, role: e.detail.selectedOption.dataset.value }))}>
@@ -737,18 +1105,49 @@ function DocumentTypesTab() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
   const [msg, setMsg] = useState('');
+  const [msgType, setMsgType] = useState('Positive');
+  const [editingCode, setEditingCode] = useState(null);
 
   const loadTypes  = () => fetch('/api/admin/config/doc-types').then(r => r.json()).then(setTypes);
   useEffect(() => { loadTypes(); }, []);
 
   const saveType = async () => {
-    if (!typeForm.code) return;
-    await fetch('/api/admin/config/doc-types', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(typeForm) });
-    setTypeForm({ code:'', description:'' });
-    setIsModalOpen(false);
-    setModalMode('add');
-    setMsg('Document type saved.'); setTimeout(() => setMsg(''), 3000);
-    loadTypes();
+    const code = normalizeCode(typeForm.code);
+    const description = normalizeText(typeForm.description);
+    if (!code) {
+      setMsgType('Negative');
+      setMsg('Code is required.');
+      return;
+    }
+
+    const isEditing = modalMode === 'edit' && editingCode;
+    const duplicate = types.find(t => sameText(t.code, code) && (!isEditing || !sameText(t.code, editingCode)));
+    if (duplicate) {
+      setMsgType('Negative');
+      setMsg(`Document type "${code}" already exists.`);
+      return;
+    }
+
+    try {
+      const response = await fetch(isEditing ? `/api/admin/config/doc-types/${editingCode}` : '/api/admin/config/doc-types', {
+        method: isEditing ? 'PUT' : 'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ code, description })
+      });
+      const res = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(res.error || 'Failed to save document type');
+      setMsgType('Positive');
+      setTypeForm({ code:'', description:'' });
+      setEditingCode(null);
+      setIsModalOpen(false);
+      setModalMode('add');
+      setMsg('Document type saved.');
+      setTimeout(() => setMsg(''), 3000);
+      loadTypes();
+    } catch (err) {
+      setMsgType('Negative');
+      setMsg(err.message);
+    }
   };
 
   const delType = async (code) => {
@@ -758,24 +1157,27 @@ function DocumentTypesTab() {
 
   const editType = (row) => {
     setModalMode('edit');
+    setEditingCode(row.code || null);
     setTypeForm({ code: row.code || '', description: row.description || '' });
     setIsModalOpen(true);
   };
 
   const openAddModal = () => {
     setModalMode('add');
+    setEditingCode(null);
     setTypeForm({ code:'', description:'' });
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setTypeForm({ code:'', description:'' });
+    setEditingCode(null);
     setIsModalOpen(false);
   };
 
   return (
     <div>
-      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      {msg && <MessageStrip design={msgType} style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
       <Card>
         <div style={{ padding:'1.25rem' }}>
           <Title level="H5" style={{ marginBottom:'1rem' }}>Document Types</Title>
@@ -788,7 +1190,7 @@ function DocumentTypesTab() {
                 <div style={{ padding:'1.25rem' }}>
                   <Title level="H5" style={{ marginBottom:'1rem' }}>{modalMode === 'edit' ? 'Edit Document Type' : 'Add Document Type'}</Title>
                   <div style={{ display:'flex', gap:'0.75rem', marginBottom:'1rem', flexWrap:'wrap' }}>
-                    <Input placeholder="Code" value={typeForm.code} onInput={e => setTypeForm(p => ({ ...p, code: e.target.value }))} style={{ width:'90px' }} />
+                    <Input placeholder="Code" value={typeForm.code} onInput={e => setTypeForm(p => ({ ...p, code: e.target.value }))} style={{ width:'90px' }} disabled={modalMode === 'edit'} />
                     <Input placeholder="Description" value={typeForm.description} onInput={e => setTypeForm(p => ({ ...p, description: e.target.value }))} style={{ flex:1, minWidth:'140px' }} />
                   </div>
                   <div style={{ display:'flex', gap:'0.75rem', justifyContent:'flex-end' }}>
@@ -820,19 +1222,56 @@ function DocumentGroupsTab() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add');
   const [msg, setMsg] = useState('');
+  const [msgType, setMsgType] = useState('Positive');
+  const [editingCode, setEditingCode] = useState(null);
 
   const loadTypes  = () => fetch('/api/admin/config/doc-types').then(r => r.json()).then(setTypes);
   const loadGroups = () => fetch('/api/admin/config/doc-groups').then(r => r.json()).then(setGroups);
   useEffect(() => { loadTypes(); loadGroups(); }, []);
 
   const saveGroup = async () => {
-    if (!groupForm.code || !groupForm.docType) return;
-    await fetch('/api/admin/config/doc-groups', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(groupForm) });
-    setGroupForm(emptyGroupForm);
-    setIsModalOpen(false);
-    setModalMode('add');
-    setMsg('Document group saved.'); setTimeout(() => setMsg(''), 3000);
-    loadGroups();
+    const docType = normalizeCode(groupForm.docType);
+    const code = normalizeCode(groupForm.code);
+    const description = normalizeText(groupForm.description);
+    if (!code || !docType) {
+      setMsgType('Negative');
+      setMsg('Document type and code are required.');
+      return;
+    }
+
+    const isEditing = modalMode === 'edit' && editingCode;
+    const duplicate = groups.find(g => sameText(g.code, code) && (!isEditing || !sameText(g.code, editingCode)));
+    if (duplicate) {
+      setMsgType('Negative');
+      setMsg(`Document group "${code}" already exists.`);
+      return;
+    }
+
+    try {
+      const response = await fetch(isEditing ? `/api/admin/config/doc-groups/${editingCode}` : '/api/admin/config/doc-groups', {
+        method: isEditing ? 'PUT' : 'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          docType,
+          code,
+          description,
+          workflowRequired: Boolean(groupForm.workflowRequired)
+        })
+      });
+      const res = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(res.error || 'Failed to save document group');
+      setMsgType('Positive');
+      setGroupForm(emptyGroupForm);
+      setEditingCode(null);
+      setIsModalOpen(false);
+      setModalMode('add');
+      setMsg('Document group saved.');
+      setTimeout(() => setMsg(''), 3000);
+      loadGroups();
+    } catch (err) {
+      setMsgType('Negative');
+      setMsg(err.message);
+    }
   };
 
   const delGroup = async (code) => {
@@ -842,6 +1281,7 @@ function DocumentGroupsTab() {
 
   const editGroup = (row) => {
     setModalMode('edit');
+    setEditingCode(row.code || null);
     setGroupForm({
       docType: row.doc_type || '',
       code: row.code || '',
@@ -853,18 +1293,20 @@ function DocumentGroupsTab() {
 
   const openAddModal = () => {
     setModalMode('add');
+    setEditingCode(null);
     setGroupForm(emptyGroupForm);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setGroupForm(emptyGroupForm);
+    setEditingCode(null);
     setIsModalOpen(false);
   };
 
   return (
     <div>
-      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      {msg && <MessageStrip design={msgType} style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
       <Card>
         <div style={{ padding:'1.25rem' }}>
           <Title level="H5" style={{ marginBottom:'1rem' }}>Document Groups</Title>
@@ -883,7 +1325,7 @@ function DocumentGroupsTab() {
                         {types.map(t => <Option key={t.code} data-value={t.code} selected={groupForm.docType === t.code}>{t.code}</Option>)}
                       </Select>
                     </div>
-                    <div><Label>Code</Label><Input value={groupForm.code} onInput={e => setGroupForm(p => ({ ...p, code: e.target.value }))} style={{ width:'100%' }} /></div>
+                    <div><Label>Code</Label><Input value={groupForm.code} onInput={e => setGroupForm(p => ({ ...p, code: e.target.value }))} style={{ width:'100%' }} disabled={modalMode === 'edit'} /></div>
                     <div style={{ gridColumn:'1/-1' }}><Label>Description</Label><Input value={groupForm.description} onInput={e => setGroupForm(p => ({ ...p, description: e.target.value }))} style={{ width:'100%' }} /></div>
                     <div style={{ display:'flex', alignItems:'center', gap:'0.5rem' }}>
                       <input type="checkbox" checked={groupForm.workflowRequired} onChange={e => setGroupForm(p => ({ ...p, workflowRequired: e.target.checked }))} />
@@ -955,8 +1397,13 @@ function FieldVisibilityTab() {
             {allGroups.map(g => <Option key={g.code} data-value={g.code}>{g.code}</Option>)}
           </Select>
         </div>
-        <span style={{ fontSize:'0.78rem', color:'#6a6d70' }}>M=Mandatory, O=Optional, MO=Mand/Optional, D=Display, null=Hidden</span>
+        <span style={{ fontSize:'0.78rem', color:'#6a6d70' }}>M=Mandatory, O=Optional, D=Display only, null=Hidden</span>
       </div>
+      <Card style={{ marginBottom:'1rem' }}>
+        <div style={{ padding:'0.9rem 1rem', fontSize:'0.82rem', color:'#4b5563', lineHeight:1.5 }}>
+          <div><strong>Visibility codes:</strong> `M` = Mandatory, `O` = Optional, `D` = Display only, `M*` = Multiple entries with at least one required, `AMO` = Mandatory for approvers only, `MO` = One object-link field in the row is mandatory and related object-link values should stay together in the same row.</div>
+        </div>
+      </Card>
       <div style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
         {displayGroups.map(g => (
           <Card key={g.code}>
@@ -1062,16 +1509,52 @@ function WorkCentersTab() {
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState({ departmentId:'', departmentName:'', description:'' });
   const [msg, setMsg] = useState('');
+  const [msgType, setMsgType] = useState('Positive');
+  const [editingDepartmentId, setEditingDepartmentId] = useState(null);
 
   const load = () => fetch('/api/admin/config/work-centers').then(r => r.json()).then(setRows);
   useEffect(() => { load(); }, []);
 
   const save = async () => {
-    if (!form.departmentId) return;
-    await fetch('/api/admin/config/work-centers', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form) });
-    setForm({ departmentId:'', departmentName:'', description:'' });
-    setMsg('Work center saved.'); setTimeout(() => setMsg(''), 3000);
-    load();
+    const departmentId = normalizeText(form.departmentId);
+    if (!departmentId) {
+      setMsgType('Negative');
+      setMsg('Department ID is required.');
+      return;
+    }
+
+    const isEditing = Boolean(editingDepartmentId);
+    const duplicate = rows.filter(r => r.active).find(
+      r => sameText(r.department_id, departmentId) && (!isEditing || !sameText(r.department_id, editingDepartmentId))
+    );
+    if (duplicate) {
+      setMsgType('Negative');
+      setMsg(`Work center "${departmentId}" already exists.`);
+      return;
+    }
+
+    try {
+      const response = await fetch(isEditing ? `/api/admin/config/work-centers/${editingDepartmentId}` : '/api/admin/config/work-centers', {
+        method: isEditing ? 'PUT' : 'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          departmentId,
+          departmentName: normalizeText(form.departmentName),
+          description: normalizeText(form.description)
+        })
+      });
+      const res = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(res.error || 'Failed to save work center');
+      setMsgType('Positive');
+      setForm({ departmentId:'', departmentName:'', description:'' });
+      setEditingDepartmentId(null);
+      setMsg('Work center saved.');
+      setTimeout(() => setMsg(''), 3000);
+      load();
+    } catch (err) {
+      setMsgType('Negative');
+      setMsg(err.message);
+    }
   };
 
   const remove = async (row) => {
@@ -1080,6 +1563,7 @@ function WorkCentersTab() {
   };
 
   const edit = (row) => {
+    setEditingDepartmentId(row.department_id || null);
     setForm({
       departmentId: row.department_id || '',
       departmentName: row.department_name || '',
@@ -1087,18 +1571,26 @@ function WorkCentersTab() {
     });
   };
 
+  const cancelEdit = () => {
+    setEditingDepartmentId(null);
+    setForm({ departmentId:'', departmentName:'', description:'' });
+  };
+
   return (
     <div>
-      {msg && <MessageStrip design="Positive" style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
+      {msg && <MessageStrip design={msgType} style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
       <Card style={{ marginBottom:'1.5rem' }}>
         <div style={{ padding:'1.25rem' }}>
-          <Title level="H5" style={{ marginBottom:'1rem' }}>Add / Edit Department (Work Center)</Title>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>{editingDepartmentId ? 'Edit Department (Work Center)' : 'Add Department (Work Center)'}</Title>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
-            <div><Label>Department ID*</Label><Input value={form.departmentId} onInput={e => setForm(p => ({ ...p, departmentId: e.target.value }))} placeholder="e.g. 1813" style={{ width:'100%' }} /></div>
+            <div><Label>Department ID*</Label><Input value={form.departmentId} onInput={e => setForm(p => ({ ...p, departmentId: e.target.value }))} placeholder="e.g. 1813" style={{ width:'100%' }} disabled={Boolean(editingDepartmentId)} /></div>
             <div><Label>Name</Label><Input value={form.departmentName} onInput={e => setForm(p => ({ ...p, departmentName: e.target.value }))} style={{ width:'100%' }} /></div>
             <div><Label>Description</Label><Input value={form.description} onInput={e => setForm(p => ({ ...p, description: e.target.value }))} style={{ width:'100%' }} /></div>
           </div>
-          <Button design="Emphasized" onClick={save}>Save</Button>
+          <div style={{ display:'flex', gap:'0.75rem' }}>
+            <Button design="Emphasized" onClick={save}>Save</Button>
+            {editingDepartmentId && <Button design="Default" onClick={cancelEdit}>Cancel</Button>}
+          </div>
         </div>
       </Card>
       <Card>
@@ -1119,7 +1611,7 @@ function WorkCentersTab() {
 
 // ── Main Admin Component ──────────────────────────────────────────────────────
 export default function Admin() {
-  const { currentUser } = useAuth();
+  const { currentUser, users } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -1161,15 +1653,28 @@ export default function Admin() {
     { id:'work-centers',      label:'Work Centers' }
   ];
 
+  const orderedTabs = [
+    tabs.find((tab) => tab.id === 'overview'),
+    tabs.find((tab) => tab.id === 'workflows'),
+    tabs.find((tab) => tab.id === 'users'),
+    tabs.find((tab) => tab.id === 'approvers-disc'),
+    tabs.find((tab) => tab.id === 'approvers-maint'),
+    tabs.find((tab) => tab.id === 'doc-types'),
+    tabs.find((tab) => tab.id === 'doc-groups'),
+    tabs.find((tab) => tab.id === 'field-visibility'),
+    tabs.find((tab) => tab.id === 'attachment-naming'),
+    tabs.find((tab) => tab.id === 'work-centers')
+  ].filter(Boolean);
+
   return (
     <div className="page-container">
       <Title level="H2" style={{ marginBottom:'1.5rem' }}>Administration</Title>
-      <TabBar tabs={tabs} active={activeTab} onChange={setActiveTab} />
+      <TabBar tabs={orderedTabs} active={activeTab} onChange={setActiveTab} />
 
       {activeTab === 'overview'          && <OverviewTab stats={stats} />}
       {activeTab === 'workflows'         && <WorkflowTab currentUser={currentUser} />}
-      {activeTab === 'approvers-disc'    && <ApproversDisciplineTab />}
-      {activeTab === 'approvers-maint'   && <ApproversMaintenanceTab />}
+      {activeTab === 'approvers-disc'    && <ApproversDisciplineTab users={users} />}
+      {activeTab === 'approvers-maint'   && <ApproversMaintenanceTab users={users} />}
       {activeTab === 'users'             && <UsersTab currentUser={currentUser} />}
       {activeTab === 'doc-types'         && <DocumentTypesTab />}
       {activeTab === 'doc-groups'        && <DocumentGroupsTab />}

@@ -9,12 +9,23 @@ function getDocTypes() {
   return db.prepare('SELECT * FROM config_doc_types WHERE active = 1 ORDER BY code').all();
 }
 
-function upsertDocType(code, description) {
+function getDocTypeByCode(code) {
+  return db.prepare('SELECT * FROM config_doc_types WHERE code = ?').get(code);
+}
+
+function createDocType(code, description) {
   db.prepare(`
     INSERT INTO config_doc_types (code, description, active)
     VALUES (?, ?, 1)
-    ON CONFLICT(code) DO UPDATE SET description=excluded.description, active=1
   `).run(code, description);
+}
+
+function updateDocType(currentCode, nextCode, description) {
+  db.prepare(`
+    UPDATE config_doc_types
+    SET code = ?, description = ?, active = 1
+    WHERE code = ?
+  `).run(nextCode, description, currentCode);
 }
 
 function deleteDocType(code) {
@@ -32,14 +43,23 @@ function getDocGroups(docType) {
   return db.prepare('SELECT * FROM config_doc_groups WHERE active = 1 ORDER BY doc_type, code').all();
 }
 
-function upsertDocGroup(docType, code, description, workflowRequired) {
+function getDocGroupByCode(code) {
+  return db.prepare('SELECT * FROM config_doc_groups WHERE code = ?').get(code);
+}
+
+function createDocGroup(docType, code, description, workflowRequired) {
   db.prepare(`
     INSERT INTO config_doc_groups (doc_type, code, description, workflow_required, active)
     VALUES (?, ?, ?, ?, 1)
-    ON CONFLICT(code) DO UPDATE SET
-      doc_type=excluded.doc_type, description=excluded.description,
-      workflow_required=excluded.workflow_required, active=1
   `).run(docType, code, description, workflowRequired ? 1 : 0);
+}
+
+function updateDocGroup(currentCode, docType, nextCode, description, workflowRequired) {
+  db.prepare(`
+    UPDATE config_doc_groups
+    SET doc_type = ?, code = ?, description = ?, workflow_required = ?, active = 1
+    WHERE code = ?
+  `).run(docType, nextCode, description, workflowRequired ? 1 : 0, currentCode);
 }
 
 function deleteDocGroup(code) {
@@ -125,15 +145,23 @@ function getWorkCenters() {
   return db.prepare('SELECT * FROM config_work_centers ORDER BY department_id').all();
 }
 
-function upsertWorkCenter(departmentId, departmentName, description) {
+function getWorkCenterById(departmentId) {
+  return db.prepare('SELECT * FROM config_work_centers WHERE department_id = ?').get(departmentId);
+}
+
+function createWorkCenter(departmentId, departmentName, description) {
   db.prepare(`
     INSERT INTO config_work_centers (department_id, department_name, description, active)
     VALUES (?, ?, ?, 1)
-    ON CONFLICT(department_id) DO UPDATE SET
-      department_name=excluded.department_name,
-      description=excluded.description,
-      active=1
   `).run(departmentId, departmentName, description || null);
+}
+
+function updateWorkCenter(currentDepartmentId, departmentId, departmentName, description) {
+  db.prepare(`
+    UPDATE config_work_centers
+    SET department_id = ?, department_name = ?, description = ?, active = 1
+    WHERE department_id = ?
+  `).run(departmentId, departmentName, description || null, currentDepartmentId);
 }
 
 function deleteWorkCenter(departmentId) {
@@ -214,6 +242,22 @@ function replaceApproversDisciplineForDept(departmentId, approvalType, approverU
   }
 }
 
+function deleteApproverDisciplineGroup(departmentId, approvalType) {
+  db.prepare(
+    'DELETE FROM workflow_approvers_discipline WHERE department_id = ? AND approval_type = ?'
+  ).run(departmentId, approvalType);
+}
+
+function replaceApproverDisciplineGroup(originalDepartmentId, originalApprovalType, departmentId, approvalType, approverUsernames) {
+  const run = db.transaction(() => {
+    if (originalDepartmentId !== departmentId || originalApprovalType !== approvalType) {
+      deleteApproverDisciplineGroup(originalDepartmentId, originalApprovalType);
+    }
+    replaceApproversDisciplineForDept(departmentId, approvalType, approverUsernames);
+  });
+  run();
+}
+
 function getApproversByMaintenance() {
   return db.prepare(
     'SELECT * FROM workflow_approvers_maintenance WHERE active = 1 ORDER BY maintenance_strategy, approval_type'
@@ -240,12 +284,56 @@ function updateApproverMaintenance(id, data) {
   `).run(data.maintenanceStrategy || null, data.maintenanceDays || null, data.approvalType, data.approverUsername, id);
 }
 
+function deleteApproverMaintenanceGroup(data) {
+  db.prepare(`
+    DELETE FROM workflow_approvers_maintenance
+    WHERE COALESCE(maintenance_strategy, '') = ?
+      AND COALESCE(maintenance_days, '') = ?
+      AND approval_type = ?
+  `).run(data.maintenanceStrategy || '', data.maintenanceDays ?? '', data.approvalType);
+}
+
+function replaceApproverMaintenanceGroup(originalData, nextData) {
+  const run = db.transaction(() => {
+    const originalKeyChanged =
+      (originalData.maintenanceStrategy || '') !== (nextData.maintenanceStrategy || '') ||
+      (originalData.maintenanceDays ?? '') !== (nextData.maintenanceDays ?? '') ||
+      originalData.approvalType !== nextData.approvalType;
+
+    if (originalKeyChanged) {
+      deleteApproverMaintenanceGroup(originalData);
+    }
+
+    deleteApproverMaintenanceGroup(nextData);
+
+    const insert = db.prepare(`
+      INSERT INTO workflow_approvers_maintenance
+        (maintenance_strategy, maintenance_days, approval_type, approver_username, active)
+      VALUES (?, ?, ?, ?, 1)
+    `);
+
+    for (const username of nextData.approverUsernames) {
+      insert.run(
+        nextData.maintenanceStrategy || null,
+        nextData.maintenanceDays ?? null,
+        nextData.approvalType,
+        username
+      );
+    }
+  });
+  run();
+}
+
 module.exports = {
   getDocTypes,
-  upsertDocType,
+  getDocTypeByCode,
+  createDocType,
+  updateDocType,
   deleteDocType,
   getDocGroups,
-  upsertDocGroup,
+  getDocGroupByCode,
+  createDocGroup,
+  updateDocGroup,
   deleteDocGroup,
   isWorkflowRequired,
   getFieldVisibility,
@@ -254,7 +342,9 @@ module.exports = {
   getAttachmentNaming,
   replaceAttachmentNaming,
   getWorkCenters,
-  upsertWorkCenter,
+  getWorkCenterById,
+  createWorkCenter,
+  updateWorkCenter,
   deleteWorkCenter,
   getEmailConfig,
   setEmailConfig,
@@ -264,8 +354,12 @@ module.exports = {
   deleteApproverDiscipline,
   updateApproverDiscipline,
   replaceApproversDisciplineForDept,
+  deleteApproverDisciplineGroup,
+  replaceApproverDisciplineGroup,
   getApproversByMaintenance,
   upsertApproverMaintenance,
   deleteApproverMaintenance,
-  updateApproverMaintenance
+  updateApproverMaintenance,
+  deleteApproverMaintenanceGroup,
+  replaceApproverMaintenanceGroup
 };

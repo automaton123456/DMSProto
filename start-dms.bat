@@ -33,6 +33,26 @@ if not exist "%RB%\node_modules" (
     echo   Installing backend dependencies...
     cd /d "%RB%"
     call npm install
+    if errorlevel 1 (
+        echo.
+        echo   ERROR: Backend dependency install failed.
+        pause
+        exit /b 1
+    )
+    echo.
+)
+
+rem Make sure the SQLite driver is present before starting the backend
+if not exist "%RB%\node_modules\better-sqlite3\package.json" (
+    echo   Installing missing backend dependency: better-sqlite3...
+    cd /d "%RB%"
+    call npm install
+    if errorlevel 1 (
+        echo.
+        echo   ERROR: Backend dependency install failed.
+        pause
+        exit /b 1
+    )
     echo.
 )
 
@@ -41,6 +61,12 @@ if not exist "%RB%\client\node_modules" (
     echo   Installing DMS RB client dependencies...
     cd /d "%RB%"
     call npm run install:client
+    if errorlevel 1 (
+        echo.
+        echo   ERROR: Client dependency install failed.
+        pause
+        exit /b 1
+    )
     echo.
 )
 
