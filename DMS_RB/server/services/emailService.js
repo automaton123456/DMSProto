@@ -122,7 +122,10 @@ function composeHtml({ greeting, intro, details, ctaLabel }) {
 }
 
 async function send({ to, subject, text, html }) {
-  if (!to) return;
+  if (!to) {
+    console.warn(`[Email] Skipping "${subject}" because no recipient email address was provided.`);
+    return;
+  }
 
   const cfg = resolveConfig();
   if (!cfg.enabled) {

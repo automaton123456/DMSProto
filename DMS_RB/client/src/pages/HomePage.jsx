@@ -15,6 +15,7 @@ const TILES = [
   { id: 'inbox',    title: 'DMS Inbox',            subtitle: 'Items pending your approval',    icon: mdiTrayArrowDown,                  variant: 'warning',  route: '/inbox',           countKey: 'inboxCount' },
   { id: 'my-docs',  title: 'My DMS Forms',         subtitle: 'Your submitted documents',       icon: mdiFileDocumentMultipleOutline,   variant: 'success',  route: '/my-documents',    countKey: 'myDocsCount' },
   { id: 'report',   title: 'DMS Report',           subtitle: 'Search all DMS documents',       icon: mdiChartBoxOutline,               variant: 'info',     route: '/report',          countKey: null },
+  { id: 'completed-report', title: 'Completed DMS Report', subtitle: 'Search approved workflow documents', icon: mdiChartBoxOutline, variant: 'secondary', route: '/completed-report', countKey: null },
 ];
 
 export default function HomePage() {

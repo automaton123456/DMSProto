@@ -38,6 +38,9 @@ router.put('/:id', (req, res) => {
     if (!existing) return res.status(404).json({ error: 'Document not found' });
     const { currentUser, action, ...docData } = req.body;
     if (!currentUser) return res.status(400).json({ error: 'currentUser required' });
+    if (!svc.canEditDocument(existing, currentUser)) {
+      return res.status(403).json({ error: 'Not authorized to edit this document' });
+    }
     const doc = svc.updateDocument(req.params.id, docData, currentUser, action);
     res.json(doc);
   } catch (err) {
@@ -113,6 +116,11 @@ router.post('/:id/attachments', upload.array('files', 20), (req, res) => {
     const doc = svc.getDocumentById(req.params.id);
     if (!doc) return res.status(404).json({ error: 'Document not found' });
     const { currentUser } = req.body;
+    if (!currentUser) return res.status(400).json({ error: 'currentUser required' });
+    if (!svc.canEditDocument(doc, currentUser)) {
+      return res.status(403).json({ error: 'Not authorized to edit attachments for this document' });
+    }
+    const user = svc.getUserByUsername(currentUser);
 
     const docDir = path.join(STORAGE_DIR, doc.rig, doc.docType, doc.docGroup, doc.documentId);
     if (!fs.existsSync(docDir)) fs.mkdirSync(docDir, { recursive: true });
@@ -137,6 +145,22 @@ router.post('/:id/attachments', upload.array('files', 20), (req, res) => {
     });
 
     const updated = svc.getDocumentById(req.params.id);
+    histRepo.add({
+      documentId: doc.documentId,
+      version: updated.version,
+      changedBy: currentUser,
+      changedByName: user?.displayName || currentUser,
+      changeType: 'attachment_add',
+      changeSummary: `Attachments added by ${user?.displayName || currentUser}: ${addedFiles.join(', ')}`,
+      previousData: {
+        changes: [{
+          field: 'attachments',
+          label: 'Attachments',
+          before: 'No new files',
+          after: addedFiles.join(', ')
+        }]
+      }
+    });
     res.json({ attachments: updated.attachments, added: addedFiles });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -148,6 +172,12 @@ router.delete('/:id/attachments/:filename', (req, res) => {
   try {
     const doc = svc.getDocumentById(req.params.id);
     if (!doc) return res.status(404).json({ error: 'Document not found' });
+    const { currentUser } = req.body || {};
+    if (!currentUser) return res.status(400).json({ error: 'currentUser required' });
+    if (!svc.canEditDocument(doc, currentUser)) {
+      return res.status(403).json({ error: 'Not authorized to edit attachments for this document' });
+    }
+    const user = svc.getUserByUsername(currentUser);
 
     const filename = req.params.filename;
     const docDir   = path.join(STORAGE_DIR, doc.rig, doc.docType, doc.docGroup, doc.documentId);
@@ -157,6 +187,22 @@ router.delete('/:id/attachments/:filename', (req, res) => {
     docRepo.removeAttachment(doc.documentId, filename);
 
     const updated = svc.getDocumentById(req.params.id);
+    histRepo.add({
+      documentId: doc.documentId,
+      version: updated.version,
+      changedBy: currentUser,
+      changedByName: user?.displayName || currentUser,
+      changeType: 'attachment_remove',
+      changeSummary: `Attachment removed by ${user?.displayName || currentUser}: ${filename}`,
+      previousData: {
+        changes: [{
+          field: 'attachments',
+          label: 'Attachments',
+          before: filename,
+          after: 'Removed'
+        }]
+      }
+    });
     res.json({ attachments: updated.attachments });
   } catch (err) {
     res.status(500).json({ error: err.message });

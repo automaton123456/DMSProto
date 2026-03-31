@@ -1027,7 +1027,7 @@ function UsersTab({ currentUser }) {
             <Button design="Default" onClick={() => fileRef.current?.click()} disabled={uploading}>
               {uploading ? 'Uploading…' : 'Upload Excel'}
             </Button>
-            <span style={{ fontSize:'0.78rem', color:'#6a6d70' }}>Columns: Username | Display Name | Email | Role</span>
+            <span style={{ fontSize:'0.78rem', color:'#6a6d70' }}>Columns: Username | Display Name | Email | Role (user, editor, admin)</span>
             <input ref={fileRef} type="file" accept=".xlsx,.xls" style={{ display:'none' }} onChange={handleUpload} />
           </div>
         </div>
@@ -1045,6 +1045,7 @@ function UsersTab({ currentUser }) {
                   <Label>Role</Label>
                   <Select style={{ width:'100%' }} onChange={e => setForm(p => ({ ...p, role: e.detail.selectedOption.dataset.value }))}>
                     <Option data-value="user" selected={form.role === 'user'}>User</Option>
+                    <Option data-value="editor" selected={form.role === 'editor'}>Editor</Option>
                     <Option data-value="admin" selected={form.role === 'admin'}>Admin</Option>
                   </Select>
                 </div>
@@ -1074,7 +1075,14 @@ function UsersTab({ currentUser }) {
                   <td style={{ padding:'0.6rem 0.9rem' }}>{u.displayName}</td>
                   <td style={{ padding:'0.6rem 0.9rem', color:'#6a6d70' }}>{u.email}</td>
                   <td style={{ padding:'0.6rem 0.9rem' }}>
-                    <span style={{ background: u.role === 'admin' ? '#e3f2fd' : '#f0f0f0', color: u.role === 'admin' ? '#0070f2' : '#666', padding:'0.2rem 0.6rem', borderRadius:'1rem', fontSize:'0.72rem', fontWeight:600 }}>
+                    <span style={{
+                      background: u.role === 'admin' ? '#e3f2fd' : u.role === 'editor' ? '#fff3cd' : '#f0f0f0',
+                      color: u.role === 'admin' ? '#0070f2' : u.role === 'editor' ? '#8a6d1f' : '#666',
+                      padding:'0.2rem 0.6rem',
+                      borderRadius:'1rem',
+                      fontSize:'0.72rem',
+                      fontWeight:600
+                    }}>
                       {u.role}
                     </span>
                   </td>
@@ -1082,9 +1090,17 @@ function UsersTab({ currentUser }) {
                     <div style={{ display:'flex', gap:'0.5rem', flexWrap:'wrap' }}>
                       <Button design="Default" onClick={() => editUser(u)}>Edit</Button>
                       {u.username !== currentUser.username && (
-                        <Button design="Transparent" onClick={() => updateRole(u.username, u.role === 'admin' ? 'user' : 'admin')}>
-                          {u.role === 'admin' ? 'Revoke Admin' : 'Make Admin'}
-                        </Button>
+                        <>
+                          <Button design={u.role === 'user' ? 'Emphasized' : 'Transparent'} onClick={() => updateRole(u.username, 'user')} disabled={u.role === 'user'}>
+                            Make User
+                          </Button>
+                          <Button design={u.role === 'editor' ? 'Emphasized' : 'Transparent'} onClick={() => updateRole(u.username, 'editor')} disabled={u.role === 'editor'}>
+                            Make Editor
+                          </Button>
+                          <Button design={u.role === 'admin' ? 'Emphasized' : 'Transparent'} onClick={() => updateRole(u.username, 'admin')} disabled={u.role === 'admin'}>
+                            Make Admin
+                          </Button>
+                        </>
                       )}
                     </div>
                   </td>
@@ -1504,7 +1520,7 @@ function AttachmentNamingTab() {
   );
 }
 
-// ── Work Centers ──────────────────────────────────────────────────────────────
+// ── Departments ───────────────────────────────────────────────────────────────
 function WorkCentersTab() {
   const [rows, setRows] = useState([]);
   const [form, setForm] = useState({ departmentId:'', departmentName:'', description:'' });
@@ -1529,7 +1545,7 @@ function WorkCentersTab() {
     );
     if (duplicate) {
       setMsgType('Negative');
-      setMsg(`Work center "${departmentId}" already exists.`);
+      setMsg(`Department "${departmentId}" already exists.`);
       return;
     }
 
@@ -1544,11 +1560,11 @@ function WorkCentersTab() {
         })
       });
       const res = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(res.error || 'Failed to save work center');
+      if (!response.ok) throw new Error(res.error || 'Failed to save department');
       setMsgType('Positive');
       setForm({ departmentId:'', departmentName:'', description:'' });
       setEditingDepartmentId(null);
-      setMsg('Work center saved.');
+      setMsg('Department saved.');
       setTimeout(() => setMsg(''), 3000);
       load();
     } catch (err) {
@@ -1581,7 +1597,7 @@ function WorkCentersTab() {
       {msg && <MessageStrip design={msgType} style={{ marginBottom:'1rem' }} onClose={() => setMsg('')}>{msg}</MessageStrip>}
       <Card style={{ marginBottom:'1.5rem' }}>
         <div style={{ padding:'1.25rem' }}>
-          <Title level="H5" style={{ marginBottom:'1rem' }}>{editingDepartmentId ? 'Edit Department (Work Center)' : 'Add Department (Work Center)'}</Title>
+          <Title level="H5" style={{ marginBottom:'1rem' }}>{editingDepartmentId ? 'Edit Department' : 'Add Department'}</Title>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px, 1fr))', gap:'1rem', marginBottom:'1rem' }}>
             <div><Label>Department ID*</Label><Input value={form.departmentId} onInput={e => setForm(p => ({ ...p, departmentId: e.target.value }))} placeholder="e.g. 1813" style={{ width:'100%' }} disabled={Boolean(editingDepartmentId)} /></div>
             <div><Label>Name</Label><Input value={form.departmentName} onInput={e => setForm(p => ({ ...p, departmentName: e.target.value }))} style={{ width:'100%' }} /></div>
@@ -1650,7 +1666,7 @@ export default function Admin() {
     { id:'doc-groups',        label:'Document Groups' },
     { id:'field-visibility',  label:'Field Visibility' },
     { id:'attachment-naming', label:'Attachment Naming' },
-    { id:'work-centers',      label:'Work Centers' }
+    { id:'work-centers',      label:'Departments' }
   ];
 
   const orderedTabs = [

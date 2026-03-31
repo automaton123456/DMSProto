@@ -127,8 +127,16 @@ function query(filters = {}) {
   const wheres = [];
   const params = [];
 
-  // Join object links for work order / equipment filters
-  if (filters.workOrder || filters.emAssetNumber) {
+  const hasObjectLinkFilters = Boolean(
+    filters.workOrder ||
+    filters.workOrderDescription ||
+    filters.emAssetNumber ||
+    filters.equipmentDescription ||
+    filters.owningDepartmentId
+  );
+
+  // Join object links for object link filters
+  if (hasObjectLinkFilters) {
     joins.push('LEFT JOIN dms_object_links ol ON ol.document_id = h.document_id');
   }
 
@@ -137,8 +145,8 @@ function query(filters = {}) {
     params.push(`%${filters.documentId}%`);
   }
   if (filters.originator) {
-    wheres.push('h.originator_username = ?');
-    params.push(filters.originator);
+    wheres.push('(h.originator_username LIKE ? OR h.originator LIKE ?)');
+    params.push(`%${filters.originator}%`, `%${filters.originator}%`);
   }
   if (filters.status) {
     const statuses = Array.isArray(filters.status) ? filters.status : [filters.status];
@@ -164,9 +172,21 @@ function query(filters = {}) {
     wheres.push('h.add_desc LIKE ?');
     params.push(`%${filters.description}%`);
   }
+  if (filters.docDate) {
+    wheres.push('h.doc_date LIKE ?');
+    params.push(`%${filters.docDate}%`);
+  }
   if (filters.manuName) {
     wheres.push('h.manu_name LIKE ?');
     params.push(`%${filters.manuName}%`);
+  }
+  if (filters.manuSerial) {
+    wheres.push('h.manu_serial LIKE ?');
+    params.push(`%${filters.manuSerial}%`);
+  }
+  if (filters.alertNum) {
+    wheres.push('h.alert_num LIKE ?');
+    params.push(`%${filters.alertNum}%`);
   }
   if (filters.certAuth) {
     wheres.push('h.cert_auth LIKE ?');
@@ -175,6 +195,10 @@ function query(filters = {}) {
   if (filters.certNum) {
     wheres.push('h.cert_num LIKE ?');
     params.push(`%${filters.certNum}%`);
+  }
+  if (filters.docLoc) {
+    wheres.push('h.doc_loc LIKE ?');
+    params.push(`%${filters.docLoc}%`);
   }
   if (filters.dateFrom) {
     wheres.push('h.created_date >= ?');
@@ -188,9 +212,21 @@ function query(filters = {}) {
     wheres.push('ol.work_order LIKE ?');
     params.push(`%${filters.workOrder}%`);
   }
+  if (filters.workOrderDescription) {
+    wheres.push('ol.work_order_description LIKE ?');
+    params.push(`%${filters.workOrderDescription}%`);
+  }
   if (filters.emAssetNumber) {
     wheres.push('(ol.em_asset_number LIKE ? OR ol.equipment_text LIKE ?)');
     params.push(`%${filters.emAssetNumber}%`, `%${filters.emAssetNumber}%`);
+  }
+  if (filters.equipmentDescription) {
+    wheres.push('ol.equipment_description LIKE ?');
+    params.push(`%${filters.equipmentDescription}%`);
+  }
+  if (filters.owningDepartmentId) {
+    wheres.push('ol.owning_department_id LIKE ?');
+    params.push(`%${filters.owningDepartmentId}%`);
   }
   if (filters.fullText) {
     wheres.push('h.search_text LIKE ?');

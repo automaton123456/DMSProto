@@ -11,6 +11,21 @@ const histRepo   = require('../repositories/historyRepository');
 const wfSvc      = require('./workflowService');
 const path       = require('path');
 
+const HISTORY_FIELD_LABELS = {
+  rig: 'Rig',
+  docType: 'Document Type',
+  docGroup: 'Document Group',
+  docDate: 'Document Date',
+  manuName: 'Manufacturer Name',
+  manuSerial: 'Manufacturer Serial No',
+  alertNum: 'Alert Number',
+  certAuth: 'Certifying Authority',
+  certNum: 'Certificate Number',
+  addDesc: 'Additional Description',
+  docLoc: 'Document Location',
+  objectLinks: 'Object Links'
+};
+
 // ── Config helpers ────────────────────────────────────────────────────────────
 
 function getRigs() {
@@ -68,6 +83,116 @@ function getDocGenConfig() {
   };
 }
 
+function getUser(username) {
+  return userRepo.toApiShape(userRepo.getByUsername(username));
+}
+
+function getUserRole(username) {
+  return getUser(username)?.role || 'user';
+}
+
+function isAdminOrEditor(role) {
+  return role === 'admin' || role === 'editor';
+}
+
+function canEditCompletedDocument(doc, currentUser) {
+  if (!doc || !currentUser) return false;
+  return doc.status === 'Approved' && isAdminOrEditor(getUserRole(currentUser));
+}
+
+function canEditDocument(doc, currentUser) {
+  if (!doc || !currentUser) return false;
+
+  const role = getUserRole(currentUser);
+  if (role === 'admin') return true;
+  if (role === 'editor') return doc.status === 'Approved';
+
+  return doc.originatorUsername === currentUser && ['Draft', 'Rejected'].includes(doc.status);
+}
+
+function normalizeValue(value) {
+  if (value === undefined || value === null) return '';
+  if (typeof value === 'string') return value.trim();
+  return value;
+}
+
+function summarizeObjectLinks(links = []) {
+  return (links || [])
+    .map((link) => {
+      const parts = [
+        link.workOrder || '',
+        link.workOrderText || link.workOrderDescription || '',
+        link.equipment || link.em_asset_number || '',
+        link.equipmentText || '',
+        link.equipmentDescription || '',
+        link.owningDepartmentId || link.owning_department_id || ''
+      ].map((part) => String(part || '').trim()).filter(Boolean);
+      return parts.join(' / ');
+    })
+    .filter(Boolean);
+}
+
+function normalizeObjectLinksForComparison(links = []) {
+  return (links || [])
+    .map((link) => ({
+      workOrder: String(link.workOrder || '').trim(),
+      workOrderText: String(link.workOrderText || link.workOrderDescription || '').trim(),
+      equipment: String(link.equipment || link.em_asset_number || '').trim(),
+      equipmentText: String(link.equipmentText || '').trim(),
+      equipmentDescription: String(link.equipmentDescription || '').trim(),
+      owningDepartmentId: String(link.owningDepartmentId || link.owning_department_id || '').trim()
+    }))
+    .filter((link) => Object.values(link).some(Boolean))
+    .sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+}
+
+function describeValue(key, value) {
+  if (key === 'objectLinks') {
+    const summary = summarizeObjectLinks(Array.isArray(value) ? value : []);
+    return summary.length ? summary.join(' | ') : 'blank';
+  }
+  const normalized = normalizeValue(value);
+  return normalized === '' ? 'blank' : String(normalized);
+}
+
+function buildDocumentChanges(existing, nextDoc) {
+  const changes = [];
+
+  const compareField = (key, beforeValue, afterValue) => {
+    const beforeNormalized = normalizeValue(beforeValue);
+    const afterNormalized = normalizeValue(afterValue);
+    if (beforeNormalized === afterNormalized) return;
+    changes.push({
+      field: key,
+      label: HISTORY_FIELD_LABELS[key] || key,
+      before: describeValue(key, beforeValue),
+      after: describeValue(key, afterValue)
+    });
+  };
+
+  compareField('rig', existing.rig, nextDoc.rig);
+  compareField('docType', existing.docType, nextDoc.docType);
+  compareField('docGroup', existing.docGroup, nextDoc.docGroup);
+
+  const classificationKeys = ['docDate', 'manuName', 'manuSerial', 'alertNum', 'certAuth', 'certNum', 'addDesc', 'docLoc'];
+  for (const key of classificationKeys) {
+    compareField(key, existing.classifications?.[key], nextDoc.classifications?.[key]);
+  }
+
+  const previousLinks = normalizeObjectLinksForComparison(existing.objectLinks);
+  const nextLinks = normalizeObjectLinksForComparison(nextDoc.objectLinks);
+  if (JSON.stringify(previousLinks) !== JSON.stringify(nextLinks)) {
+    changes.push({
+      field: 'objectLinks',
+      label: HISTORY_FIELD_LABELS.objectLinks,
+      before: describeValue('objectLinks', existing.objectLinks),
+      after: describeValue('objectLinks', nextDoc.objectLinks)
+    });
+  }
+
+  return changes;
+}
+
 // ── Document CRUD ─────────────────────────────────────────────────────────────
 
 function getNextDocId() { return docRepo.getNextDocId(); }
@@ -82,7 +207,7 @@ function getAllDocuments() {
 }
 
 function createDocument(docData, currentUser, action) {
-  const user  = userRepo.toApiShape(userRepo.getByUsername(currentUser));
+  const user  = getUser(currentUser);
   const docId = getNextDocId();
   const now   = new Date().toISOString().split('T')[0];
 
@@ -150,7 +275,7 @@ function updateDocument(id, docData, currentUser, action) {
   const existing = docRepo.getById(id);
   if (!existing) return null;
 
-  const user     = userRepo.toApiShape(userRepo.getByUsername(currentUser));
+  const user     = getUser(currentUser);
   const userName = user ? user.displayName : currentUser;
   const now      = new Date().toISOString().split('T')[0];
   const newVersion = incrementVersion(existing.version);
@@ -172,6 +297,8 @@ function updateDocument(id, docData, currentUser, action) {
     lastModified:   now,
     version:        newVersion
   };
+
+  const changes = buildDocumentChanges(existing, doc);
 
   if (action === 'submit' || action === 'resubmit') {
     const wfRequired = wfSvc.requiresWorkflow(doc.docGroup);
@@ -211,8 +338,10 @@ function updateDocument(id, docData, currentUser, action) {
     changedBy: currentUser, changedByName: userName,
     changeDate: new Date().toISOString(),
     changeType: action || 'edit',
-    changeSummary: `Document updated by ${userName} (v${newVersion})`,
-    previousData: snapshot
+    changeSummary: changes.length
+      ? `Document updated by ${userName} (v${newVersion}): ${changes.map((change) => change.label).join(', ')}`
+      : `Document updated by ${userName} (v${newVersion})`,
+    previousData: { snapshot, changes }
   });
 
   return docRepo.getById(id);
@@ -263,6 +392,8 @@ module.exports = {
   getStats,
   getInboxForUser,
   buildAttachmentName,
+  canEditDocument,
+  canEditCompletedDocument,
   // Forward user/config/notification methods so existing code continues to work
   getUserByUsername: (u) => userRepo.toApiShape(userRepo.getByUsername(u)),
   getUsers:          ()  => userRepo.getAll().map(userRepo.toApiShape),

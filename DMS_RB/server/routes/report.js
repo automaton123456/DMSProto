@@ -6,7 +6,9 @@ router.get('/', (req, res) => {
   const {
     documentId, rig, docType, docGroup, status, originator,
     dateFrom, dateTo, workOrder, equipment, description,
-    manuName, certAuth, certNum, fullText
+    workOrderDescription, owningDepartmentId,
+    docDate, manuName, manuSerial, alertNum, certAuth, certNum, docLoc,
+    equipmentDescription, fullText
   } = req.query;
 
   const filters = {};
@@ -19,11 +21,18 @@ router.get('/', (req, res) => {
   if (dateFrom)     filters.dateFrom    = dateFrom;
   if (dateTo)       filters.dateTo      = dateTo;
   if (workOrder)    filters.workOrder   = workOrder;
+  if (workOrderDescription) filters.workOrderDescription = workOrderDescription;
   if (equipment)    filters.emAssetNumber = equipment;
+  if (owningDepartmentId) filters.owningDepartmentId = owningDepartmentId;
   if (description)  filters.description  = description;
+  if (docDate)      filters.docDate      = docDate;
   if (manuName)     filters.manuName     = manuName;
+  if (manuSerial)   filters.manuSerial   = manuSerial;
+  if (alertNum)     filters.alertNum     = alertNum;
   if (certAuth)     filters.certAuth     = certAuth;
   if (certNum)      filters.certNum      = certNum;
+  if (docLoc)       filters.docLoc       = docLoc;
+  if (equipmentDescription) filters.equipmentDescription = equipmentDescription;
   if (fullText)     filters.fullText     = fullText;
 
   res.json(svc.queryDocuments(filters));
@@ -32,7 +41,10 @@ router.get('/', (req, res) => {
 router.get('/export', (req, res) => {
   const {
     documentId, rig, docType, docGroup, status, originator,
-    dateFrom, dateTo, workOrder, equipment, description, fullText
+    dateFrom, dateTo, workOrder, equipment, description,
+    workOrderDescription, owningDepartmentId,
+    docDate, manuName, manuSerial, alertNum, certAuth, certNum, docLoc,
+    equipmentDescription, fullText
   } = req.query;
 
   const filters = {};
@@ -45,16 +57,27 @@ router.get('/export', (req, res) => {
   if (dateFrom)    filters.dateFrom    = dateFrom;
   if (dateTo)      filters.dateTo      = dateTo;
   if (workOrder)   filters.workOrder   = workOrder;
+  if (workOrderDescription) filters.workOrderDescription = workOrderDescription;
   if (equipment)   filters.emAssetNumber = equipment;
+  if (owningDepartmentId) filters.owningDepartmentId = owningDepartmentId;
   if (description) filters.description  = description;
+  if (docDate)     filters.docDate      = docDate;
+  if (manuName)    filters.manuName     = manuName;
+  if (manuSerial)  filters.manuSerial   = manuSerial;
+  if (alertNum)    filters.alertNum     = alertNum;
+  if (certAuth)    filters.certAuth     = certAuth;
+  if (certNum)     filters.certNum      = certNum;
+  if (docLoc)      filters.docLoc       = docLoc;
+  if (equipmentDescription) filters.equipmentDescription = equipmentDescription;
   if (fullText)    filters.fullText     = fullText;
 
   const docs = svc.queryDocuments(filters);
 
   const headers = [
     'Document ID', 'Version', 'Rig', 'Doc Type', 'Doc Group', 'Description',
-    'Manufacturer', 'Cert Auth', 'Cert No', 'Doc Date',
-    'Originator', 'Status', 'Date Created', 'Work Order', 'E&M Asset Number'
+    'Manufacturer', 'Manufacturer Serial', 'Alert Number', 'Cert Auth', 'Cert No', 'Doc Date',
+    'Document Location', 'Originator', 'Status', 'Date Created',
+    'Department', 'Work Order', 'Work Order Description', 'Equipment', 'Equipment Description'
   ];
   const rows = docs.map(d => [
     d.documentId,
@@ -64,14 +87,20 @@ router.get('/export', (req, res) => {
     d.docGroup,
     d.classifications?.addDesc || '',
     d.classifications?.manuName || '',
+    d.classifications?.manuSerial || '',
+    d.classifications?.alertNum || '',
     d.classifications?.certAuth || '',
     d.classifications?.certNum || '',
     d.classifications?.docDate || '',
+    d.classifications?.docLoc || '',
     d.originator,
     d.status,
     d.createdDate,
+    d.objectLinks?.[0]?.owningDepartmentId || '',
     d.objectLinks?.[0]?.workOrder || '',
-    d.objectLinks?.[0]?.em_asset_number || ''
+    d.objectLinks?.[0]?.workOrderDescription || '',
+    d.objectLinks?.[0]?.em_asset_number || '',
+    d.objectLinks?.[0]?.equipmentDescription || ''
   ]);
 
   const csv = [headers, ...rows]

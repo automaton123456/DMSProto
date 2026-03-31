@@ -47,12 +47,18 @@ function initWorkflow(doc) {
   };
 }
 
+function queueEmail(action, context) {
+  Promise.resolve(action()).catch((err) => {
+    console.error(`[Email] ${context}: ${err.message}`);
+  });
+}
+
 function notifyApprovers(approvers, doc, message, link, currentStep) {
   for (const username of approvers) {
     notifRepo.add({ recipientUsername: username, type: 'approval_required', message, documentId: doc.documentId, link });
-    const user = userRepo.getByUsername(username);
+    const user = userRepo.toApiShape(userRepo.getByUsername(username));
     if (user) {
-      emailSvc.notifyApprovalRequired(user.email, user.display_name, {
+      queueEmail(() => emailSvc.notifyApprovalRequired(user.email, user.displayName || username, {
         documentId: doc.documentId,
         rig: doc.rig,
         docType: doc.docType,
@@ -61,7 +67,7 @@ function notifyApprovers(approvers, doc, message, link, currentStep) {
         originator: doc.originator,
         currentStep,
         link
-      });
+      }), `Failed to notify approver ${username} for document ${doc.documentId}`);
     }
   }
 }
@@ -111,7 +117,7 @@ async function approveStep(doc, username) {
     });
 
     const originator = userRepo.toApiShape(userRepo.getByUsername(doc.originatorUsername));
-    if (originator) emailSvc.notifyStepApproved(originator.email, originator.displayName, {
+    if (originator) queueEmail(() => emailSvc.notifyStepApproved(originator.email, originator.displayName, {
       documentId: doc.documentId,
       rig: doc.rig,
       docType: doc.docType,
@@ -121,7 +127,7 @@ async function approveStep(doc, username) {
       currentStep: step1.name,
       actionBy: userName,
       link: `/documents/${doc.documentId}`
-    });
+    }), `Failed to notify originator ${doc.originatorUsername} after step approval for document ${doc.documentId}`);
 
   } else if (doc.workflow.currentStep === 'em') {
     const step2 = doc.workflow.steps.find(s => s.step === 2);
@@ -148,7 +154,7 @@ async function approveStep(doc, username) {
     });
 
     const originator = userRepo.toApiShape(userRepo.getByUsername(doc.originatorUsername));
-    if (originator) emailSvc.notifyFullyApproved(originator.email, originator.displayName, {
+    if (originator) queueEmail(() => emailSvc.notifyFullyApproved(originator.email, originator.displayName, {
       documentId: doc.documentId,
       rig: doc.rig,
       docType: doc.docType,
@@ -158,7 +164,7 @@ async function approveStep(doc, username) {
       currentStep: step2.name,
       actionBy: userName,
       link: `/documents/${doc.documentId}`
-    });
+    }), `Failed to notify originator ${doc.originatorUsername} after final approval for document ${doc.documentId}`);
   }
 }
 
@@ -195,7 +201,7 @@ async function rejectStep(doc, username, reason) {
   });
 
   const originator = userRepo.toApiShape(userRepo.getByUsername(doc.originatorUsername));
-  if (originator) emailSvc.notifyRejected(originator.email, originator.displayName, {
+  if (originator) queueEmail(() => emailSvc.notifyRejected(originator.email, originator.displayName, {
     documentId: doc.documentId,
     rig: doc.rig,
     docType: doc.docType,
@@ -206,7 +212,7 @@ async function rejectStep(doc, username, reason) {
     actionBy: userName,
     reason,
     link: `/documents/${doc.documentId}`
-  });
+  }), `Failed to notify originator ${doc.originatorUsername} after rejection for document ${doc.documentId}`);
 }
 
 async function resubmitWorkflow(doc, username) {

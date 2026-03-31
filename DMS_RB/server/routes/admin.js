@@ -9,6 +9,7 @@ const XLSX      = require('xlsx');
 const multer    = require('multer');
 const upload    = multer({ storage: multer.memoryStorage() });
 const APPROVAL_TYPES = new Set(['msv', 'em']);
+const USER_ROLES = new Set(['user', 'editor', 'admin']);
 
 function normalizeCell(value) {
   return String(value ?? '').trim();
@@ -157,11 +158,13 @@ router.post('/users', (req, res) => {
   try {
     const username = normalizeCell(req.body?.username);
     const email = normalizeCell(req.body?.email);
+    const role = normalizeCell(req.body?.role || 'user').toLowerCase();
     if (!username) return res.status(400).json({ error: 'Username is required' });
     if (!email) return res.status(400).json({ error: 'Email is required when adding a user' });
+    if (!USER_ROLES.has(role)) return res.status(400).json({ error: 'Role must be user, editor or admin' });
     const existing = userRepo.getAll().find(u => sameText(u.username, username)) || userRepo.getByUsername(username);
     if (existing) return res.status(409).json({ error: `User "${username}" already exists` });
-    userRepo.upsert(req.body);
+    userRepo.upsert({ ...req.body, role });
     res.json(userRepo.toApiShape(userRepo.getByUsername(username)));
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -172,7 +175,9 @@ router.put('/users/:username', (req, res) => {
   try {
     const existing = userRepo.getByUsername(req.params.username);
     if (!existing) return res.status(404).json({ error: 'User not found' });
-    userRepo.upsert({ ...req.body, username: req.params.username });
+    const role = normalizeCell(req.body?.role || existing.role || 'user').toLowerCase();
+    if (!USER_ROLES.has(role)) return res.status(400).json({ error: 'Role must be user, editor or admin' });
+    userRepo.upsert({ ...req.body, username: req.params.username, role });
     res.json(userRepo.toApiShape(userRepo.getByUsername(req.params.username)));
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -201,7 +206,7 @@ router.post('/users/upload', upload.single('file'), (req, res) => {
       const email = normalizeCell(row['Email'] || row['email']);
       const role = normalizeCell(row['Role'] || row['role'] || 'user').toLowerCase();
       if (!username) throw new Error(`Row ${index + 2}: Username is required`);
-      if (!['user', 'admin'].includes(role)) throw new Error(`Row ${index + 2}: Role must be user or admin`);
+      if (!USER_ROLES.has(role)) throw new Error(`Row ${index + 2}: Role must be user, editor or admin`);
       return { username, displayName, email, role };
     });
 
@@ -236,7 +241,8 @@ router.post('/users/upload', upload.single('file'), (req, res) => {
 });
 
 router.put('/users/:username/role', (req, res) => {
-  const { role } = req.body;
+  const role = normalizeCell(req.body?.role || '').toLowerCase();
+  if (!USER_ROLES.has(role)) return res.status(400).json({ error: 'Role must be user, editor or admin' });
   const user = userRepo.getByUsername(req.params.username);
   if (!user) return res.status(404).json({ error: 'User not found' });
   userRepo.updateRole(req.params.username, role);
@@ -347,7 +353,7 @@ router.put('/config/attachment-naming/:docGroup', (req, res) => {
   res.json({ success: true });
 });
 
-// ── Work Centers ──────────────────────────────────────────────────────────────
+// ── Departments ───────────────────────────────────────────────────────────────
 
 router.get('/config/work-centers', (req, res) => {
   res.json(cfgRepo.getWorkCenters());
@@ -359,7 +365,7 @@ router.post('/config/work-centers', (req, res) => {
   const description = normalizeCell(req.body?.description);
   if (!departmentId) return res.status(400).json({ error: 'departmentId required' });
   const duplicate = cfgRepo.getWorkCenters().find(w => w.active === 1 && sameText(w.department_id, departmentId)) || cfgRepo.getWorkCenterById(departmentId);
-  if (duplicate) return res.status(409).json({ error: `Work center "${departmentId}" already exists` });
+  if (duplicate) return res.status(409).json({ error: `Department "${departmentId}" already exists` });
   cfgRepo.createWorkCenter(departmentId, departmentName || null, description || null);
   res.json({ success: true });
 });
@@ -372,12 +378,12 @@ router.put('/config/work-centers/:id', (req, res) => {
   if (!departmentId) return res.status(400).json({ error: 'departmentId required' });
 
   const existing = cfgRepo.getWorkCenterById(currentDepartmentId);
-  if (!existing) return res.status(404).json({ error: 'Work center not found' });
+  if (!existing) return res.status(404).json({ error: 'Department not found' });
 
   const duplicate = cfgRepo.getWorkCenters().find(
     w => w.active === 1 && !sameText(w.department_id, currentDepartmentId) && sameText(w.department_id, departmentId)
   );
-  if (duplicate) return res.status(409).json({ error: `Work center "${departmentId}" already exists` });
+  if (duplicate) return res.status(409).json({ error: `Department "${departmentId}" already exists` });
 
   cfgRepo.updateWorkCenter(currentDepartmentId, departmentId, departmentName || null, description || null);
   res.json({ success: true });

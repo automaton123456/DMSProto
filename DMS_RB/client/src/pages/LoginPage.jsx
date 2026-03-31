@@ -17,6 +17,12 @@ export default function LoginPage() {
     setLoading(false);
   };
 
+  const roleLabel = (role) => {
+    if (role === 'admin') return 'Admin';
+    if (role === 'editor') return 'Editor';
+    return 'User';
+  };
+
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center bg-primary p-3">
       <Card style={{ width: '100%', maxWidth: '420px' }} className="shadow-lg">
@@ -45,7 +51,7 @@ export default function LoginPage() {
               <option value="">— Select a user —</option>
               {users.map(u => (
                 <option key={u.username} value={u.username}>
-                  {u.displayName} ({u.role === 'admin' ? 'Admin' : u.username})
+                  {u.displayName} ({roleLabel(u.role)})
                 </option>
               ))}
             </Form.Select>

@@ -57,6 +57,11 @@ function AppRoutes() {
           <NavbarLayout><Report /></NavbarLayout>
         </ProtectedRoute>
       } />
+      <Route path="/completed-report" element={
+        <ProtectedRoute>
+          <NavbarLayout><Report completedOnly /></NavbarLayout>
+        </ProtectedRoute>
+      } />
       <Route path="/admin" element={
         <ProtectedRoute>
           <NavbarLayout><Admin /></NavbarLayout>

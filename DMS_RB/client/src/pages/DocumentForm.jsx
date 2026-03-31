@@ -10,6 +10,7 @@ import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Badge from 'react-bootstrap/Badge';
+import Nav from 'react-bootstrap/Nav';
 import Icon from '@mdi/react';
 import {
   mdiCloudUploadOutline, mdiFileOutline, mdiPaperclip, mdiDownload,
@@ -38,6 +39,30 @@ const EMPTY_OBJECT_LINK = {
   equipmentText: ''
 };
 
+function normalizeObjectLink(link = {}) {
+  return {
+    workOrder: link.workOrder || link.work_order || '',
+    workOrderText: link.workOrderText || link.workOrderDescription || link.work_order_description || '',
+    equipment: link.equipment || link.em_asset_number || '',
+    equipmentText: link.equipmentText || link.equipment_text || '',
+    equipmentDescription: link.equipmentDescription || link.equipment_description || '',
+    owningDepartmentId: link.owningDepartmentId || link.owning_department_id || '',
+    rig: link.rig || '',
+    parent: link.parent || ''
+  };
+}
+
+function formatDateTime(value) {
+  if (!value) return '—';
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString('en-GB');
+}
+
+function formatHistoryValue(value) {
+  if (value === undefined || value === null || value === '') return 'blank';
+  return String(value);
+}
+
 export default function DocumentForm({ mode: initialMode }) {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
@@ -49,6 +74,10 @@ export default function DocumentForm({ mode: initialMode }) {
   const [loading, setLoading] = useState(!!id);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [history, setHistory] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('details');
 
   const [rigs, setRigs] = useState([]);
   const [docTypes, setDocTypes] = useState([]);
@@ -78,6 +107,19 @@ export default function DocumentForm({ mode: initialMode }) {
   const fileInputRef = useRef();
   const [dragover, setDragover] = useState(false);
 
+  const loadHistory = async (documentId) => {
+    if (!documentId) return;
+    setHistoryLoading(true);
+    try {
+      const response = await fetch(`/api/documents/${documentId}/history`);
+      const data = await response.json();
+      setHistory(Array.isArray(data) ? data : []);
+    } catch {
+      setHistory([]);
+    }
+    setHistoryLoading(false);
+  };
+
   useEffect(() => {
     fetch('/api/config/document-types').then(r => r.json()).then(setDocTypes);
     fetch('/api/rigs').then(r => r.json()).then(setRigs);
@@ -93,14 +135,19 @@ export default function DocumentForm({ mode: initialMode }) {
         setDocType(data.docType);
         setDocGroup(data.docGroup);
         setClassifications(data.classifications || {});
-        setObjectLinks(data.objectLinks || []);
+        setObjectLinks((data.objectLinks || []).map(normalizeObjectLink));
         setAttachments(data.attachments || []);
 
         const isApprover = currentUser && data.workflow && isApproverForDoc(data, currentUser.username);
         const isOriginator = data.originatorUsername === currentUser?.username;
+        const isPrivilegedCompletedEdit = searchParams.get('edit') === '1' &&
+          ['admin', 'editor'].includes(currentUser?.role) &&
+          data.status === 'Approved';
 
         if (initialMode === 'approve' && isApprover) {
           setMode('approve');
+        } else if (isPrivilegedCompletedEdit) {
+          setMode('edit');
         } else if (isOriginator && (data.status === 'Draft' || data.status === 'Rejected')) {
           setMode('edit');
         } else {
@@ -109,7 +156,12 @@ export default function DocumentForm({ mode: initialMode }) {
         setLoading(false);
       })
       .catch(() => { setError('Document not found'); setLoading(false); });
-  }, [id, currentUser]);
+  }, [id, currentUser, initialMode, searchParams]);
+
+  useEffect(() => {
+    if (!id) return;
+    loadHistory(id);
+  }, [id]);
 
   useEffect(() => {
     if (!docType) { setDocGroups([]); return; }
@@ -147,6 +199,7 @@ export default function DocumentForm({ mode: initialMode }) {
   }
 
   const isReadOnly = mode === 'readonly' || mode === 'approve';
+  const isCompletedEdit = mode === 'edit' && doc?.status === 'Approved';
 
   const searchWO = async (search) => {
     if (!search || search.length < 2) { setWoResults([]); return; }
@@ -218,16 +271,21 @@ export default function DocumentForm({ mode: initialMode }) {
     if (pendingFiles.length === 0) return;
     const formData = new FormData();
     pendingFiles.forEach(f => formData.append('files', f));
-    await fetch(`/api/documents/${docId}/attachments`, { method: 'POST', body: formData });
+    formData.append('currentUser', currentUser.username);
+    const response = await fetch(`/api/documents/${docId}/attachments`, { method: 'POST', body: formData });
+    const data = await response.json();
+    if (Array.isArray(data.attachments)) setAttachments(data.attachments);
     setPendingFiles([]);
+    await loadHistory(docId);
   };
 
   const handleSave = async (action) => {
-    if (action === 'submit') {
+    if (action === 'submit' || action === 'resubmit') {
       const err = validate();
       if (err) { setError(err); return; }
     }
     setError('');
+    setNotice('');
     setSaving(true);
     try {
       const body = { currentUser: currentUser.username, action, rig, docType, docGroup, classifications, objectLinks };
@@ -243,6 +301,10 @@ export default function DocumentForm({ mode: initialMode }) {
       await uploadPendingFiles(result.documentId);
       if (action === 'draft') {
         navigate('/my-documents');
+      } else if (action === 'edit') {
+        setDoc(result);
+        setNotice('Document updated successfully.');
+        await loadHistory(result.documentId);
       } else {
         setSuccessInfo({ documentId: result.documentId, status: result.status || 'Submitted' });
       }
@@ -261,6 +323,7 @@ export default function DocumentForm({ mode: initialMode }) {
       const updated = await res.json();
       if (updated.error) { setError(updated.error); setSaving(false); return; }
       setDoc(updated); setMode('readonly'); setShowApproveModal(false);
+      await loadHistory(id);
     } catch (e) { setError(e.message); }
     setSaving(false);
   };
@@ -276,6 +339,7 @@ export default function DocumentForm({ mode: initialMode }) {
       const updated = await res.json();
       if (updated.error) { setError(updated.error); setSaving(false); return; }
       setDoc(updated); setMode('readonly'); setShowRejectModal(false); setRejectReason('');
+      await loadHistory(id);
     } catch (e) { setError(e.message); }
     setSaving(false);
   };
@@ -288,8 +352,14 @@ export default function DocumentForm({ mode: initialMode }) {
 
   const removeAttachment = async (filename) => {
     if (!id) return;
-    await fetch(`/api/documents/${id}/attachments/${encodeURIComponent(filename)}`, { method: 'DELETE' });
+    await fetch(`/api/documents/${id}/attachments/${encodeURIComponent(filename)}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentUser: currentUser.username })
+    });
     setAttachments(prev => prev.filter(a => a !== filename));
+    setNotice(`Attachment removed: ${filename}`);
+    await loadHistory(id);
   };
 
   // ── Loading ──
@@ -348,6 +418,17 @@ export default function DocumentForm({ mode: initialMode }) {
         {doc?.status && <StatusBadge status={doc.status} />}
       </div>
 
+      {id && (
+        <Nav variant="tabs" activeKey={activeTab} onSelect={(key) => setActiveTab(key || 'details')} className="mb-4">
+          <Nav.Item>
+            <Nav.Link eventKey="details">Details</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="history">History{history.length ? ` (${history.length})` : ''}</Nav.Link>
+          </Nav.Item>
+        </Nav>
+      )}
+
       {/* Banners */}
       {doc?.status === 'Rejected' && (
         <Alert variant="danger" className="mb-3">
@@ -356,12 +437,19 @@ export default function DocumentForm({ mode: initialMode }) {
             : 'This document was rejected. You may edit and resubmit.'}
         </Alert>
       )}
+      {notice && (
+        <Alert variant="success" dismissible onClose={() => setNotice('')} className="mb-3">
+          {notice}
+        </Alert>
+      )}
       {error && (
         <Alert variant="danger" dismissible onClose={() => setError('')} className="mb-3">
           {error}
         </Alert>
       )}
 
+      {activeTab === 'details' && (
+        <>
       {/* ── Section 1: Document Classification ── */}
       <Card className="mb-4 shadow-sm">
         <Card.Body>
@@ -701,18 +789,30 @@ export default function DocumentForm({ mode: initialMode }) {
       <div className="action-bar">
         {(mode === 'create' || mode === 'edit') && (
           <>
-            <Button
-              variant="primary"
-              onClick={() => handleSave('submit')}
-              disabled={saving}
-            >
-              <Icon path={mdiSend} size={0.7} className="me-1" />{doc?.status === 'Rejected' ? 'Resubmit' : 'Submit'}
-            </Button>
-            <Button variant="outline-secondary" onClick={() => handleSave('draft')} disabled={saving}>
-              <Icon path={mdiContentSaveOutline} size={0.7} className="me-1" />Save as Draft
-            </Button>
+            {isCompletedEdit ? (
+              <Button
+                variant="primary"
+                onClick={() => handleSave('edit')}
+                disabled={saving}
+              >
+                <Icon path={mdiContentSaveOutline} size={0.7} className="me-1" />Save Changes
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="primary"
+                  onClick={() => handleSave(doc?.status === 'Rejected' ? 'resubmit' : 'submit')}
+                  disabled={saving}
+                >
+                  <Icon path={mdiSend} size={0.7} className="me-1" />{doc?.status === 'Rejected' ? 'Resubmit' : 'Submit'}
+                </Button>
+                <Button variant="outline-secondary" onClick={() => handleSave('draft')} disabled={saving}>
+                  <Icon path={mdiContentSaveOutline} size={0.7} className="me-1" />Save as Draft
+                </Button>
+              </>
+            )}
             <div className="flex-grow-1" />
-            {doc?.status === 'Draft' && id && (
+            {!isCompletedEdit && doc?.status === 'Draft' && id && (
               <Button variant="outline-danger" onClick={handleDelete} disabled={saving}><Icon path={mdiTrashCanOutline} size={0.7} className="me-1" />Delete Draft</Button>
             )}
             <Button variant="link" className="text-muted" onClick={() => navigate(-1)} disabled={saving}>Cancel</Button>
@@ -734,6 +834,67 @@ export default function DocumentForm({ mode: initialMode }) {
 
         {saving && <Spinner size="sm" animation="border" variant="primary" className="ms-2" />}
       </div>
+        </>
+      )}
+
+      {id && activeTab === 'history' && (
+        <Card className="shadow-sm">
+          <Card.Body>
+            <div className="section-header">Change History</div>
+            {historyLoading ? (
+              <div className="d-flex justify-content-center py-4">
+                <Spinner animation="border" variant="primary" />
+              </div>
+            ) : history.length === 0 ? (
+              <p className="text-muted mb-0">No change history recorded yet.</p>
+            ) : (
+              <div className="d-flex flex-column gap-3">
+                {history.map((entry) => {
+                  const changes = Array.isArray(entry.previousData?.changes) ? entry.previousData.changes : [];
+                  return (
+                    <div key={entry.id} className="border rounded p-3">
+                      <div className="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-2">
+                        <div>
+                          <div className="fw-semibold">{entry.changeSummary}</div>
+                          <div className="text-muted" style={{ fontSize: '0.8rem' }}>
+                            {formatDateTime(entry.changeDate)} by {entry.changedByName || entry.changedBy}
+                          </div>
+                        </div>
+                        <div className="text-end">
+                          <div className="text-uppercase text-muted" style={{ fontSize: '0.72rem', letterSpacing: '0.04em' }}>{entry.changeType}</div>
+                          <div className="fw-semibold" style={{ fontSize: '0.8rem' }}>v{entry.version || '—'}</div>
+                        </div>
+                      </div>
+                      {changes.length > 0 && (
+                        <div style={{ overflowX: 'auto' }}>
+                          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
+                            <thead>
+                              <tr style={{ background: '#f5f6f7' }}>
+                                <th style={{ textAlign: 'left', padding: '0.55rem 0.7rem' }}>Field</th>
+                                <th style={{ textAlign: 'left', padding: '0.55rem 0.7rem' }}>Before</th>
+                                <th style={{ textAlign: 'left', padding: '0.55rem 0.7rem' }}>After</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {changes.map((change, index) => (
+                                <tr key={`${entry.id}-${index}`} style={{ borderTop: '1px solid #edf0f2' }}>
+                                  <td style={{ padding: '0.55rem 0.7rem', fontWeight: 600 }}>{change.label || change.field}</td>
+                                  <td style={{ padding: '0.55rem 0.7rem' }}>{formatHistoryValue(change.before)}</td>
+                                  <td style={{ padding: '0.55rem 0.7rem' }}>{formatHistoryValue(change.after)}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </Card.Body>
+        </Card>
+      )}
 
       {/* Approve Modal */}
       <Modal show={showApproveModal} onHide={() => setShowApproveModal(false)} centered>
