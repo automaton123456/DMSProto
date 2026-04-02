@@ -1,0 +1,14 @@
+{
+  "workflowRules": [
+    {
+      "id": "amo-msv-approval",
+      "description": "Documents with an Object Link containing 'AMO' require MSV approval",
+      "condition": {
+        "field": "objectLinks",
+        "anyField": true,
+        "contains": "AMO"
+      },
+      "requiredSteps": ["msv"]
+    }
+  ]
+}
